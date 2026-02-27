@@ -2,67 +2,57 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="bg-tmi-charcoal text-white">
-      {/* CTA Band */}
+    <footer className="bg-onyx text-white">
+      {/* Final CTA band */}
       <div className="border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16 text-center">
-          <p className="font-display text-3xl md:text-4xl font-semibold mb-4 text-tmi-green-light">
-            Your wealth is an Amanah. Treat it like one.
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-20 text-center">
+          <p className="arabic text-3xl md:text-4xl text-viridian-100 mb-6">
+            بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ
           </p>
-          <p className="text-gray-400 max-w-xl mx-auto mb-8 text-lg">
-            Join a community of Muslims building Halal wealth with purpose, purity, and peace of mind.
+          <h2 className="text-2xl md:text-3xl font-bold mb-4 max-w-2xl mx-auto leading-tight">
+            Your wealth is an Amanah.<br />
+            <span className="text-viridian">Treat it like one.</span>
+          </h2>
+          <p className="text-dimgray max-w-lg mx-auto mb-10 text-base leading-relaxed">
+            Join a community of Muslims preparing their answer for the Day of Judgment through Akhirah-first wealth building.
           </p>
-          <a
-            href="https://www.skool.com/the-muslim-investor"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-primary text-base"
-          >
+          <a href="https://www.skool.com/the-muslim-investor" target="_blank" rel="noopener noreferrer"
+            className="btn-primary text-base">
             Join the Free Community →
           </a>
         </div>
       </div>
 
-      {/* Footer Links */}
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12">
+      {/* Links */}
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-14">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
-          {/* Brand Column */}
           <div className="md:col-span-2">
-            <img src="/logo-dark.png" alt="The Muslim Investor" className="h-8 w-auto mb-4 brightness-150" />
-            <p className="text-gray-400 text-sm leading-relaxed max-w-md">
-              Akhirah-first wealth building. Helping Muslims worldwide purify their portfolios, 
-              avoid Riba, and use their wealth as a tool for eternal success.
+            <img src="/logo-light.png" alt="The Muslim Investor" className="h-8 w-auto mb-5 brightness-[2] invert" />
+            <p className="text-sm text-dimgray leading-relaxed max-w-sm">
+              Akhirah-first wealth building. Helping Muslims worldwide purify their wealth, 
+              eliminate Riba, and prepare their answer for the Day of Judgment.
             </p>
           </div>
-
-          {/* Navigation */}
           <div>
-            <h4 className="text-xs font-semibold tracking-widest uppercase text-gray-500 mb-4">Navigate</h4>
+            <h4 className="text-xs font-bold tracking-[0.15em] uppercase text-dimgray mb-5">Navigate</h4>
             <div className="space-y-3">
-              <Link href="/about" className="block text-sm text-gray-400 hover:text-tmi-green transition-colors">About Mehdi</Link>
-              <Link href="/curriculum" className="block text-sm text-gray-400 hover:text-tmi-green transition-colors">Curriculum</Link>
-              <Link href="/tools" className="block text-sm text-gray-400 hover:text-tmi-green transition-colors">Free Tools</Link>
+              <Link href="/about" className="block text-sm text-onyx-200 hover:text-viridian transition-colors">About Mehdi</Link>
+              <Link href="/curriculum" className="block text-sm text-onyx-200 hover:text-viridian transition-colors">Curriculum</Link>
+              <Link href="/tools" className="block text-sm text-onyx-200 hover:text-viridian transition-colors">Free Tools</Link>
             </div>
           </div>
-
-          {/* Connect */}
           <div>
-            <h4 className="text-xs font-semibold tracking-widest uppercase text-gray-500 mb-4">Connect</h4>
+            <h4 className="text-xs font-bold tracking-[0.15em] uppercase text-dimgray mb-5">Connect</h4>
             <div className="space-y-3">
-              <a href="https://www.skool.com/the-muslim-investor" target="_blank" rel="noopener noreferrer" className="block text-sm text-gray-400 hover:text-tmi-green transition-colors">Skool Community</a>
-              <a href="#" className="block text-sm text-gray-400 hover:text-tmi-green transition-colors">YouTube</a>
-              <a href="#" className="block text-sm text-gray-400 hover:text-tmi-green transition-colors">Instagram</a>
+              <a href="https://www.skool.com/the-muslim-investor" target="_blank" rel="noopener noreferrer" className="block text-sm text-onyx-200 hover:text-viridian transition-colors">Skool Community</a>
+              <a href="#" className="block text-sm text-onyx-200 hover:text-viridian transition-colors">YouTube</a>
+              <a href="#" className="block text-sm text-onyx-200 hover:text-viridian transition-colors">Instagram</a>
             </div>
           </div>
         </div>
-
-        <div className="border-t border-white/10 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-gray-500">
-            © {new Date().getFullYear()} The Muslim Investor. All rights reserved.
-          </p>
-          <p className="text-xs text-gray-600 italic">
-            Bismillah ir-Rahman ir-Rahim
-          </p>
+        <div className="border-t border-white/10 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-3">
+          <p className="text-xs text-dimgray">© {new Date().getFullYear()} The Muslim Investor. All rights reserved.</p>
+          <p className="text-xs text-dimgray italic">We are not building a business. We are collecting Hasanat at scale.</p>
         </div>
       </div>
     </footer>

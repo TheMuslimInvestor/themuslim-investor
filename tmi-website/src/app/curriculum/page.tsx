@@ -3,174 +3,115 @@ import Footer from '@/components/Footer';
 
 export const metadata = {
   title: 'Curriculum | The Muslim Investor',
-  description: '12 professional courses covering spiritual foundations, investor profiling, macro analysis, Halal asset classes, portfolio management, and more.',
+  description: '7 structured courses. A guided spiritual and financial transformation from covenant to Zakat. Built by a $500M fund manager for the Ummah.',
 };
 
-const curriculum = [
+const courses = [
   {
-    set: 'The Foundation',
-    setNum: 1,
-    description: 'Build the spiritual and practical bedrock of your investing journey.',
-    courses: [
-      {
-        num: 1,
-        title: 'Welcome to the Movement',
-        modules: [
-          'Personal Welcome from the Founder',
-          'How to Use This Platform & Community Guide',
-          'Choosing and Opening a Shariah-Compliant Brokerage Account',
-        ],
-        transformation: 'You are no longer a passive observer. You are an active participant in the Movement, with your brokerage account open and ready.',
-      },
-      {
-        num: 2,
-        title: 'The Akhirah Mindset',
-        modules: [
-          'Is Being Wealthy Compatible with Being the Best Muslim?',
-          'Why Halal Investing is a Spiritual Duty',
-          'The Seriousness of Investing in Haram',
-          'The Triangle of Halal Financial Freedom',
-          'The Barakah Budget: Managing Your Cash Flow',
-          'The Islamic View on Debt: Eliminating Riba',
-          'Your Financial Fortress: Building Your Emergency Fund',
-          'Key Terms & Concepts: Your Financial Dictionary',
-        ],
-        transformation: 'You possess an unshakeable conviction that building Halal wealth is an act of worship. You have a budget, a debt elimination plan, and the financial vocabulary to move forward.',
-      },
+    num: 1,
+    title: 'The Covenant',
+    tagline: 'Your Niyyah made tangible.',
+    problem: 'You know something in your financial life isn\u2019t right with Allah — but you don\u2019t know where to start. The guilt has been building for years.',
+    transformation: 'You have signed your Mission Pledge before Allah, audited every holding you own, and started the 72-hour purification protocol. The anxiety is replaced by clarity and action.',
+    modules: [
+      'The Two Questions That Define Everything',
+      'The TMI Mission Pledge — Your Covenant with Allah',
+      'The Immediate Purge — Identifying and Eliminating Haram',
     ],
+    tools: ['TMI Mission Pledge (PDF)', 'Emergency Purification Guide', 'Halal Portfolio Screener', 'Sharia Methodology Note'],
+    character: 'Khalid — 42-year-old IT manager in London. Been investing in his company pension for 15 years. Just realized he has no idea if any of it is halal.',
   },
   {
-    set: "The Professional Investor's Journey",
-    setNum: 2,
-    description: 'The 6-step professional framework that takes you from beginner to confident, independent Muslim investor.',
-    courses: [
-      {
-        num: 3,
-        title: 'Step 1 — The Investor Profile',
-        modules: [
-          'Defining Your Personal Vision',
-          'Financial Goals & Objectives',
-          'Understanding Your Financial Needs',
-          'Your Relationship with Money',
-          'Assessing Your Risk Tolerance',
-          'How Your Career Shapes Your Profile',
-          'Uncovering Your Hidden Competitive Edges',
-          'Define Your Muslim Investor Profile',
-        ],
-        transformation: 'You hold your personalized "Compass of Conviction"—a roadmap that makes every future investment decision clearer and more confident.',
-      },
-      {
-        num: 4,
-        title: 'Step 2 — The Investor\'s Mindset',
-        modules: [
-          'The Market is Always Right: The Discipline of Humility',
-          'Mastering Your Emotions: Conquering Fear & Greed',
-          'The Lie of "Passive" Investing & The Virtue of Effort',
-        ],
-        transformation: 'You are a Resilient Believer—capable of observing market volatility with professional calm and the deep patience (Sabr) of a Muslim.',
-      },
-      {
-        num: 5,
-        title: 'Step 3 — The World View',
-        modules: [
-          'What is a Macro View & How to Develop Yours',
-          'Economic Indicators: Leading, Lagging & Coincident',
-          'The 4 Economic Regimes: Goldilocks, Reflation, Inflation, Recession',
-          'The 6 Pillars: Growth, Inflation, Liquidity, Risk Appetite, Monetary & Fiscal Policy',
-          'Growth Leading Indicators (4 modules)',
-          'Inflation Leading Indicators (4 modules)',
-          'Liquidity Leading Indicators (4 modules)',
-          'Risk Appetite Leading Indicators (4 modules)',
-          'Monetary & Fiscal Policy Analysis',
-          'Business Cycles & Global Context',
-        ],
-        transformation: 'You are "The Watchtower"—able to analyze the global economic landscape, discern signal from noise, and allocate time to Ibadah instead of worrying about headlines.',
-      },
-      {
-        num: 6,
-        title: 'Step 4 — The Halal Toolbox',
-        modules: [
-          'What is a Halal Asset Class',
-          'The 5 Halal Asset Classes: Sukuk, Equities, Cash, Gold, Bitcoin',
-          'Growth Equities: Selection & Screening',
-          'Dividend Equities: Income Strategies',
-          'Sukuk: Halal vs. Bonds',
-          'Islamic Deposits (Cash Management)',
-          'Gold: Investment Methods & Compliance',
-          'Bitcoin: Halal Assessment & Risks',
-        ],
-        transformation: 'You command the full arsenal of Halal investment tools. You know what each asset does, why it matters, and how to invest in it compliantly.',
-      },
-      {
-        num: 7,
-        title: 'Step 5 — The Analysis',
-        modules: [
-          'Fundamental Analysis for Halal Assets',
-          'Technical Analysis Essentials',
-          'Combining Macro, Fundamental & Technical Views',
-        ],
-        transformation: 'You can analyze any Halal asset with the confidence of a professional, combining multiple lenses into a coherent investment thesis.',
-      },
-      {
-        num: 8,
-        title: 'Step 6 — The Amanah Portfolio',
-        modules: [
-          'Portfolio Construction Principles',
-          'Asset Allocation Strategies',
-          'The 5-Minute Monthly Rebalancing Ritual',
-          'Risk Management & Stop-Loss Framework',
-          'The Amanah Portfolio Command Center',
-        ],
-        transformation: 'Your portfolio is built, balanced, and managed with institutional-grade discipline—requiring only 5 minutes a month to maintain.',
-      },
+    num: 2,
+    title: 'Readiness & Identity',
+    tagline: 'Stop guessing. Start knowing.',
+    problem: 'You\u2019re following generic \u201Cone-size-fits-all\u201D advice that doesn\u2019t account for your unique life, obligations, and values as a Muslim.',
+    transformation: 'You hold your complete financial MRI and a 2,500+ word personalized investor profile. You know your Islamic Investment Readiness Score, your risk tolerance, your strengths, and your unique investor DNA.',
+    modules: [
+      'The TMI Readiness Assessment — Your Financial X-Ray',
+      'Your Investor DNA Profile — The 35-Question Deep Dive',
+      'The Portfolio Mirror — Analyzing What You Already Own',
     ],
+    tools: ['TMI Akhirah Financial Compass (Excel)', 'TMI Investor Profile System (Web App)', 'TMI Portfolio Analyzer (Web App)'],
+    character: 'Amina — 35-year-old physician in Jeddah. High earner, zero investing experience. Overwhelmed by conflicting advice.',
   },
   {
-    set: 'Advanced & Resource Library',
-    setNum: 3,
-    description: 'Deepen your mastery with real-world case studies, advanced strategies, and the complete stewardship framework.',
-    courses: [
-      {
-        num: 9,
-        title: 'The Amanah Blueprints',
-        modules: [
-          'Zakat Calculation & Obligations',
-          'Portfolio Purification Methods',
-          'The Pillars of Islamic Wealth Stewardship',
-        ],
-        transformation: 'You fulfill your Zakat obligations with precision and understand the complete framework of Islamic wealth stewardship.',
-      },
-      {
-        num: 10,
-        title: 'Applied TMI: Case Studies',
-        modules: [
-          'Real-World Portfolio Scenarios',
-          'Market Crisis Response Playbooks',
-          'Sector Analysis Examples',
-        ],
-        transformation: 'You can apply everything you\'ve learned to real-world situations with the confidence that comes from seeing it done.',
-      },
-      {
-        num: 11,
-        title: "The Professional's Guidebook",
-        modules: [
-          'Advanced Portfolio Optimization',
-          'Multi-Asset Correlation Analysis',
-          'Institutional-Grade Risk Frameworks',
-        ],
-        transformation: 'You operate at the level of a professional fund manager, with advanced tools and frameworks at your disposal.',
-      },
-      {
-        num: 12,
-        title: 'The Psychology of Managing Wealth',
-        modules: [
-          'Behavioral Finance & Islamic Perspective',
-          'Long-Term Wealth Stewardship Mindset',
-          'Building Generational Halal Wealth',
-        ],
-        transformation: 'You have mastered the inner game of investing—the psychology that separates those who build lasting, generational Halal wealth from those who don\'t.',
-      },
+    num: 3,
+    title: 'Mastering the Halal Arsenal',
+    tagline: 'Six weapons. One purpose.',
+    problem: 'You don\u2019t know the difference between a Sukuk and a bond, or whether Bitcoin is halal, or how to screen an equity for Sharia compliance.',
+    transformation: 'You command the full arsenal of halal investment tools. You know what each asset does, when it shines, why it exists in your portfolio, and how to invest in it compliantly.',
+    modules: [
+      'Halal Equities — Owning Shariah-Compliant Businesses',
+      'Sukuk — The Stability Anchor',
+      'Gold — The Ancient Protector',
+      'Islamic REITs, ETFs & Funds',
+      'Cash — Islamic Deposits and Liquidity',
+      'Bitcoin — The Halal Assessment',
     ],
+    tools: ['TMI Halal Equity Analyzer', 'TMI Sukuk Analyzer', 'Asset Class Deep-Dive Guides'],
+    character: null,
+  },
+  {
+    num: 4,
+    title: 'The TMI Macro System',
+    tagline: 'Read the weather. Protect the Amanah.',
+    problem: 'You feel like a leaf in the wind — tossed by scary headlines about inflation, recessions, and geopolitical events. You don\u2019t know what any of it means for your money.',
+    transformation: 'You are \u201CThe Watchtower.\u201D You can read the global economic environment through 34 indicators across 5 weather regimes and know exactly when to lean in or protect.',
+    modules: [
+      'The TMI Macro Framework — 5 Weather Regimes',
+      '34 Leading Indicators Across 6 Pillars',
+      'Growth, Inflation, Liquidity, Risk Appetite, Monetary & Fiscal Policy',
+      'From Signal to Portfolio Action',
+    ],
+    tools: ['TMI Global Macro Dashboard (12-Tab System)', 'Weather Regime Signal Tracker'],
+    character: null,
+  },
+  {
+    num: 5,
+    title: 'Portfolio & Risk Management',
+    tagline: 'One sheet. Three sections. 15\u201320 minutes a week.',
+    problem: 'You\u2019ve learned about assets and markets — but you don\u2019t know how to put it all together into a real portfolio that you can actually manage.',
+    transformation: 'Your Amanah Portfolio is built, balanced, and managed with institutional discipline. Profile + asset knowledge + macro regime + new cash = one clear instruction. Done.',
+    modules: [
+      'Portfolio Construction Principles for Muslims',
+      'Asset Allocation Strategies by Investor Profile',
+      'The 15\u201320 Minute Weekly Ritual',
+      'Risk Management & Islamic Stop-Loss Framework',
+      'The Amanah Portfolio Command Center Walkthrough',
+    ],
+    tools: ['TMI Amanah Portfolio Command Center', 'Islamic Stop-Loss & Profit Target Planner', 'Relationship Analyzer'],
+    character: null,
+  },
+  {
+    num: 6,
+    title: 'Execution & Systems',
+    tagline: 'Close the gap between knowledge and action.',
+    problem: 'You know what to invest in and why — but you\u2019ve never actually placed a trade. The practical \u201Chow\u201D is the final barrier.',
+    transformation: 'You have an open halal brokerage account, you\u2019ve placed your first trade, and you have a systematized execution process that removes emotion from every decision.',
+    modules: [
+      'Choosing Your Shariah-Compliant Broker',
+      'Opening Your Account — Step by Step',
+      'Your First Halal Trade',
+      'Limit Orders, Automation & Systematized Execution',
+    ],
+    tools: ['TMI Execution Toolkit', 'Broker Selection & Comparison Guide'],
+    character: null,
+  },
+  {
+    num: 7,
+    title: 'Zakat & Wealth Purification',
+    tagline: 'Where your portfolio becomes an engine of Hasanat.',
+    problem: 'You don\u2019t know how to calculate Zakat on modern halal assets — Sukuk, equities, ETFs, gold, Bitcoin. Traditional calculators weren\u2019t built for this.',
+    transformation: 'You calculate Zakat with precision across every asset class. Your wealth is not just clean — it is actively generating Hasanat. The spiritual capstone is complete.',
+    modules: [
+      'The Obligation and Blessing of Zakat',
+      'Zakat on Modern Halal Assets (Equities, Sukuk, Gold, Bitcoin)',
+      'Purification of Haram Earnings',
+      'The TMI Zakat Calculator Walkthrough',
+    ],
+    tools: ['TMI Zakat & Purification Calculator (7-Sheet System)'],
+    character: null,
   },
 ];
 
@@ -179,112 +120,104 @@ export default function CurriculumPage() {
     <>
       <Navbar />
       <main>
-        {/* ═══════════ HERO ═══════════ */}
-        <section className="relative pt-32 pb-20 bg-tmi-charcoal overflow-hidden">
-          <div className="absolute inset-0 islamic-accent opacity-20" />
-          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
-            <div className="max-w-3xl">
-              <p className="text-tmi-green font-display text-lg italic mb-4">The Complete Curriculum</p>
-              <h1 className="font-display text-4xl md:text-6xl font-bold text-white leading-tight mb-6">
-                12 Courses.<br />One Akhirah-First Mission.
-              </h1>
-              <p className="text-xl text-gray-300 leading-relaxed">
-                A professional-grade curriculum that takes you from complete beginner to 
-                confident, independent Muslim investor—without compromising a single principle.
-              </p>
-            </div>
+
+        {/* HERO */}
+        <section className="relative pt-32 pb-20 mesh-dark overflow-hidden">
+          <div className="absolute inset-0 islamic-pattern opacity-15" />
+          <div className="relative z-10 max-w-4xl mx-auto px-6 lg:px-8 text-center">
+            <p className="arabic text-2xl text-viridian mb-6">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</p>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight mb-6">
+              7 Courses.<br />One Akhirah-First<br />Transformation.
+            </h1>
+            <p className="text-lg text-onyx-200 leading-relaxed max-w-2xl mx-auto">
+              Not a library of content. A structured journey — from covenant to Zakat — built by 
+              a practicing $500M fund manager. Each course builds on the last. Each moves you 
+              closer to a prepared answer.
+            </p>
           </div>
         </section>
 
-        {/* ═══════════ CURRICULUM SETS ═══════════ */}
-        {curriculum.map((set, setIndex) => (
-          <section
-            key={set.set}
-            className={`py-20 lg:py-24 ${setIndex % 2 === 0 ? 'bg-white' : 'bg-tmi-green-mist'}`}
-          >
-            <div className="max-w-7xl mx-auto px-6 lg:px-8">
-              {/* Set Header */}
-              <div className="mb-16">
-                <div className="flex items-center gap-4 mb-4">
-                  <span className="text-xs font-semibold tracking-widest uppercase text-tmi-green bg-tmi-green/10 px-3 py-1 rounded-full">
-                    Set {set.setNum}
-                  </span>
-                </div>
-                <h2 className="font-display text-3xl md:text-4xl font-bold text-tmi-charcoal mb-3">
-                  {set.set}
-                </h2>
-                <p className="text-lg text-gray-600 max-w-2xl">{set.description}</p>
-              </div>
+        {/* COURSES */}
+        <section className="py-20 bg-white">
+          <div className="max-w-5xl mx-auto px-6 lg:px-8 space-y-6">
+            {courses.map((c) => (
+              <div key={c.num} className="bg-white rounded-2xl border border-onyx-50 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                <div className="p-8 md:p-10">
+                  <div className="flex flex-col md:flex-row md:items-start gap-6">
+                    {/* Number */}
+                    <div className="flex-shrink-0 w-16 h-16 rounded-xl bg-viridian/10 flex items-center justify-center">
+                      <span className="text-2xl font-black text-viridian">{String(c.num).padStart(2, '0')}</span>
+                    </div>
 
-              {/* Courses Grid */}
-              <div className="space-y-8">
-                {set.courses.map((course) => (
-                  <div
-                    key={course.num}
-                    className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-md transition-shadow"
-                  >
-                    <div className="p-8 md:p-10">
-                      <div className="flex flex-col md:flex-row md:items-start gap-6">
-                        {/* Course Number */}
-                        <div className="flex-shrink-0 w-16 h-16 rounded-xl bg-tmi-green/10 flex items-center justify-center">
-                          <span className="text-2xl font-display font-bold text-tmi-green">
-                            {String(course.num).padStart(2, '0')}
-                          </span>
+                    <div className="flex-grow">
+                      <h2 className="text-2xl font-black text-onyx mb-1">
+                        Course {c.num}: {c.title}
+                      </h2>
+                      <p className="text-sm font-semibold text-viridian mb-4 italic">{c.tagline}</p>
+
+                      {/* Problem → Transformation */}
+                      <div className="grid md:grid-cols-2 gap-4 mb-6">
+                        <div className="bg-onyx-50 rounded-xl p-5">
+                          <p className="text-xs font-bold tracking-[0.1em] uppercase text-dimgray mb-2">The Problem</p>
+                          <p className="text-sm text-onyx leading-relaxed">{c.problem}</p>
                         </div>
-
-                        <div className="flex-grow">
-                          <h3 className="font-display text-2xl font-bold text-tmi-charcoal mb-4">
-                            Course {course.num}: {course.title}
-                          </h3>
-
-                          {/* Modules */}
-                          <div className="grid sm:grid-cols-2 gap-2 mb-6">
-                            {course.modules.map((mod) => (
-                              <div key={mod} className="flex items-start gap-2">
-                                <span className="text-tmi-green text-xs mt-1.5 flex-shrink-0">◆</span>
-                                <span className="text-sm text-gray-600">{mod}</span>
-                              </div>
-                            ))}
-                          </div>
-
-                          {/* Transformation */}
-                          <div className="bg-tmi-green-mist rounded-xl p-5 border border-tmi-green/10">
-                            <p className="text-xs font-semibold tracking-widest uppercase text-tmi-green mb-2">
-                              Your Transformation
-                            </p>
-                            <p className="text-sm text-tmi-charcoal leading-relaxed">
-                              {course.transformation}
-                            </p>
-                          </div>
+                        <div className="bg-ivory rounded-xl p-5 border border-viridian/10">
+                          <p className="text-xs font-bold tracking-[0.1em] uppercase text-viridian mb-2">Your Transformation</p>
+                          <p className="text-sm text-onyx leading-relaxed">{c.transformation}</p>
                         </div>
                       </div>
+
+                      {/* Modules */}
+                      <div className="mb-4">
+                        <p className="text-xs font-bold tracking-[0.1em] uppercase text-dimgray mb-3">Modules</p>
+                        <div className="grid sm:grid-cols-2 gap-2">
+                          {c.modules.map(m => (
+                            <div key={m} className="flex items-start gap-2">
+                              <span className="text-viridian text-xs mt-1 flex-shrink-0">◆</span>
+                              <span className="text-sm text-dimgray">{m}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Tools */}
+                      <div className="flex flex-wrap gap-2">
+                        {c.tools.map(t => (
+                          <span key={t} className="text-xs bg-viridian/5 text-viridian px-3 py-1 rounded-full font-medium">
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+
+                      {/* Character */}
+                      {c.character && (
+                        <div className="mt-4 bg-ivory rounded-lg p-4 border border-viridian/5">
+                          <p className="text-xs font-bold tracking-[0.1em] uppercase text-dimgray mb-1">Follow Along With</p>
+                          <p className="text-sm text-onyx">{c.character}</p>
+                        </div>
+                      )}
                     </div>
                   </div>
-                ))}
+                </div>
               </div>
-            </div>
-          </section>
-        ))}
+            ))}
+          </div>
+        </section>
 
-        {/* ═══════════ CTA ═══════════ */}
-        <section className="py-24 bg-tmi-charcoal text-center">
+        {/* CTA */}
+        <section className="py-24 mesh-dark text-center">
           <div className="max-w-3xl mx-auto px-6 lg:px-8">
-            <h2 className="font-display text-3xl md:text-4xl font-bold text-white mb-6">
-              Ready to begin?
-            </h2>
-            <p className="text-gray-400 text-lg mb-10">
-              Join the free community and start your journey toward Akhirah-first wealth building.
+            <h2 className="text-3xl font-black text-white mb-4">Ready to begin?</h2>
+            <p className="text-base text-onyx-200 mb-10 leading-relaxed">
+              Join the free community. Sign your Mission Pledge. Start the transformation.
             </p>
-            <a
-              href="https://www.skool.com/the-muslim-investor"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary text-base"
-            >
+            <a href="https://www.skool.com/the-muslim-investor" target="_blank" rel="noopener noreferrer"
+              className="btn-primary text-base">
               Bismillah — Join the Community →
             </a>
           </div>
         </section>
+
       </main>
       <Footer />
     </>

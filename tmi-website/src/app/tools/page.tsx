@@ -3,65 +3,84 @@ import Footer from '@/components/Footer';
 
 export const metadata = {
   title: 'Free Tools | The Muslim Investor',
-  description: 'Professional Islamic finance tools: Investor Profile Assessment, Akhirah Financial Compass, Stop-Loss Planner, and more.',
+  description: 'Institutional-grade Islamic finance tools: Akhirah Financial Compass, Investor Profile System, Amanah Portfolio Command Center, Zakat Calculator, and more.',
 };
+
+const featured = [
+  {
+    name: 'TMI Akhirah Financial Compass',
+    desc: 'A complete financial MRI that produces your Islamic Investment Readiness Score — measuring Riba exposure, financial fortress readiness, and savings discipline. This is your starting point.',
+    format: 'Excel Workbook',
+    course: 'Course 2',
+  },
+  {
+    name: 'TMI Investor Profile System',
+    desc: 'A 35-question deep-dive assessment that produces a 2,500+ word personalized report revealing your unique investor identity — from Fortress Builder to Growth Seeker. Your Compass of Conviction.',
+    format: 'Interactive Web App',
+    course: 'Course 2',
+  },
+];
 
 const tools = [
   {
-    name: 'TMI Investor Profile Assessment',
-    description: 'A comprehensive 35-question assessment that defines your unique Muslim Investor Profile. Covers risk tolerance, financial goals, values alignment, and competitive edges to create your personalized investing compass.',
-    category: 'Self-Discovery',
-    format: 'Interactive Excel',
-    highlight: true,
+    name: 'Amanah Portfolio Command Center',
+    desc: 'The convergence tool. Profile + asset knowledge + macro regime + new cash = one clear instruction. One sheet. Three sections. 15\u201320 minutes a week.',
+    format: 'Excel System',
+    course: 'Course 5',
   },
   {
-    name: 'TMI Akhirah Financial Compass',
-    description: 'Align your financial decisions with your Akhirah goals. This tool helps you evaluate investments, spending, and charitable giving through the lens of spiritual return—not just financial return.',
-    category: 'Spiritual Framework',
-    format: 'Excel Workbook',
-    highlight: true,
-  },
-  {
-    name: 'Islamic Stop-Loss & Profit Target Planner',
-    description: 'A professional-grade risk management tool adapted for Halal portfolios. Set disciplined stop-loss levels and profit targets for each position, removing emotion from your investment decisions.',
-    category: 'Risk Management',
-    format: 'Excel Workbook',
-    highlight: false,
-  },
-  {
-    name: 'TMI Relationship Analyzer',
-    description: 'Understand the correlations between your Halal asset classes. See how Sukuk, equities, gold, and Bitcoin interact in different market environments to build a truly diversified portfolio.',
-    category: 'Portfolio Analysis',
-    format: 'Excel Workbook',
-    highlight: false,
-  },
-  {
-    name: 'Barakah Budget Tracker',
-    description: 'A simple, purpose-built budgeting system with Islamic categories including Sadaqah, Zakat, and investable surplus. See exactly where your rizq goes each month.',
-    category: 'Financial Foundation',
-    format: 'Excel Template',
-    highlight: false,
-  },
-  {
-    name: 'Riba-Free Debt Escape Plan',
-    description: 'A step-by-step calculator and planner to prioritize eliminating interest-bearing debt from your life. Includes milestone tracking and motivational Islamic reminders.',
-    category: 'Debt Freedom',
-    format: 'Excel Template',
-    highlight: false,
-  },
-  {
-    name: 'Halal Equity Screener',
-    description: 'Screen stocks for Shariah compliance using standard financial ratios and Halal criteria. Filter out companies with impermissible revenue sources or excessive debt.',
-    category: 'Asset Screening',
-    format: 'Excel Tool',
-    highlight: false,
+    name: 'Global Macro Dashboard',
+    desc: 'A 12-tab dashboard tracking 34 leading indicators that produces one signal: the current economic weather regime and what it means for your portfolio positioning.',
+    format: 'Excel Dashboard',
+    course: 'Course 4',
   },
   {
     name: 'Zakat & Purification Calculator',
-    description: 'Calculate your Zakat obligations with precision across all asset classes. Includes purification calculations for any inadvertent Haram exposure in your portfolio.',
-    category: 'Zakat & Purification',
+    desc: 'A 7-sheet system designed specifically for modern halal portfolios — calculating Zakat on equities, Sukuk, gold, Bitcoin, and assets most traditional calculators cannot cover.',
     format: 'Excel Calculator',
-    highlight: false,
+    course: 'Course 7',
+  },
+  {
+    name: 'Halal Equity Analyzer',
+    desc: 'Screen individual stocks for Shariah compliance using AAOIFI-based financial ratios. Revenue screens, debt ratios, and prohibited business activity filters.',
+    format: 'Excel Tool',
+    course: 'Course 3',
+  },
+  {
+    name: 'Sukuk Analyzer',
+    desc: 'Evaluate Sukuk instruments for issuer credibility, Shariah structure, risk characteristics, and portfolio fit. The same logic used professionally for institutional portfolios.',
+    format: 'Excel Tool',
+    course: 'Course 3',
+  },
+  {
+    name: 'Islamic Stop-Loss & Profit Target Planner',
+    desc: 'Professional-grade risk management for halal portfolios. Set disciplined stop-losses and profit targets for each position, removing emotion from your decisions.',
+    format: 'Excel Planner',
+    course: 'Course 5',
+  },
+  {
+    name: 'Relationship Analyzer',
+    desc: 'Understand correlations between your halal asset classes. See how Sukuk, equities, gold, and Bitcoin interact across different market environments.',
+    format: 'Excel Tool',
+    course: 'Course 5',
+  },
+  {
+    name: 'Emergency Purification Guide',
+    desc: 'The 72-hour protocol. Inventory your holdings, screen each one, and execute a purification plan. Step-by-step, with Khalid as your guide.',
+    format: 'PDF Guide',
+    course: 'Course 1',
+  },
+  {
+    name: 'Halal Portfolio Screener',
+    desc: 'Quickly screen your existing portfolio holdings against AAOIFI Shariah standards. Identify what\u2019s clean and what needs to go.',
+    format: 'Excel Screener',
+    course: 'Course 1',
+  },
+  {
+    name: 'TMI Mission Pledge',
+    desc: 'Your Niyyah made tangible. Five commitments between you and your Creator about how you will approach your wealth from this day forward.',
+    format: 'Fillable PDF',
+    course: 'Course 1',
   },
 ];
 
@@ -70,126 +89,98 @@ export default function ToolsPage() {
     <>
       <Navbar />
       <main>
-        {/* ═══════════ HERO ═══════════ */}
-        <section className="relative pt-32 pb-20 bg-tmi-charcoal overflow-hidden">
-          <div className="absolute inset-0 islamic-accent opacity-20" />
-          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
-            <div className="max-w-3xl">
-              <p className="text-tmi-green font-display text-lg italic mb-4">Professional Tools, Free Access</p>
-              <h1 className="font-display text-4xl md:text-6xl font-bold text-white leading-tight mb-6">
-                Institutional-grade tools.<br />Built for you.
-              </h1>
-              <p className="text-xl text-gray-300 leading-relaxed">
-                Every tool is designed to save you time, eliminate guesswork, and keep 
-                your financial life 100% Halal. Professional quality, zero cost.
-              </p>
-            </div>
+
+        {/* HERO */}
+        <section className="relative pt-32 pb-20 mesh-dark overflow-hidden">
+          <div className="absolute inset-0 islamic-pattern opacity-15" />
+          <div className="relative z-10 max-w-4xl mx-auto px-6 lg:px-8 text-center">
+            <p className="arabic text-2xl text-viridian mb-6">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</p>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight mb-6">
+              Institutional-Grade Tools.<br />Built for the Ummah.
+            </h1>
+            <p className="text-lg text-onyx-200 leading-relaxed max-w-2xl mx-auto">
+              The same analytical logic used to manage $500 million in Islamic assets — 
+              translated into tools that eliminate guesswork and work in minutes, not hours.
+            </p>
           </div>
         </section>
 
-        {/* ═══════════ FEATURED TOOLS ═══════════ */}
+        {/* FEATURED TOOLS */}
         <section className="py-24 bg-white">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="mb-16">
-              <div className="tmi-divider mb-6" />
-              <h2 className="font-display text-3xl md:text-4xl font-bold text-tmi-charcoal mb-3">
-                Featured Tools
-              </h2>
-              <p className="text-lg text-gray-600">
-                Start with these two cornerstone tools—they form the foundation of your TMI journey.
-              </p>
+              <div className="tmi-line mb-6" />
+              <h2 className="text-2xl md:text-3xl font-black text-onyx mb-3">Cornerstone Tools</h2>
+              <p className="text-base text-dimgray">Start here. These two tools form the foundation of your entire TMI journey.</p>
             </div>
 
             <div className="grid md:grid-cols-2 gap-8 mb-20">
-              {tools.filter(t => t.highlight).map((tool) => (
-                <div key={tool.name} className="group relative bg-gradient-to-br from-tmi-green-mist to-white rounded-2xl p-10 border-2 border-tmi-green/20 hover:border-tmi-green/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-                  <span className="inline-block text-xs font-semibold tracking-widest uppercase text-tmi-green bg-tmi-green/10 px-3 py-1 rounded-full mb-4">
-                    {tool.category}
-                  </span>
-                  <h3 className="font-display text-2xl font-bold text-tmi-charcoal mb-4">
-                    {tool.name}
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed mb-6">
-                    {tool.description}
-                  </p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs text-gray-500 font-medium">{tool.format}</span>
-                    <span className="text-sm font-semibold text-tmi-green group-hover:translate-x-1 transition-transform">
-                      Available in Community →
-                    </span>
+              {featured.map(t => (
+                <div key={t.name} className="group bg-gradient-to-br from-ivory to-white rounded-2xl p-10 border-2 border-viridian/15 hover:border-viridian/40 card-hover">
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="text-xs font-bold tracking-[0.1em] uppercase text-viridian bg-viridian/10 px-3 py-1 rounded-full">{t.course}</span>
+                    <span className="text-xs text-dimgray">{t.format}</span>
                   </div>
+                  <h3 className="text-xl font-bold text-onyx mb-4">{t.name}</h3>
+                  <p className="text-sm text-dimgray leading-relaxed mb-6">{t.desc}</p>
+                  <span className="text-sm font-semibold text-viridian group-hover:translate-x-1 transition-transform inline-block">
+                    Available in Community →
+                  </span>
                 </div>
               ))}
             </div>
 
-            {/* ═══════════ ALL TOOLS ═══════════ */}
+            {/* ALL TOOLS */}
             <div className="mb-12">
-              <h2 className="font-display text-3xl font-bold text-tmi-charcoal mb-3">
-                Complete Tool Library
-              </h2>
-              <p className="text-lg text-gray-600">
-                All tools are available to community members for free.
-              </p>
+              <h2 className="text-2xl font-black text-onyx mb-3">Complete Tool Library</h2>
+              <p className="text-base text-dimgray">All tools included with membership. Professional quality, maximum accessibility.</p>
             </div>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {tools.filter(t => !t.highlight).map((tool) => (
-                <div key={tool.name} className="bg-white rounded-xl p-7 border border-gray-100 hover:border-tmi-green/20 hover:shadow-md transition-all duration-300">
-                  <span className="inline-block text-xs font-semibold tracking-widest uppercase text-tmi-green/70 mb-3">
-                    {tool.category}
-                  </span>
-                  <h3 className="font-display text-lg font-bold text-tmi-charcoal mb-3">
-                    {tool.name}
-                  </h3>
-                  <p className="text-sm text-gray-600 leading-relaxed mb-4">
-                    {tool.description}
-                  </p>
-                  <span className="text-xs text-gray-400 font-medium">{tool.format}</span>
+              {tools.map(t => (
+                <div key={t.name} className="bg-white rounded-xl p-7 border border-onyx-50 hover:border-viridian/20 card-hover">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-xs font-semibold text-viridian">{t.course}</span>
+                    <span className="text-xs text-dimgray">· {t.format}</span>
+                  </div>
+                  <h3 className="text-base font-bold text-onyx mb-3">{t.name}</h3>
+                  <p className="text-sm text-dimgray leading-relaxed">{t.desc}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ═══════════ COMING SOON ═══════════ */}
-        <section className="py-20 bg-tmi-green-mist">
+        {/* WEB APPS COMING */}
+        <section className="py-20 bg-ivory">
           <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
-            <h2 className="font-display text-3xl font-bold text-tmi-charcoal mb-4">
-              Web apps coming soon.
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
-              We&apos;re building professional web applications for every tool—interactive, 
-              mobile-friendly, and shareable. The Excel versions are available now to get you started.
+            <h2 className="text-2xl font-black text-onyx mb-4">Web applications launching soon.</h2>
+            <p className="text-base text-dimgray max-w-2xl mx-auto mb-8 leading-relaxed">
+              We&apos;re building interactive, mobile-friendly web apps for every tool. 
+              The Excel versions are available now — the web apps will make them even more accessible.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
-              {['Investor Profile Web App', 'Zakat Calculator', 'Portfolio Dashboard', 'Halal Screener'].map((item) => (
-                <span key={item} className="text-sm bg-white px-4 py-2 rounded-full border border-tmi-green/10 text-gray-600">
-                  {item}
-                </span>
+              {['Investor Profile Web App', 'Portfolio Analyzer', 'Zakat Calculator', 'Macro Dashboard', 'Halal Screener'].map(i => (
+                <span key={i} className="text-sm bg-white px-4 py-2 rounded-full border border-viridian/10 text-dimgray font-medium">{i}</span>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ═══════════ CTA ═══════════ */}
-        <section className="py-24 bg-tmi-charcoal text-center">
+        {/* CTA */}
+        <section className="py-24 mesh-dark text-center">
           <div className="max-w-3xl mx-auto px-6 lg:px-8">
-            <h2 className="font-display text-3xl md:text-4xl font-bold text-white mb-6">
-              Get instant access to all tools.
-            </h2>
-            <p className="text-gray-400 text-lg mb-10">
-              Join the free community and download every tool today. No payment required.
+            <h2 className="text-3xl font-black text-white mb-4">Get instant access to every tool.</h2>
+            <p className="text-base text-onyx-200 mb-10">
+              Join the free community and download the complete toolkit today.
             </p>
-            <a
-              href="https://www.skool.com/the-muslim-investor"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary text-base"
-            >
-              Join Free & Download Tools →
+            <a href="https://www.skool.com/the-muslim-investor" target="_blank" rel="noopener noreferrer"
+              className="btn-primary text-base">
+              Join Free & Access All Tools →
             </a>
           </div>
         </section>
+
       </main>
       <Footer />
     </>

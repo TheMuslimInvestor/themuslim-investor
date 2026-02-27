@@ -3,23 +3,14 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'The Muslim Investor | Akhirah-First Wealth Building',
-  description: 'Prepare for the Day of Judgment with confidence. Learn to build Halal wealth, purify your portfolio from Riba, and use your money as a tool for your Akhirah.',
-  keywords: 'halal investing, Islamic finance, Muslim investor, Shariah compliant, Sukuk, Akhirah, halal portfolio',
-  openGraph: {
-    title: 'The Muslim Investor | Akhirah-First Wealth Building',
-    description: 'Your wealth is an Amanah. Learn to invest it purely, profitably, and with purpose.',
-    type: 'website',
-  },
+  description: 'Your portfolio will testify. Either for you or against you. Professional Islamic finance education to purify your wealth, prepare your answer for the Day of Judgment, and maximize your Sadaqah capacity.',
+  keywords: 'halal investing, Islamic finance, Muslim investor, Shariah compliant, Sukuk, Akhirah, halal portfolio, Riba free',
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className="font-poppins">{children}</body>
     </html>
   );
 }

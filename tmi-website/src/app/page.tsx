@@ -7,287 +7,312 @@ export default function Home() {
     <>
       <Navbar />
       <main>
-        {/* ═══════════ HERO ═══════════ */}
-        <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
-          {/* Background */}
-          <div className="absolute inset-0 bg-tmi-charcoal" />
-          <div className="absolute inset-0 islamic-accent opacity-40" />
-          <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-tmi-charcoal to-transparent z-10" />
-          
-          {/* Decorative elements */}
-          <div className="absolute top-32 right-10 w-72 h-72 rounded-full bg-tmi-green/5 blur-3xl" />
-          <div className="absolute bottom-20 left-10 w-96 h-96 rounded-full bg-tmi-green/3 blur-3xl" />
 
-          <div className="relative z-20 max-w-7xl mx-auto px-6 lg:px-8 py-20 lg:py-32">
-            <div className="max-w-4xl">
-              {/* Bismillah */}
-              <p className="text-tmi-green font-display text-lg md:text-xl italic mb-8 animate-fade-in opacity-0">
-                Bismillah ir-Rahman ir-Rahim
-              </p>
+        {/* ══════════════════════════════════════════════
+            HERO — Pattern interrupt. Spiritual weight.
+        ══════════════════════════════════════════════ */}
+        <section className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden mesh-dark">
+          <div className="absolute inset-0 islamic-pattern opacity-30" />
 
-              {/* Main Headline */}
-              <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1] mb-8 animate-fade-in-up opacity-0 delay-100">
-                Your ultimate metric is not the return on your investment—
-                <span className="text-tmi-green">it is the return on your Akhirah.</span>
-              </h1>
+          <div className="relative z-10 max-w-5xl mx-auto px-6 lg:px-8 py-24 lg:py-32 text-center">
+            {/* Bismillah — Arabic, prominent */}
+            <p className="arabic text-2xl md:text-3xl text-viridian mb-10 anim-fade-in d1">
+              بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ
+            </p>
 
-              {/* Subheadline */}
-              <p className="text-lg md:text-xl text-gray-300 leading-relaxed max-w-2xl mb-12 animate-fade-in-up opacity-0 delay-300">
-                Professional Islamic finance education that helps you purify your wealth from Riba, 
-                invest in 100% Halal assets, and free up your time for what truly matters—
-                your Ibadah, your family, and your Akhirah.
-              </p>
+            {/* Main headline */}
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[4.25rem] font-black text-white leading-[1.1] mb-8 anim-fade-up d2 tracking-tight">
+              Your portfolio will testify.<br />
+              <span className="text-viridian">Either for you — or against you.</span>
+            </h1>
 
-              {/* CTAs */}
-              <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up opacity-0 delay-400">
-                <a
-                  href="https://www.skool.com/the-muslim-investor"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-primary text-base"
-                >
-                  Join the Free Community →
-                </a>
-                <Link href="/curriculum" className="btn-secondary !border-white/30 !text-white hover:!bg-white/10 text-base">
-                  Explore the Curriculum
-                </Link>
-              </div>
+            {/* Subheadline */}
+            <p className="text-lg md:text-xl text-onyx-200 leading-relaxed max-w-2xl mx-auto mb-12 anim-fade-up d3 font-light">
+              We are not teaching halal investing. We are preparing your answer 
+              for the Day of Judgment. Akhirah-first wealth building — powered by the 
+              same system used to manage $500 million in Islamic assets.
+            </p>
 
-              {/* Trust Markers */}
-              <div className="flex flex-wrap gap-8 mt-16 animate-fade-in opacity-0 delay-600">
-                {[
-                  { value: '$500M+', label: 'Islamic Assets Managed' },
-                  { value: '15+', label: 'Years in Islamic Finance' },
-                  { value: '100%', label: 'Shariah Compliant' },
-                ].map((stat) => (
-                  <div key={stat.label}>
-                    <p className="text-2xl font-bold text-tmi-green">{stat.value}</p>
-                    <p className="text-sm text-gray-400">{stat.label}</p>
-                  </div>
-                ))}
-              </div>
+            {/* CTAs */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center anim-fade-up d4">
+              <a href="https://www.skool.com/the-muslim-investor" target="_blank" rel="noopener noreferrer"
+                className="btn-primary text-base">
+                Join the Free Community →
+              </a>
+              <Link href="/curriculum" className="btn-outline text-base">
+                Explore the Curriculum
+              </Link>
+            </div>
+
+            {/* Trust markers */}
+            <div className="flex flex-wrap justify-center gap-x-12 gap-y-4 mt-20 anim-fade-in d6">
+              {[
+                { val: '$500M+', label: 'Islamic Assets Managed' },
+                { val: '15+', label: 'Years in Islamic Finance' },
+                { val: '$9/mo', label: 'Maximum Accessibility' },
+              ].map(s => (
+                <div key={s.label} className="text-center">
+                  <p className="text-2xl font-black text-viridian">{s.val}</p>
+                  <p className="text-xs text-dimgray tracking-wide uppercase mt-1">{s.label}</p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* ═══════════ THE MIRROR / PAIN SECTION ═══════════ */}
-        <section className="relative py-24 lg:py-32 bg-white geo-pattern">
+
+        {/* ══════════════════════════════════════════════
+            THE SACRED WHY — Hadith foundation
+        ══════════════════════════════════════════════ */}
+        <section className="relative py-24 lg:py-32 bg-ivory">
+          <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
+            <div className="tmi-line mx-auto mb-8" />
+            <h2 className="text-3xl md:text-4xl font-black text-onyx leading-tight mb-8">
+              Two questions about your wealth.<br />
+              You cannot escape them.
+            </h2>
+            <div className="bg-white rounded-2xl p-8 md:p-12 shadow-sm border border-viridian/10 max-w-3xl mx-auto">
+              <p className="text-base md:text-lg text-onyx leading-relaxed italic mb-6">
+                &ldquo;The feet of a servant will not move on the Day of Resurrection until he 
+                is asked about his lifetime and how he used it, his youth and how he spent it, 
+                <strong className="text-viridian not-italic"> his wealth and how he earned it and how he spent it</strong>, 
+                and his knowledge and how he acted upon it.&rdquo;
+              </p>
+              <p className="text-sm text-dimgray">
+                — Sunan al-Tirmidhi 2417. Graded Hasan Sahih.
+              </p>
+            </div>
+            <p className="text-base text-dimgray leading-relaxed max-w-2xl mx-auto mt-10">
+              Two of the five questions on the Day of Judgment are specifically about your money. 
+              Where you got it. What you did with it. Not maybe. Not possibly. 
+              The Prophet ﷺ said your feet <em>will not move</em> until you answer.
+            </p>
+          </div>
+        </section>
+
+
+        {/* ══════════════════════════════════════════════
+            THE THREE FEARS — Deep empathy section
+        ══════════════════════════════════════════════ */}
+        <section className="relative py-24 lg:py-32 mesh-light">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
-            <div className="max-w-3xl mx-auto text-center mb-16">
-              <div className="tmi-divider mx-auto mb-6" />
-              <h2 className="font-display text-3xl md:text-5xl font-bold text-tmi-charcoal mb-6">
-                Let&apos;s hold up a mirror to the soul.
+            <div className="text-center mb-16">
+              <div className="tmi-line mx-auto mb-8" />
+              <h2 className="text-3xl md:text-4xl font-black text-onyx leading-tight mb-4">
+                The weight you carry in silence.
               </h2>
-              <p className="text-lg text-gray-600 leading-relaxed">
-                You work hard. You pray. You fast. You love Allah and His Messenger ﷺ. 
-                But there is a quiet anxiety you carry—a gnawing disconnect between your 
-                faith and your finances.
+              <p className="text-base text-dimgray max-w-2xl mx-auto leading-relaxed">
+                You pray. You fast. You love Allah and His Messenger ﷺ. But there is a quiet 
+                anxiety you carry — one you rarely speak about.
               </p>
             </div>
 
             <div className="grid md:grid-cols-3 gap-8">
               {[
                 {
-                  title: 'The Fear of Unseen Haram',
-                  desc: 'Your pension, your mutual funds, the very financial system you participate in—is it secretly collecting sayyi\'at for you? Is your wealth built on the architecture of Riba?',
-                  icon: '⚖️',
+                  title: 'The Unseen Haram',
+                  body: 'Your pension. Your mutual funds. That index fund you were told to buy. Is it secretly collecting sayyi\u2019at for you? Is your wealth built on the architecture of Riba — a system Allah Himself declared war upon?',
+                  accent: 'This is not anxiety. It is spiritual contamination.',
                 },
                 {
-                  title: 'The Weight of Powerlessness',
-                  desc: 'You see the Ummah suffering. Your heart breaks, you make du\'a. But your financial capacity feels like a thimble of water against a roaring fire. You want to give more, but you can\'t.',
-                  icon: '🤲',
+                  title: 'The Chasm of Hypocrisy',
+                  body: 'Your heart is stirred in Jumu\u2019ah. On Monday, you return to a system that holds your livelihood in its hands. The gap between your beliefs and your financial reality creates a crack in your soul.',
+                  accent: 'A lion forced to live in a cage.',
                 },
                 {
-                  title: 'The Lie of "Later"',
-                  desc: 'You tell yourself you\'ll purify your finances "when you have more money." But Shaytan\'s greatest trick is the promise of tomorrow. Every day you delay is a day you choose the status quo.',
-                  icon: '⏳',
+                  title: 'The Pain of Powerlessness',
+                  body: 'You see the Ummah suffering. You make du\u2019a. You give what you can. And you feel a profound, gut-wrenching shame — your ambition to do khayr is a roaring fire, but your financial capacity is a thimble of water.',
+                  accent: 'A spectator to the pain of your own family.',
                 },
-              ].map((pain) => (
-                <div key={pain.title} className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm hover:shadow-lg hover:border-tmi-green/20 transition-all duration-300">
-                  <span className="text-3xl block mb-4">{pain.icon}</span>
-                  <h3 className="font-display text-xl font-bold text-tmi-charcoal mb-3">{pain.title}</h3>
-                  <p className="text-gray-600 leading-relaxed text-sm">{pain.desc}</p>
+              ].map((fear, i) => (
+                <div key={i} className="bg-white rounded-2xl p-8 border border-onyx-50 card-hover">
+                  <div className="w-10 h-10 rounded-lg bg-viridian/10 flex items-center justify-center mb-5">
+                    <span className="text-viridian font-black text-sm">{String(i + 1).padStart(2, '0')}</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-onyx mb-3">{fear.title}</h3>
+                  <p className="text-sm text-dimgray leading-relaxed mb-4">{fear.body}</p>
+                  <p className="text-sm font-semibold text-viridian italic">{fear.accent}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ═══════════ THE BRIDGE / TRANSFORMATION ═══════════ */}
-        <section className="relative py-24 lg:py-32 bg-tmi-green-mist noise-bg overflow-hidden">
+
+        {/* ══════════════════════════════════════════════
+            THE THREE LIES — Expose with compassion
+        ══════════════════════════════════════════════ */}
+        <section className="relative py-24 lg:py-32 bg-onyx overflow-hidden">
+          <div className="absolute inset-0 islamic-pattern opacity-15" />
           <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
-            <div className="max-w-3xl mx-auto text-center mb-16">
-              <div className="tmi-divider mx-auto mb-6" />
-              <h2 className="font-display text-3xl md:text-5xl font-bold text-tmi-charcoal mb-6">
-                From anxiety to Amanah.
+            <div className="text-center mb-16">
+              <div className="tmi-line mx-auto mb-8" />
+              <h2 className="text-3xl md:text-4xl font-black text-white leading-tight mb-4">
+                The comfortable lies that keep you stuck.
               </h2>
-              <p className="text-lg text-gray-700 leading-relaxed">
-                Imagine having the knowledge, the tools, and the community to confidently say: 
-                &ldquo;Every dirham I own is Halal, every investment I make is pure, and my wealth 
-                is a weapon for my Akhirah.&rdquo;
+              <p className="text-base text-dimgray max-w-2xl mx-auto">
+                You cope with the anxiety by telling yourself stories. Reasonable, comfortable — and spiritually devastating.
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
               {[
                 {
-                  title: 'Purify Your Wealth',
-                  desc: 'Eliminate Riba and Haram from your portfolio with professional-grade screening tools and clear Shariah guidance.',
-                  num: '01',
+                  lie: '"I have no choice. This is the system."',
+                  truth: 'The Sahaba were a tiny minority facing two superpowers. They never once believed they had no choice. Your cage is not built by the world — it is built by the limits of your own economic imagination.',
                 },
                 {
-                  title: 'Free Up Your Time',
-                  desc: 'A 5-minute monthly portfolio ritual replaces hours of anxiety. Spend your time on Ibadah, family, and the Ummah.',
-                  num: '02',
+                  lie: '"I\'ll get to it later. When I have more money."',
+                  truth: 'Shaytan\u2019s greatest trick is the promise of tomorrow. Every day you delay, you actively choose to remain weak. You are not waiting for the right time — you are choosing the status quo.',
                 },
                 {
-                  title: 'Maximize Your Sadaqah',
-                  desc: 'Build the financial capacity to give more. Sadaqah offers the best spiritual ROI—Allah multiplies every good deed.',
-                  num: '03',
+                  lie: '"My du\'a is enough."',
+                  truth: 'The Prophet ﷺ did not just make du\u2019a before Badr. He sharpened swords, trained men, and planned strategy. Prayer without taking worldly means is not Tawakkul — it is a misunderstanding of our Deen.',
                 },
-                {
-                  title: 'Face Allah with Confidence',
-                  desc: 'Prepare your answers for the Day of Judgment: how you earned your wealth, how you spent it, and how you grew it.',
-                  num: '04',
-                },
-              ].map((item) => (
-                <div key={item.num} className="group relative bg-white rounded-2xl p-8 border border-tmi-green/10 hover:border-tmi-green/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-                  <span className="text-5xl font-display font-bold text-tmi-green/10 group-hover:text-tmi-green/20 transition-colors absolute top-4 right-6">
-                    {item.num}
-                  </span>
-                  <h3 className="font-display text-xl font-bold text-tmi-charcoal mb-3 mt-4">{item.title}</h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">{item.desc}</p>
+              ].map((item, i) => (
+                <div key={i} className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
+                  <p className="text-lg font-bold text-viridian mb-4">{item.lie}</p>
+                  <p className="text-sm text-onyx-200 leading-relaxed">{item.truth}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ═══════════ CREDIBILITY / ABOUT MEHDI PREVIEW ═══════════ */}
-        <section className="relative py-24 lg:py-32 bg-white">
+
+        {/* ══════════════════════════════════════════════
+            THE FIVE PROMISES — What TMI delivers
+        ══════════════════════════════════════════════ */}
+        <section className="relative py-24 lg:py-32 bg-white noise overflow-hidden">
+          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <div className="tmi-line mx-auto mb-8" />
+              <h2 className="text-3xl md:text-4xl font-black text-onyx leading-tight mb-4">
+                From anxiety to Amanah.<br />The five promises of TMI.
+              </h2>
+            </div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-6">
+              {[
+                { num: '01', title: 'Save Your Time for Worship', body: 'Investing becomes a 15–20 minute weekly ritual. The rest of your week is yours — for Quran, Salah, family, and community.' },
+                { num: '02', title: 'Remove Every Act of Disobedience', body: 'Riba, haram dividends, prohibited stocks — we identify them and eliminate them so you stand clean before your Lord.' },
+                { num: '03', title: 'Prepare Your Answer', body: 'When Allah asks how you earned and spent your wealth, you can say: Ya Rabb, I tried my absolute best. TMI gives you the tools to mean it.' },
+                { num: '04', title: 'Maximize Your Sadaqah', body: 'The ultimate ROI is not portfolio returns — it is charitable capacity. Every dirham of Sadaqah is an investment with returns guaranteed by Allah.' },
+                { num: '05', title: 'Give You Peace of Mind', body: 'Replace the spiritual anxiety with sakinah — tranquility rooted in knowing your wealth is clean, growing, and aligned with your Deen.' },
+              ].map(p => (
+                <div key={p.num} className="group bg-ivory rounded-2xl p-7 border border-viridian/5 card-hover">
+                  <span className="text-4xl font-black text-viridian/10 group-hover:text-viridian/20 transition-colors block mb-3">{p.num}</span>
+                  <h3 className="text-base font-bold text-onyx mb-2">{p.title}</h3>
+                  <p className="text-sm text-dimgray leading-relaxed">{p.body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+
+        {/* ══════════════════════════════════════════════
+            CREDIBILITY — About Mehdi preview
+        ══════════════════════════════════════════════ */}
+        <section className="relative py-24 lg:py-32 bg-ivory">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-16 items-center">
               {/* Photo placeholder */}
-              <div className="relative">
-                <div className="aspect-[4/5] rounded-2xl bg-gradient-to-br from-tmi-green/10 to-tmi-green-mist overflow-hidden flex items-center justify-center border border-tmi-green/10">
+              <div className="relative order-2 lg:order-1">
+                <div className="aspect-[4/5] rounded-2xl bg-gradient-to-br from-viridian/10 via-cambridge/10 to-ivory overflow-hidden flex items-center justify-center border border-viridian/10">
                   <div className="text-center p-8">
-                    <div className="w-32 h-32 rounded-full bg-tmi-green/20 mx-auto mb-6 flex items-center justify-center">
-                      <span className="text-5xl font-display font-bold text-tmi-green">M</span>
+                    <div className="w-28 h-28 rounded-full bg-viridian/15 mx-auto mb-5 flex items-center justify-center">
+                      <span className="text-5xl font-black text-viridian">M</span>
                     </div>
-                    <p className="text-sm text-gray-500 italic">Headshot coming soon</p>
+                    <p className="text-sm text-dimgray italic">Headshot coming soon</p>
                   </div>
                 </div>
-                {/* Floating credential card */}
-                <div className="absolute -bottom-6 -right-6 bg-tmi-charcoal text-white rounded-xl p-6 shadow-2xl max-w-xs hidden lg:block">
-                  <p className="font-display text-lg font-semibold text-tmi-green-light">Senior Sukuk Portfolio Manager</p>
-                  <p className="text-sm text-gray-400 mt-1">Managing $500M+ in Islamic Assets</p>
-                  <p className="text-sm text-gray-400">Based in Dubai, UAE</p>
+                {/* Floating card */}
+                <div className="absolute -bottom-6 -right-4 bg-onyx text-white rounded-xl p-6 shadow-2xl max-w-[260px] hidden lg:block">
+                  <p className="text-sm font-bold text-viridian">Senior Sukuk Portfolio Manager</p>
+                  <p className="text-xs text-dimgray mt-1">$500M+ Islamic Assets · Dubai</p>
+                  <p className="text-xs text-dimgray">Durham MSc Islamic Finance · CFA</p>
                 </div>
               </div>
 
               {/* Text */}
-              <div>
-                <div className="tmi-divider mb-6" />
-                <h2 className="font-display text-3xl md:text-4xl font-bold text-tmi-charcoal mb-6">
+              <div className="order-1 lg:order-2">
+                <div className="tmi-line mb-8" />
+                <h2 className="text-3xl md:text-4xl font-black text-onyx leading-tight mb-6">
                   Not another &ldquo;guru.&rdquo;<br />
-                  A professional who does this for a living.
+                  A practitioner who does this<br />every single day.
                 </h2>
-                <div className="space-y-5 text-gray-600 leading-relaxed">
+                <div className="space-y-5 text-dimgray leading-relaxed">
                   <p>
-                    Mehdi is a Senior Sukuk Portfolio Manager at one of the region&apos;s leading 
-                    Islamic financial institutions, managing over $500 million in Shariah-compliant 
-                    assets. His career spans 15+ years in Islamic finance, starting from the aftermath 
-                    of the 2008 financial crisis.
+                    Mehdi is a Senior Sukuk Portfolio Manager in Dubai, managing <strong className="text-onyx">$500 million 
+                    in Shariah-compliant assets</strong> at one of the region&apos;s leading Islamic financial institutions. 
+                    He has been in Islamic capital markets since 2011 — trading Sukuk, executing Islamic financial 
+                    transactions, and building institutional expertise every single working day.
                   </p>
                   <p>
-                    He launched The Muslim Investor with a singular mission: to help as many Muslims 
-                    as possible avoid the Haram, invest purely, and use their wealth as a tool for 
-                    their Akhirah. Not for profit—for Hassanat.
+                    He holds a Master&apos;s in Islamic Finance from Durham University, contacted over 200 professionals 
+                    across London, Switzerland, and the GCC to break into the industry, and has never transacted a single 
+                    haram asset in his entire career. Alhamdulillah, Allah closed the doors of conventional finance 
+                    and opened the halal path.
                   </p>
-                  <p className="font-display text-xl text-tmi-charcoal font-semibold italic">
-                    &ldquo;I&apos;m doing it for myself, because I need to collect as many Hassanat 
-                    as possible. This is all I want to do.&rdquo;
-                  </p>
+                  <div className="bg-white rounded-xl p-6 border-l-4 border-viridian">
+                    <p className="text-base text-onyx font-semibold italic leading-relaxed">
+                      &ldquo;If I&apos;m really true to myself — in a very selfish manner — I want to collect Hasanat. 
+                      This is what I want to do. This is all I want to do. And it&apos;s going to be done through 
+                      helping as many Muslims as possible.&rdquo;
+                    </p>
+                  </div>
                 </div>
-                <Link href="/about" className="btn-secondary mt-8 text-sm">
-                  Read Mehdi&apos;s Full Story →
+                <Link href="/about" className="btn-outline-dark mt-8 text-sm">
+                  Read the Full Story →
                 </Link>
               </div>
             </div>
           </div>
         </section>
 
-        {/* ═══════════ CURRICULUM PREVIEW ═══════════ */}
-        <section className="relative py-24 lg:py-32 bg-tmi-charcoal overflow-hidden">
-          <div className="absolute inset-0 islamic-accent opacity-20" />
+
+        {/* ══════════════════════════════════════════════
+            THE 7-COURSE JOURNEY
+        ══════════════════════════════════════════════ */}
+        <section className="relative py-24 lg:py-32 mesh-dark overflow-hidden">
+          <div className="absolute inset-0 islamic-pattern opacity-15" />
           <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
-            <div className="max-w-3xl mx-auto text-center mb-16">
-              <div className="tmi-divider mx-auto mb-6" />
-              <h2 className="font-display text-3xl md:text-5xl font-bold text-white mb-6">
-                12 Courses. One Mission.
+            <div className="text-center mb-16">
+              <div className="tmi-line mx-auto mb-8" />
+              <h2 className="text-3xl md:text-4xl font-black text-white leading-tight mb-4">
+                7 courses. One guided transformation.
               </h2>
-              <p className="text-lg text-gray-400 leading-relaxed">
-                A comprehensive curriculum built by a professional fund manager—structured to take you 
-                from complete beginner to confident, independent Muslim investor.
+              <p className="text-base text-onyx-200 max-w-2xl mx-auto leading-relaxed">
+                Not a library of content. A structured spiritual and financial journey — each course 
+                building on the last, each moving you closer to a prepared answer.
               </p>
             </div>
 
-            {/* Three Pillars */}
-            <div className="grid md:grid-cols-3 gap-8 mb-12">
+            <div className="space-y-4">
               {[
-                {
-                  pillar: 'The Foundation',
-                  courses: [
-                    'Course 1: Welcome to the Movement',
-                    'Course 2: The Akhirah Mindset',
-                  ],
-                  desc: 'Build your spiritual and financial foundation. Understand why Halal investing is a duty, not a luxury.',
-                  color: 'from-tmi-green/20 to-tmi-green/5',
-                },
-                {
-                  pillar: "The Professional Investor's Journey",
-                  courses: [
-                    'Course 3: The Investor Profile',
-                    'Course 4: The Investor\'s Mindset',
-                    'Course 5: The World View',
-                    'Course 6: The Halal Toolbox',
-                    'Course 7: The Analysis',
-                    'Course 8: The Amanah Portfolio',
-                  ],
-                  desc: 'Master the 6-step professional framework. From your investor profile to building and managing your portfolio.',
-                  color: 'from-tmi-green/30 to-tmi-green/10',
-                },
-                {
-                  pillar: 'Advanced & Resource Library',
-                  courses: [
-                    'Course 9: The Amanah Blueprints',
-                    'Course 10: Applied TMI Case Studies',
-                    'Course 11: The Professional\'s Guidebook',
-                    'Course 12: Psychology of Managing Wealth',
-                  ],
-                  desc: 'Real case studies, advanced strategies, Zakat obligations, and the psychology of long-term wealth stewardship.',
-                  color: 'from-tmi-green/40 to-tmi-green/15',
-                },
-              ].map((set) => (
-                <div key={set.pillar} className="relative group">
-                  <div className={`absolute inset-0 rounded-2xl bg-gradient-to-b ${set.color} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
-                  <div className="relative bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:border-tmi-green/30 transition-all duration-300 h-full">
-                    <h3 className="font-display text-xl font-bold text-tmi-green mb-3">{set.pillar}</h3>
-                    <p className="text-sm text-gray-400 mb-6">{set.desc}</p>
-                    <div className="space-y-2">
-                      {set.courses.map((course) => (
-                        <div key={course} className="flex items-start gap-2">
-                          <span className="text-tmi-green mt-0.5 text-xs">◆</span>
-                          <span className="text-sm text-gray-300">{course}</span>
-                        </div>
-                      ))}
-                    </div>
+                { num: 1, title: 'The Covenant', desc: 'Sign your Mission Pledge. Perform an immediate audit of your financial life for haram exposure. This is not onboarding — it is a spiritual covenant.', tools: 'Mission Pledge · Emergency Purification Guide · Halal Portfolio Screener' },
+                { num: 2, title: 'Readiness & Identity', desc: 'The Akhirah Financial Compass reveals your complete financial reality. The Investor Profile System reveals your unique investor DNA. Stop guessing — start knowing.', tools: 'Akhirah Financial Compass · Investor Profile System · Portfolio Analyzer' },
+                { num: 3, title: 'The Halal Arsenal', desc: 'Six halal asset classes — equities, Sukuk, gold, REITs, cash, Bitcoin — each explained with institutional depth but retail clarity.', tools: 'Halal Equity Analyzer · Sukuk Analyzer · Asset Class Guides' },
+                { num: 4, title: 'The Macro System', desc: 'Read the economic environment with 34 indicators across 5 weather regimes. Not to become an economist — but to know when to lean in or protect the Amanah.', tools: 'TMI Global Macro Dashboard · Weather Regime Signals' },
+                { num: 5, title: 'Portfolio & Risk Management', desc: 'Everything converges into the Amanah Portfolio Command Center. One sheet. Three sections. 15–20 minutes a week. Institutional management, simplified for the Ummah.', tools: 'Amanah Portfolio Command Center · Stop-Loss Planner' },
+                { num: 6, title: 'Execution & Systems', desc: 'The last mile. Open a halal brokerage, place your first trade, use limit orders, and automate your strategy. The gap between knowledge and action is closed permanently.', tools: 'Execution Toolkit · Broker Selection Guide' },
+                { num: 7, title: 'Zakat & Wealth Purification', desc: 'The spiritual capstone. Calculate Zakat on modern halal assets with precision. This is where your portfolio transforms from a financial instrument into an engine of Hasanat.', tools: 'TMI Zakat & Purification Calculator' },
+              ].map(c => (
+                <div key={c.num} className="group bg-white/5 backdrop-blur-sm rounded-xl p-6 md:p-8 border border-white/10 hover:border-viridian/30 transition-all duration-300 flex flex-col md:flex-row md:items-start gap-5">
+                  <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-viridian/15 flex items-center justify-center">
+                    <span className="text-xl font-black text-viridian">{String(c.num).padStart(2, '0')}</span>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-white mb-2">Course {c.num}: {c.title}</h3>
+                    <p className="text-sm text-onyx-200 leading-relaxed mb-3">{c.desc}</p>
+                    <p className="text-xs text-dimgray"><span className="text-viridian font-semibold">Tools:</span> {c.tools}</p>
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="text-center">
+            <div className="text-center mt-12">
               <Link href="/curriculum" className="btn-primary text-base">
                 View Full Curriculum →
               </Link>
@@ -295,117 +320,184 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ═══════════ HOW IT WORKS ═══════════ */}
-        <section className="relative py-24 lg:py-32 bg-white">
-          <div className="max-w-7xl mx-auto px-6 lg:px-8">
-            <div className="max-w-3xl mx-auto text-center mb-16">
-              <div className="tmi-divider mx-auto mb-6" />
-              <h2 className="font-display text-3xl md:text-5xl font-bold text-tmi-charcoal mb-6">
-                How it works.
-              </h2>
-            </div>
 
-            <div className="grid md:grid-cols-3 gap-12 max-w-5xl mx-auto">
+        {/* ══════════════════════════════════════════════
+            THE WEEKLY RITUAL — Simplicity promise
+        ══════════════════════════════════════════════ */}
+        <section className="relative py-24 lg:py-32 bg-white">
+          <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
+            <div className="tmi-line mx-auto mb-8" />
+            <h2 className="text-3xl md:text-4xl font-black text-onyx leading-tight mb-6">
+              15–20 minutes a week.<br />
+              <span className="text-viridian">One ritual. Complete peace of mind.</span>
+            </h2>
+            <p className="text-base text-dimgray max-w-2xl mx-auto leading-relaxed mb-12">
+              Once a week, you sit down with the TMI system. Review the macro signal. Check your 
+              allocations. Execute any adjustments. Close the laptop. Your Amanah is stewarded. The 
+              rest of the week is yours — for Quran, family, community, and worship.
+            </p>
+            <div className="grid sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
               {[
-                {
-                  step: '1',
-                  title: 'Join the Community',
-                  desc: 'Enter our free Skool community. Introduce yourself, connect with fellow Muslim investors, and begin your journey.',
-                },
-                {
-                  step: '2',
-                  title: 'Learn at Your Pace',
-                  desc: 'Work through 12 structured courses with video lessons, professional tools, and practical worksheets. Each course builds on the last.',
-                },
-                {
-                  step: '3',
-                  title: 'Build & Maintain',
-                  desc: 'Construct your Amanah Portfolio with our Command Center. Then maintain it with a simple 5-minute monthly ritual.',
-                },
-              ].map((item) => (
-                <div key={item.step} className="text-center">
-                  <div className="w-16 h-16 rounded-full bg-tmi-green/10 flex items-center justify-center mx-auto mb-6">
-                    <span className="text-2xl font-display font-bold text-tmi-green">{item.step}</span>
+                { label: 'Review', desc: 'Check the macro weather signal and your portfolio allocations.' },
+                { label: 'Adjust', desc: 'Deploy new savings or rebalance if the signal has shifted.' },
+                { label: 'Worship', desc: 'Close the laptop. Your wealth is clean. Your time is yours.' },
+              ].map((step, i) => (
+                <div key={i} className="text-center">
+                  <div className="w-12 h-12 rounded-full bg-viridian/10 flex items-center justify-center mx-auto mb-4">
+                    <span className="text-lg font-black text-viridian">{i + 1}</span>
                   </div>
-                  <h3 className="font-display text-xl font-bold text-tmi-charcoal mb-3">{item.title}</h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">{item.desc}</p>
+                  <h3 className="text-base font-bold text-onyx mb-2">{step.label}</h3>
+                  <p className="text-sm text-dimgray leading-relaxed">{step.desc}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ═══════════ PRICING ═══════════ */}
-        <section className="relative py-24 lg:py-32 bg-tmi-green-mist geo-pattern">
-          <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
-            <div className="tmi-divider mx-auto mb-6" />
-            <h2 className="font-display text-3xl md:text-5xl font-bold text-tmi-charcoal mb-4">
-              Built for the 99%, not the 1%.
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-12">
-              &ldquo;You cannot tell me you want to help 2 billion Muslims and charge $250 per month. 
-              That helps the 1%. I want to help the 99%.&rdquo;
-            </p>
 
-            <div className="bg-white rounded-3xl p-10 md:p-14 shadow-xl border border-tmi-green/10 max-w-lg mx-auto">
-              <p className="text-sm font-semibold tracking-widest uppercase text-tmi-green mb-2">TMI Membership</p>
-              <div className="flex items-baseline justify-center gap-1 mb-2">
-                <span className="text-6xl font-display font-bold text-tmi-charcoal">$9</span>
-                <span className="text-gray-500">/month</span>
-              </div>
-              <p className="text-gray-500 text-sm mb-8">Less than a coffee a week.</p>
-
-              <div className="space-y-4 text-left mb-10">
-                {[
-                  '12 professional courses with video lessons',
-                  '14+ Excel tools & professional resources',
-                  'Amanah Portfolio Command Center',
-                  'Investor Profile Assessment',
-                  'Zakat & Purification Calculator',
-                  'Direct access to Mehdi',
-                  'Private community of Muslim investors',
-                ].map((feature) => (
-                  <div key={feature} className="flex items-start gap-3">
-                    <span className="text-tmi-green font-bold mt-0.5">✓</span>
-                    <span className="text-sm text-gray-700">{feature}</span>
+        {/* ══════════════════════════════════════════════
+            PRICING — $9/month with the story
+        ══════════════════════════════════════════════ */}
+        <section className="relative py-24 lg:py-32 bg-ivory">
+          <div className="max-w-5xl mx-auto px-6 lg:px-8">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              {/* Story side */}
+              <div>
+                <div className="tmi-line mb-8" />
+                <h2 className="text-3xl md:text-4xl font-black text-onyx leading-tight mb-6">
+                  Built for the 99%.<br />Not the 1%.
+                </h2>
+                <div className="space-y-5 text-dimgray leading-relaxed">
+                  <p>
+                    A friend heard Mehdi&apos;s vision to help two billion Muslims — then heard 
+                    his pricing: $250 a month. And he said the words that changed everything:
+                  </p>
+                  <div className="bg-white rounded-xl p-6 border-l-4 border-viridian">
+                    <p className="text-base text-onyx italic font-medium leading-relaxed">
+                      &ldquo;You have two choices. Either you charge high and focus on a small subset. 
+                      Or you help the masses. But you cannot tell me you want to help two billion 
+                      Muslims and charge $250 a month. That&apos;s helping the 1%. Not the 99%.&rdquo;
+                    </p>
                   </div>
-                ))}
+                  <p>
+                    That was a slap to the soul. And from that moment, TMI was reborn. Not as a business. 
+                    As a mission. Because a $250 fee builds a business. <strong className="text-onyx">A $9 fee builds a movement.</strong>
+                  </p>
+                </div>
               </div>
 
-              <a
-                href="https://www.skool.com/the-muslim-investor"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-primary w-full text-base"
-              >
-                Start Your Journey — Join Free →
-              </a>
-              <p className="text-xs text-gray-400 mt-4">Free community access. Paid membership launches soon.</p>
+              {/* Pricing card */}
+              <div className="bg-white rounded-2xl p-10 md:p-12 shadow-xl border border-viridian/10">
+                <p className="text-xs font-bold tracking-[0.15em] uppercase text-viridian mb-3">TMI Membership</p>
+                <div className="flex items-baseline gap-1 mb-1">
+                  <span className="text-6xl font-black text-onyx">$9</span>
+                  <span className="text-dimgray font-medium">/month</span>
+                </div>
+                <p className="text-sm text-dimgray mb-8">The same framework used to manage $500M — built for you.</p>
+
+                <div className="space-y-3 mb-10">
+                  {[
+                    '7 structured courses with video lessons',
+                    'Institutional-grade tools & calculators',
+                    'Amanah Portfolio Command Center',
+                    'Investor Profile Assessment (35 questions)',
+                    'Global Macro Dashboard (34 indicators)',
+                    'Zakat & Purification Calculator',
+                    'Direct access to Mehdi',
+                    'Private community of Muslim investors',
+                  ].map(f => (
+                    <div key={f} className="flex items-start gap-3">
+                      <span className="text-viridian font-bold mt-0.5 flex-shrink-0">✓</span>
+                      <span className="text-sm text-onyx">{f}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <a href="https://www.skool.com/the-muslim-investor" target="_blank" rel="noopener noreferrer"
+                  className="btn-primary w-full text-base">
+                  Start Your Journey — Join Free →
+                </a>
+                <p className="text-xs text-dimgray mt-4 text-center">
+                  Free community access now. Paid membership launches Ramadan 2026.
+                </p>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* ═══════════ FINAL CTA ═══════════ */}
-        <section className="relative py-24 lg:py-32 bg-tmi-charcoal text-center overflow-hidden">
-          <div className="absolute inset-0 islamic-accent opacity-20" />
+
+        {/* ══════════════════════════════════════════════
+            WHAT TMI IS NOT — Competitive positioning
+        ══════════════════════════════════════════════ */}
+        <section className="relative py-24 lg:py-28 bg-white">
+          <div className="max-w-5xl mx-auto px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <div className="tmi-line mx-auto mb-8" />
+              <h2 className="text-3xl md:text-4xl font-black text-onyx leading-tight">
+                A category of one.
+              </h2>
+            </div>
+            <div className="grid sm:grid-cols-2 gap-8">
+              <div>
+                <h3 className="text-xs font-bold tracking-[0.15em] uppercase text-dimgray mb-6">TMI is not</h3>
+                <div className="space-y-4">
+                  {[
+                    { label: 'A halal investing app', desc: 'Apps give compliance scores. TMI gives transformation.' },
+                    { label: 'A robo-advisor', desc: 'Robo-advisors automate without educating. TMI empowers you to understand exactly what you own and why.' },
+                    { label: 'A financial education platform', desc: 'Education platforms teach theory. TMI delivers a complete operational system that works in 15–20 minutes a week.' },
+                    { label: 'An Islamic finance course', desc: 'Courses give you fiqh. TMI gives you fiqh, tools, systems, and a community — all for $9/month.' },
+                  ].map(item => (
+                    <div key={item.label} className="flex items-start gap-3">
+                      <span className="text-red-400 font-bold mt-0.5 flex-shrink-0 text-sm">✕</span>
+                      <div>
+                        <span className="text-sm font-semibold text-onyx">{item.label}.</span>{' '}
+                        <span className="text-sm text-dimgray">{item.desc}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <h3 className="text-xs font-bold tracking-[0.15em] uppercase text-viridian mb-6">TMI is</h3>
+                <div className="bg-ivory rounded-2xl p-8 border border-viridian/10">
+                  <p className="text-base text-onyx leading-relaxed font-medium mb-4">
+                    A spiritual preparation system disguised as a wealth-building platform.
+                  </p>
+                  <p className="text-sm text-dimgray leading-relaxed">
+                    The only platform in the world that begins with the Day of Judgment and works backward 
+                    to your brokerage account. Institutional expertise. Akhirah-first philosophy. Professional 
+                    tools simplified for someone with 15–20 minutes a week. Maximum accessibility at $9/month.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        {/* ══════════════════════════════════════════════
+            FINAL CTA — The invitation
+        ══════════════════════════════════════════════ */}
+        <section className="relative py-28 lg:py-36 mesh-dark text-center overflow-hidden">
+          <div className="absolute inset-0 islamic-pattern opacity-15" />
           <div className="relative z-10 max-w-3xl mx-auto px-6 lg:px-8">
-            <p className="font-display text-2xl md:text-3xl text-tmi-green-light font-semibold leading-relaxed mb-8">
-              &ldquo;The only obsession we should have is how prepared we are going to be when we face Allah, 
-              Subhanahu wa ta&apos;ala.&rdquo;
+            <p className="arabic text-2xl text-viridian mb-8">
+              بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ
             </p>
-            <p className="text-gray-400 mb-10 text-lg">
-              The journey begins here. Your wealth. Your Amanah. Your Akhirah.
+            <h2 className="text-2xl md:text-3xl font-bold text-white leading-relaxed mb-4">
+              You&apos;ve been carrying this question alone for years.
+            </h2>
+            <p className="text-lg text-onyx-200 leading-relaxed mb-10">
+              You don&apos;t have to anymore. There are Muslims on this journey with you. 
+              Walk with us. Your wealth. Your Amanah. Your Akhirah.
             </p>
-            <a
-              href="https://www.skool.com/the-muslim-investor"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary text-lg"
-            >
+            <a href="https://www.skool.com/the-muslim-investor" target="_blank" rel="noopener noreferrer"
+              className="btn-primary text-lg">
               Bismillah — Join the Movement →
             </a>
           </div>
         </section>
+
       </main>
       <Footer />
     </>
