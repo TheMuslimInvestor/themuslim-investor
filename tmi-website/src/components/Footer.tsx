@@ -27,7 +27,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-14">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           <div className="md:col-span-2">
-            <img src="/logo-light.png" alt="The Muslim Investor" className="h-8 w-auto mb-5 brightness-[2] invert" />
+            <img src="/logo-light.png" alt="The Muslim Investor" className="h-10 w-auto mb-5 brightness-[2] invert" />
             <p className="text-sm text-dimgray leading-relaxed max-w-sm">
               Akhirah-first wealth building. Helping Muslims worldwide purify their wealth, 
               eliminate Riba, and prepare their answer for the Day of Judgment.
@@ -45,8 +45,6 @@ export default function Footer() {
             <h4 className="text-xs font-bold tracking-[0.15em] uppercase text-dimgray mb-5">Connect</h4>
             <div className="space-y-3">
               <a href="https://www.skool.com/the-muslim-investor" target="_blank" rel="noopener noreferrer" className="block text-sm text-onyx-200 hover:text-viridian transition-colors">Skool Community</a>
-              <a href="#" className="block text-sm text-onyx-200 hover:text-viridian transition-colors">YouTube</a>
-              <a href="#" className="block text-sm text-onyx-200 hover:text-viridian transition-colors">Instagram</a>
             </div>
           </div>
         </div>

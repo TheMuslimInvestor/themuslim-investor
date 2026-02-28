@@ -2,87 +2,9 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 export const metadata = {
-  title: 'Free Tools | The Muslim Investor',
-  description: 'Institutional-grade Islamic finance tools: Akhirah Financial Compass, Investor Profile System, Amanah Portfolio Command Center, Zakat Calculator, and more.',
+  title: 'Free Islamic Finance Tools | The Muslim Investor',
+  description: 'Institutional-grade Islamic finance tools built for the Ummah. Investor Profile System, Akhirah Financial Compass, Zakat Calculator, Macro Dashboard, and more.',
 };
-
-const featured = [
-  {
-    name: 'TMI Akhirah Financial Compass',
-    desc: 'A complete financial MRI that produces your Islamic Investment Readiness Score — measuring Riba exposure, financial fortress readiness, and savings discipline. This is your starting point.',
-    format: 'Excel Workbook',
-    course: 'Course 2',
-  },
-  {
-    name: 'TMI Investor Profile System',
-    desc: 'A 35-question deep-dive assessment that produces a 2,500+ word personalized report revealing your unique investor identity — from Fortress Builder to Growth Seeker. Your Compass of Conviction.',
-    format: 'Interactive Web App',
-    course: 'Course 2',
-  },
-];
-
-const tools = [
-  {
-    name: 'Amanah Portfolio Command Center',
-    desc: 'The convergence tool. Profile + asset knowledge + macro regime + new cash = one clear instruction. One sheet. Three sections. 15\u201320 minutes a week.',
-    format: 'Excel System',
-    course: 'Course 5',
-  },
-  {
-    name: 'Global Macro Dashboard',
-    desc: 'A 12-tab dashboard tracking 34 leading indicators that produces one signal: the current economic weather regime and what it means for your portfolio positioning.',
-    format: 'Excel Dashboard',
-    course: 'Course 4',
-  },
-  {
-    name: 'Zakat & Purification Calculator',
-    desc: 'A 7-sheet system designed specifically for modern halal portfolios — calculating Zakat on equities, Sukuk, gold, Bitcoin, and assets most traditional calculators cannot cover.',
-    format: 'Excel Calculator',
-    course: 'Course 7',
-  },
-  {
-    name: 'Halal Equity Analyzer',
-    desc: 'Screen individual stocks for Shariah compliance using AAOIFI-based financial ratios. Revenue screens, debt ratios, and prohibited business activity filters.',
-    format: 'Excel Tool',
-    course: 'Course 3',
-  },
-  {
-    name: 'Sukuk Analyzer',
-    desc: 'Evaluate Sukuk instruments for issuer credibility, Shariah structure, risk characteristics, and portfolio fit. The same logic used professionally for institutional portfolios.',
-    format: 'Excel Tool',
-    course: 'Course 3',
-  },
-  {
-    name: 'Islamic Stop-Loss & Profit Target Planner',
-    desc: 'Professional-grade risk management for halal portfolios. Set disciplined stop-losses and profit targets for each position, removing emotion from your decisions.',
-    format: 'Excel Planner',
-    course: 'Course 5',
-  },
-  {
-    name: 'Relationship Analyzer',
-    desc: 'Understand correlations between your halal asset classes. See how Sukuk, equities, gold, and Bitcoin interact across different market environments.',
-    format: 'Excel Tool',
-    course: 'Course 5',
-  },
-  {
-    name: 'Emergency Purification Guide',
-    desc: 'The 72-hour protocol. Inventory your holdings, screen each one, and execute a purification plan. Step-by-step, with Khalid as your guide.',
-    format: 'PDF Guide',
-    course: 'Course 1',
-  },
-  {
-    name: 'Halal Portfolio Screener',
-    desc: 'Quickly screen your existing portfolio holdings against AAOIFI Shariah standards. Identify what\u2019s clean and what needs to go.',
-    format: 'Excel Screener',
-    course: 'Course 1',
-  },
-  {
-    name: 'TMI Mission Pledge',
-    desc: 'Your Niyyah made tangible. Five commitments between you and your Creator about how you will approach your wealth from this day forward.',
-    format: 'Fillable PDF',
-    course: 'Course 1',
-  },
-];
 
 export default function ToolsPage() {
   return (
@@ -95,89 +17,178 @@ export default function ToolsPage() {
           <div className="absolute inset-0 islamic-pattern opacity-15" />
           <div className="relative z-10 max-w-4xl mx-auto px-6 lg:px-8 text-center">
             <p className="arabic text-2xl text-viridian mb-6">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</p>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight mb-6">
-              Institutional-Grade Tools.<br />Built for the Ummah.
-            </h1>
-            <p className="text-lg text-onyx-200 leading-relaxed max-w-2xl mx-auto">
-              The same analytical logic used to manage $500 million in Islamic assets — 
-              translated into tools that eliminate guesswork and work in minutes, not hours.
-            </p>
+            <p className="text-base text-onyx-200 mb-4">You&apos;ve been guessing long enough. These tools replace confusion with clarity — in minutes, not hours.</p>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight mb-6">Institutional-Grade Tools.<br />Built for the Ummah.</h1>
+            <p className="text-lg text-onyx-200 leading-relaxed max-w-2xl mx-auto">The same analytical frameworks used to manage $500M+ in Islamic assets — simplified, systemized, and available to every Muslim investor on earth.</p>
           </div>
         </section>
 
-        {/* FEATURED TOOLS */}
+        {/* CORNERSTONE TOOLS */}
         <section className="py-24 bg-white">
-          <div className="max-w-7xl mx-auto px-6 lg:px-8">
-            <div className="mb-16">
-              <div className="tmi-line mb-6" />
-              <h2 className="text-2xl md:text-3xl font-black text-onyx mb-3">Cornerstone Tools</h2>
-              <p className="text-base text-dimgray">Start here. These two tools form the foundation of your entire TMI journey.</p>
+          <div className="max-w-6xl mx-auto px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <div className="tmi-line mx-auto mb-6" />
+              <h2 className="text-2xl md:text-3xl font-black text-onyx">Cornerstone Systems</h2>
+              <p className="text-sm text-dimgray mt-2">The two tools every TMI member begins with.</p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-8 mb-20">
-              {featured.map(t => (
-                <div key={t.name} className="group bg-gradient-to-br from-ivory to-white rounded-2xl p-10 border-2 border-viridian/15 hover:border-viridian/40 card-hover">
-                  <div className="flex items-center gap-3 mb-4">
-                    <span className="text-xs font-bold tracking-[0.1em] uppercase text-viridian bg-viridian/10 px-3 py-1 rounded-full">{t.course}</span>
-                    <span className="text-xs text-dimgray">{t.format}</span>
-                  </div>
-                  <h3 className="text-xl font-bold text-onyx mb-4">{t.name}</h3>
-                  <p className="text-sm text-dimgray leading-relaxed mb-6">{t.desc}</p>
-                  <span className="text-sm font-semibold text-viridian group-hover:translate-x-1 transition-transform inline-block">
-                    Available in Community →
-                  </span>
+            <div className="grid md:grid-cols-2 gap-10">
+              {/* Akhirah Financial Compass */}
+              <div className="bg-ivory rounded-2xl p-8 md:p-10 border border-viridian/10 flex flex-col">
+                <span className="text-xs font-bold tracking-[0.15em] uppercase text-viridian mb-4">Course 2 — Cornerstone</span>
+                <h3 className="text-xl font-black text-onyx mb-4">The Akhirah Financial Compass</h3>
+                <p className="text-sm text-dimgray leading-relaxed mb-6 flex-grow">
+                  Your first step toward answering Allah&apos;s question about your wealth. Reveals your Riba 
+                  exposure, measures your financial fortress readiness, and tells you whether you&apos;re 
+                  prepared to invest — or whether you need to fix your foundation first. The truth, in 10 minutes.
+                </p>
+                <div className="flex flex-wrap gap-2 mb-6">
+                  <span className="text-xs bg-viridian/10 text-viridian font-medium px-3 py-1 rounded-full">Islamic Investment Readiness Score</span>
+                  <span className="text-xs bg-viridian/10 text-viridian font-medium px-3 py-1 rounded-full">Riba Exposure Analysis</span>
+                  <span className="text-xs bg-viridian/10 text-viridian font-medium px-3 py-1 rounded-full">Financial Fortress Assessment</span>
                 </div>
-              ))}
-            </div>
+                <a href="https://www.skool.com/the-muslim-investor" target="_blank" rel="noopener noreferrer" className="btn-primary text-sm">Begin Your Assessment →</a>
+              </div>
 
-            {/* ALL TOOLS */}
-            <div className="mb-12">
-              <h2 className="text-2xl font-black text-onyx mb-3">Complete Tool Library</h2>
-              <p className="text-base text-dimgray">All tools included with membership. Professional quality, maximum accessibility.</p>
+              {/* Investor Profile System */}
+              <div className="bg-ivory rounded-2xl p-8 md:p-10 border border-viridian/10 flex flex-col">
+                <span className="text-xs font-bold tracking-[0.15em] uppercase text-viridian mb-4">Course 2 — Cornerstone</span>
+                <h3 className="text-xl font-black text-onyx mb-4">The TMI Investor Profile System</h3>
+                <p className="text-sm text-dimgray leading-relaxed mb-6 flex-grow">
+                  35 carefully designed questions that reveal exactly who you are as an investor. Your risk 
+                  tolerance, your time horizon, your liquidity needs, your knowledge depth, your emotional 
+                  temperament — all mapped into a unique investor DNA profile that drives every portfolio 
+                  decision from this point forward. Stop copying someone else&apos;s strategy.
+                </p>
+                <div className="flex flex-wrap gap-2 mb-6">
+                  <span className="text-xs bg-viridian/10 text-viridian font-medium px-3 py-1 rounded-full">35-Question Assessment</span>
+                  <span className="text-xs bg-viridian/10 text-viridian font-medium px-3 py-1 rounded-full">5 Investor Dimensions</span>
+                  <span className="text-xs bg-viridian/10 text-viridian font-medium px-3 py-1 rounded-full">Personalized Profile</span>
+                </div>
+                <a href="https://tmi-replitzip--themusliminvest.replit.app" target="_blank" rel="noopener noreferrer" className="btn-primary text-sm">Discover Your Profile →</a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ALL TOOLS */}
+        <section className="py-24 bg-ivory">
+          <div className="max-w-6xl mx-auto px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <div className="tmi-line mx-auto mb-6" />
+              <h2 className="text-2xl md:text-3xl font-black text-onyx">The Complete TMI Toolkit</h2>
+              <p className="text-sm text-dimgray mt-2 max-w-xl mx-auto">Every tool is designed to do one thing: save you time and give you clarity so you can focus on what matters — your Deen, your family, your Akhirah.</p>
             </div>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {tools.map(t => (
-                <div key={t.name} className="bg-white rounded-xl p-7 border border-onyx-50 hover:border-viridian/20 card-hover">
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="text-xs font-semibold text-viridian">{t.course}</span>
-                    <span className="text-xs text-dimgray">· {t.format}</span>
-                  </div>
-                  <h3 className="text-base font-bold text-onyx mb-3">{t.name}</h3>
-                  <p className="text-sm text-dimgray leading-relaxed">{t.desc}</p>
+              {[
+                {
+                  course: 'Course 5',
+                  title: 'Amanah Portfolio Command Center',
+                  desc: 'Your weekly cockpit. One sheet that shows your entire portfolio — current allocations vs. targets, what to buy, what to sell, and exactly how much. Transforms portfolio management from a stressful guessing game into a 15-minute ritual.',
+                  cta: 'Access the Command Center →',
+                  link: 'https://www.skool.com/the-muslim-investor',
+                },
+                {
+                  course: 'Course 4',
+                  title: 'TMI Global Macro Dashboard',
+                  desc: '34 economic indicators across 12 analytical tabs that tell you the weather before you step outside. You won\'t become an economist — you\'ll become someone who knows when to lean in and when to protect the Amanah.',
+                  cta: 'Read the Weather →',
+                  link: 'https://www.skool.com/the-muslim-investor',
+                },
+                {
+                  course: 'Course 7',
+                  title: 'Zakat & Purification Calculator',
+                  desc: 'A 7-sheet system that calculates your Zakat obligation on every modern halal asset — ETFs, Sukuk, gold, crypto, cash. Stop underpaying. Stop overpaying. Meet Allah knowing you fulfilled the obligation with precision.',
+                  cta: 'Calculate Your Zakat →',
+                  link: 'https://www.skool.com/the-muslim-investor',
+                },
+                {
+                  course: 'Course 3',
+                  title: 'Halal Equity Analyzer',
+                  desc: 'Screen any stock against Shariah compliance thresholds. Reveals revenue purity, debt ratios, and interest income — so you never invest in a company that fails the test without knowing it.',
+                  cta: 'Access This Tool →',
+                  link: 'https://www.skool.com/the-muslim-investor',
+                },
+                {
+                  course: 'Course 3',
+                  title: 'Sukuk Analyzer',
+                  desc: 'Evaluate Sukuk with the same framework used by institutional portfolio managers. Credit quality, structure type, maturity profile, and yield analysis — all in one system.',
+                  cta: 'Access This Tool →',
+                  link: 'https://www.skool.com/the-muslim-investor',
+                },
+                {
+                  course: 'Course 5',
+                  title: 'Islamic Stop-Loss & Profit Target Planner',
+                  desc: 'Protecting your wealth is not fear — it is stewardship. Set disciplined exit points that prevent catastrophic losses and lock in gains. Your Amanah deserves boundaries.',
+                  cta: 'Access This Tool →',
+                  link: 'https://www.skool.com/the-muslim-investor',
+                },
+                {
+                  course: 'Course 5',
+                  title: 'Relationship Analyzer',
+                  desc: 'Understand how your assets move together — and discover the hidden correlations that could destroy your portfolio in a downturn. Diversification is not about counting assets. It\'s about understanding relationships.',
+                  cta: 'Access This Tool →',
+                  link: 'https://www.skool.com/the-muslim-investor',
+                },
+                {
+                  course: 'Course 1',
+                  title: 'Emergency Purification Guide',
+                  desc: 'Found haram in your portfolio? This guide tells you exactly what to do — what to sell immediately, what to purify, and how to cleanse your wealth without panic. Your first aid kit for financial contamination.',
+                  cta: 'Access This Tool →',
+                  link: 'https://www.skool.com/the-muslim-investor',
+                },
+                {
+                  course: 'Course 1',
+                  title: 'Halal Portfolio Screener',
+                  desc: 'Run your existing portfolio through a comprehensive halal audit. Identifies every position that may be non-compliant — before the Day of Judgment does it for you.',
+                  cta: 'Access This Tool →',
+                  link: 'https://www.skool.com/the-muslim-investor',
+                },
+                {
+                  course: 'Course 1',
+                  title: 'The TMI Mission Pledge',
+                  desc: 'Not a form. A covenant between you and Allah. Sign it, hang it, and let it remind you every single day why you started this journey. The most important document in your financial life.',
+                  cta: 'Access This Tool →',
+                  link: 'https://www.skool.com/the-muslim-investor',
+                },
+              ].map((tool, i) => (
+                <div key={i} className="bg-white rounded-2xl p-7 border border-viridian/5 flex flex-col card-hover">
+                  <span className="text-xs font-semibold text-viridian mb-3">{tool.course}</span>
+                  <h3 className="text-base font-bold text-onyx mb-3">{tool.title}</h3>
+                  <p className="text-sm text-dimgray leading-relaxed mb-6 flex-grow">{tool.desc}</p>
+                  <a href={tool.link} target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-viridian hover:text-viridian-dark transition-colors">
+                    {tool.cta}
+                  </a>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* WEB APPS COMING */}
-        <section className="py-20 bg-ivory">
-          <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
-            <h2 className="text-2xl font-black text-onyx mb-4">Web applications launching soon.</h2>
-            <p className="text-base text-dimgray max-w-2xl mx-auto mb-8 leading-relaxed">
-              We&apos;re building interactive, mobile-friendly web apps for every tool. 
-              The Excel versions are available now — the web apps will make them even more accessible.
-            </p>
-            <div className="flex flex-wrap justify-center gap-3">
-              {['Investor Profile Web App', 'Portfolio Analyzer', 'Zakat Calculator', 'Macro Dashboard', 'Halal Screener'].map(i => (
-                <span key={i} className="text-sm bg-white px-4 py-2 rounded-full border border-viridian/10 text-dimgray font-medium">{i}</span>
-              ))}
+        {/* STUDIO PHOTO + WEB APPS COMING */}
+        <section className="py-20 bg-white">
+          <div className="max-w-5xl mx-auto px-6 lg:px-8">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <div className="rounded-2xl overflow-hidden shadow-lg">
+                <img src="/mehdi-studio.png" alt="TMI Studio — Building tools for the Ummah" className="w-full h-auto object-cover" />
+              </div>
+              <div>
+                <div className="tmi-line mb-6" />
+                <h2 className="text-2xl md:text-3xl font-black text-onyx mb-4">Web Applications<br />Launching Summer 2026 — Insha&apos;Allah.</h2>
+                <p className="text-dimgray leading-relaxed mb-6">Every tool above is being converted into professional web applications — accessible from any device, anywhere in the world. Same institutional frameworks. Faster, smoother, more powerful.</p>
+                <a href="https://www.skool.com/the-muslim-investor" target="_blank" rel="noopener noreferrer" className="btn-outline-dark text-sm">Join the Community for Early Access →</a>
+              </div>
             </div>
           </div>
         </section>
 
         {/* CTA */}
         <section className="py-24 mesh-dark text-center">
-          <div className="max-w-3xl mx-auto px-6 lg:px-8">
-            <h2 className="text-3xl font-black text-white mb-4">Get instant access to every tool.</h2>
-            <p className="text-base text-onyx-200 mb-10">
-              Join the free community and download the complete toolkit today.
-            </p>
-            <a href="https://www.skool.com/the-muslim-investor" target="_blank" rel="noopener noreferrer"
-              className="btn-primary text-base">
-              Join Free & Access All Tools →
-            </a>
+          <div className="relative z-10 max-w-3xl mx-auto px-6 lg:px-8">
+            <h2 className="text-2xl md:text-3xl font-black text-white leading-tight mb-6">Tools without action are decoration.<br /><span className="text-viridian">Start with one.</span></h2>
+            <p className="text-lg text-onyx-200 leading-relaxed mb-10">The Investor Profile takes 10 minutes. It will tell you more about yourself as an investor than 10 years of guessing.</p>
+            <a href="https://tmi-replitzip--themusliminvest.replit.app" target="_blank" rel="noopener noreferrer" className="btn-primary text-lg">Discover Your Investor Profile →</a>
           </div>
         </section>
 
