@@ -47,7 +47,7 @@ export default function ToolsPage() {
                   <span className="text-xs bg-viridian/10 text-viridian font-medium px-3 py-1 rounded-full">Riba Exposure Analysis</span>
                   <span className="text-xs bg-viridian/10 text-viridian font-medium px-3 py-1 rounded-full">Financial Fortress Assessment</span>
                 </div>
-                <a href="https://www.skool.com/the-muslim-investor" target="_blank" rel="noopener noreferrer" className="btn-primary text-sm">Begin Your Assessment →</a>
+                <a href="/tools/compass" className="btn-primary text-sm">Begin Your Assessment →</a>
               </div>
 
               {/* Investor Profile System */}
