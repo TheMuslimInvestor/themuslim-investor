@@ -34,8 +34,14 @@ interface Debt {
   remainingTerm: string;
 }
 
-interface DebtCalc extends Omit<Debt, 'apr'> {
+interface DebtCalc {
+  name: string;
+  type: string;
+  balance: string;
   apr: number;
+  minPayment: string;
+  extraPayment: string;
+  remainingTerm: string;
   bal: number;
   minPay: number;
   extraPay: number;
@@ -228,7 +234,7 @@ function computeAll(state: AppState): ComputedResult {
       }
     }
 
-    return { ...d, bal, apr, minPay, extraPay, totalPay, monthlyInterest, priorityScore, payoffMonths };
+    return { ...d, bal, apr, minPay, extraPay, totalPay, monthlyInterest, priorityScore, payoffMonths } as DebtCalc;
   });
 
   const debtPaymentsExclMortgage = debtCalcs
