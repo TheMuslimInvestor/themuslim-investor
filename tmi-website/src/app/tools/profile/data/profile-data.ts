@@ -16,66 +16,31 @@ export const PROFILES = {
 export const ALLOCATIONS = {
   foundation_builder: {
     allocation: { "Money Market": 40, "Sukuk/Fixed Income": 30, "Equity": 20, "Gold": 10 },
-    funds: [
-      { name: "Wahed Cash Account", ticker: "WAHED", type: "Cash", rationale: "Safe starting point" },
-      { name: "Azzad Wise Capital Fund", ticker: "WISEX", type: "Sukuk", rationale: "Steady income with low volatility" },
-      { name: "Wahed FTSE USA Shariah ETF", ticker: "HLAL", type: "Equity", rationale: "Easy entry into halal equity" },
-      { name: "iShares Gold Trust", ticker: "IAU", type: "Gold", rationale: "Tangible asset diversification" },
-    ],
+    rationale: "Your recommended allocation prioritizes capital preservation and stability — 40% in money market instruments provides a safe foundation as you learn, 30% in Sukuk for steady income with low volatility, 20% in equity for measured growth exposure, and 10% in gold as an inflation hedge and store of value. This allocation reflects where you are right now: at the beginning. And that is exactly where every wise investor starts. As you progress through the TMI curriculum and your knowledge grows, this allocation will evolve with you.",
   },
   tactical_trader: {
     allocation: { "Equity": 60, "Emerging Markets": 20, "Gold": 10, "Money Market": 10 },
-    funds: [
-      { name: "SP Funds S&P 500 Sharia ETF", ticker: "SPUS", type: "Equity", rationale: "Liquid US equity exposure" },
-      { name: "iShares MSCI EM Islamic ETF", ticker: "ISDE", type: "Emerging Markets", rationale: "Higher growth potential" },
-      { name: "Saturna Al-Kawthar Global", ticker: "AMAGX", type: "Global Equity", rationale: "Concentrated positions" },
-      { name: "SPDR Gold Shares", ticker: "GLD", type: "Gold", rationale: "Tactical hedge" },
-    ],
+    rationale: "Your recommended allocation is built for someone who moves with purpose — 60% in equity for strong growth potential, 20% in emerging markets for higher-reward exposure, 10% in gold as a tactical hedge, and 10% in money market for dry powder when opportunities arise. This allocation channels your decisive nature into a structured framework — preventing impulsive moves while keeping you active and engaged. Your knowledge level supports this more aggressive positioning, but the TMI curriculum will sharpen your edge even further.",
   },
   purposeful_builder: {
     allocation: { "Equity": 50, "Sukuk/Fixed Income": 25, "Real Estate": 15, "Money Market": 10 },
-    funds: [
-      { name: "Wahed FTSE USA Shariah ETF", ticker: "HLAL", type: "Equity", rationale: "Core holding for goals" },
-      { name: "Azzad Wise Capital Fund", ticker: "WISEX", type: "Sukuk", rationale: "Stable income" },
-      { name: "Wahed Real Estate ETF", ticker: "WREAL", type: "Real Estate", rationale: "Real asset exposure" },
-      { name: "Azzad Ethical Fund", ticker: "ADJEX", type: "Equity", rationale: "Values-aligned management" },
-    ],
+    rationale: "Your recommended allocation balances growth with intention — 50% in equity for long-term halal wealth building, 25% in Sukuk for stable income that anchors your portfolio, 15% in real estate for tangible asset diversification, and 10% in money market for liquidity and flexibility. Every asset class in this allocation serves a purpose — just like every financial decision you make serves your Akhirah. This is not a portfolio. It is a system for stewarding the Amanah.",
   },
   practical_provider: {
     allocation: { "Equity": 40, "Sukuk/Fixed Income": 30, "Real Estate": 15, "Money Market": 15 },
-    funds: [
-      { name: "Wahed FTSE USA Shariah ETF", ticker: "HLAL", type: "Equity", rationale: "Balanced family growth" },
-      { name: "SP Funds Dow Jones Global Sukuk ETF", ticker: "SPSK", type: "Sukuk", rationale: "Steady family income" },
-      { name: "Wahed Real Estate ETF", ticker: "WREAL", type: "Real Estate", rationale: "Long-term family wealth" },
-      { name: "Wahed Cash Account", ticker: "WAHED", type: "Cash", rationale: "Emergency fund" },
-    ],
+    rationale: "Your recommended allocation is built around your family's needs — 40% in equity for growth that compounds over your family's timeline, 30% in Sukuk for reliable income and stability, 15% in real estate for long-term family wealth preservation, and 15% in money market for the emergency reserves that every provider must maintain. This allocation reflects your sacred responsibility: protecting and growing what Allah has entrusted to you for the benefit of those who depend on you.",
   },
   fortress_builder: {
     allocation: { "Sukuk/Fixed Income": 40, "Money Market": 30, "Gold": 15, "Equity": 15 },
-    funds: [
-      { name: "Azzad Wise Capital Fund", ticker: "WISEX", type: "Sukuk", rationale: "Capital preservation" },
-      { name: "Wahed Cash Account", ticker: "WAHED", type: "Cash", rationale: "FDIC-insured safety" },
-      { name: "iShares Gold Trust", ticker: "IAU", type: "Gold", rationale: "Inflation hedge" },
-      { name: "SP Funds Dow Jones Global Sukuk ETF", ticker: "SPSK", type: "Sukuk", rationale: "Diversified Sukuk" },
-    ],
+    rationale: "Your recommended allocation prioritizes protection above all — 40% in Sukuk for capital preservation and steady returns, 30% in money market for maximum liquidity and safety, 15% in gold as a time-tested store of value, and 15% in equity for essential growth exposure. This is the allocation of a steward who understands that protecting the Amanah is itself an act of worship. Preservation is not cowardice — it is wisdom. The Prophet ﷺ tied his camel before placing his trust in Allah.",
   },
   steady_steward: {
     allocation: { "Equity": 55, "Sukuk/Fixed Income": 25, "Real Estate": 10, "Gold": 10 },
-    funds: [
-      { name: "iShares MSCI World Islamic ETF", ticker: "ISWD", type: "Global Equity", rationale: "Broad diversification" },
-      { name: "Wahed FTSE USA Shariah ETF", ticker: "HLAL", type: "US Equity", rationale: "Steady compounding" },
-      { name: "Azzad Wise Capital Fund", ticker: "WISEX", type: "Sukuk", rationale: "Portfolio stability" },
-      { name: "Saturna Sustainable Sukuk Fund", ticker: "SUSBX", type: "Income", rationale: "ESG-aligned income" },
-    ],
+    rationale: "Your recommended allocation balances growth with stability — 55% in equity for long-term halal wealth building, 25% in Sukuk for steady income and portfolio stability, 10% in real estate for tangible asset diversification, and 10% in gold as an inflation hedge and store of value. This allocation reflects your balanced nature, your patience, and your preference for steady compounding over aggressive speculation. It is designed to grow your wealth while letting you sleep peacefully at night — knowing every asset class is Shariah-compliant.",
   },
   growth_seeker: {
     allocation: { "Equity": 70, "Emerging Markets": 15, "Gold": 10, "Money Market": 5 },
-    funds: [
-      { name: "SP Funds S&P 500 Sharia ETF", ticker: "SPUS", type: "US Equity", rationale: "Maximum US exposure" },
-      { name: "Saturna Al-Kawthar Global", ticker: "AMAGX", type: "Global Equity", rationale: "Growth positions" },
-      { name: "iShares MSCI EM Islamic ETF", ticker: "ISDE", type: "Emerging Markets", rationale: "High growth markets" },
-      { name: "Iman Fund", ticker: "IMANX", type: "US Growth", rationale: "Growth-focused selection" },
-    ],
+    rationale: "Your recommended allocation is built for ambitious, forward-looking growth — 70% in equity for maximum long-term appreciation, 15% in emerging markets for high-growth exposure, 10% in gold as a portfolio stabilizer, and 5% in money market for minimal liquidity needs. Your higher risk tolerance and longer time horizon support this aggressive positioning. But remember: ambition without knowledge is speculation. The TMI curriculum ensures your growth is grounded in understanding, not hope.",
   },
 };
 

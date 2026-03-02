@@ -12,11 +12,11 @@ import {
 // TMI BRAND — from official brand guide
 // ============================================================================
 const B = {
-  v: "#358C6C",   // Viridian (primary)
-  o: "#343840",   // Onyx (primary)
-  c: "#86A68B",   // Cambridge Blue (secondary)
-  i: "#EFF2E4",   // Ivory (secondary)
-  d: "#6C7173",   // Dim Gray (secondary)
+  v: "#358C6C",   // Viridian
+  o: "#343840",   // Onyx
+  c: "#86A68B",   // Cambridge Blue
+  i: "#EFF2E4",   // Ivory
+  d: "#6C7173",   // Dim Gray
 };
 const ALLOC_COLORS = ["#358C6C", "#86A68B", "#343840", "#6C7173", "#5BA88C", "#A8C4AD"];
 
@@ -25,10 +25,10 @@ const PROCESSING_MESSAGES = [
   "Analyzing your spiritual foundation...",
   "Mapping your risk tolerance...",
   "Calibrating your knowledge level...",
-  "Building your halal allocation...",
-  "Selecting Shariah-compliant funds...",
-  "Generating your personalized report...",
-  "Almost there — preparing your action plan...",
+  "Building your recommended allocation...",
+  "Preparing your personalized report...",
+  "Writing your 90-day action plan...",
+  "Almost there — finalizing your profile...",
 ];
 
 const DIM_LABELS: Record<string, string> = {
@@ -39,9 +39,6 @@ const DIM_LABELS: Record<string, string> = {
   financial_stability: "Financial Stability",
 };
 
-// ============================================================================
-// TYPES
-// ============================================================================
 interface ReportData {
   success: boolean;
   profile: string;
@@ -50,16 +47,12 @@ interface ReportData {
   report: string;
   scores: Record<string, number>;
   allocation: Record<string, number>;
-  funds: Array<{ name: string; ticker: string; type: string; rationale: string }>;
   method: string;
   userName: string;
 }
 
 type Screen = "welcome" | "collect" | "assessment" | "processing" | "results" | "error";
 
-// ============================================================================
-// COMPONENT
-// ============================================================================
 export default function InvestorProfilePage() {
   const [screen, setScreen] = useState<Screen>("welcome");
   const [currentQ, setCurrentQ] = useState(0);
@@ -74,7 +67,6 @@ export default function InvestorProfilePage() {
   const questionRef = useRef<HTMLDivElement>(null);
   const reportRef = useRef<HTMLDivElement>(null);
 
-  // Processing animation
   useEffect(() => {
     if (screen !== "processing") return;
     const interval = setInterval(() => {
@@ -83,33 +75,26 @@ export default function InvestorProfilePage() {
     return () => clearInterval(interval);
   }, [screen]);
 
-  // Scroll to top
   useEffect(() => { window.scrollTo({ top: 0, behavior: "smooth" }); }, [screen]);
 
   const question = QUESTIONS[currentQ];
   const section = question ? SECTIONS.find((s) => s.id === question.section) : null;
   const progress = (currentQ / QUESTIONS.length) * 100;
   const currentAnswer = question ? answers[question.id] || "" : "";
-
-  // --- EMAIL VALIDATION ---
   const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-  // --- NAVIGATION ---
   const goNext = useCallback(() => {
     if (!question) return;
     if (question.type === "text") {
       if (!textInput.trim()) return;
       setAnswers((prev) => ({ ...prev, [question.id]: textInput.trim() }));
     } else if (!currentAnswer) return;
-
     if (currentQ < QUESTIONS.length - 1) {
       setCurrentQ((p) => p + 1);
       setTextInput("");
       questionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     } else {
-      const finalAnswers = question.type === "text"
-        ? { ...answers, [question.id]: textInput.trim() }
-        : answers;
+      const finalAnswers = question.type === "text" ? { ...answers, [question.id]: textInput.trim() } : answers;
       submitAssessment(finalAnswers);
     }
   }, [currentQ, question, textInput, currentAnswer, answers]);
@@ -126,14 +111,10 @@ export default function InvestorProfilePage() {
     if (!question) return;
     setAnswers((prev) => ({ ...prev, [question.id]: value }));
     setTimeout(() => {
-      if (currentQ < QUESTIONS.length - 1) {
-        setCurrentQ((p) => p + 1);
-        setTextInput("");
-      }
+      if (currentQ < QUESTIONS.length - 1) { setCurrentQ((p) => p + 1); setTextInput(""); }
     }, 300);
   }, [question, currentQ]);
 
-  // --- SUBMIT ---
   const submitAssessment = async (finalAnswers: Record<string, string>) => {
     setScreen("processing");
     setProcessingMsg(0);
@@ -147,44 +128,28 @@ export default function InvestorProfilePage() {
         signal: controller.signal,
       });
       clearTimeout(timeout);
-      if (!response.ok) {
-        const err = await response.json().catch(() => ({}));
-        throw new Error(err.error || "Server error");
-      }
+      if (!response.ok) { const err = await response.json().catch(() => ({})); throw new Error(err.error || "Server error"); }
       const data: ReportData = await response.json();
       if (data.success) { setReportData(data); setScreen("results"); }
       else throw new Error("Failed to generate report");
     } catch (error: any) {
-      setErrorMsg(error.name === "AbortError"
-        ? "Report generation is taking longer than expected. Please try again."
-        : "An error occurred generating your report. Please try again.");
+      setErrorMsg(error.name === "AbortError" ? "Report generation is taking longer than expected. Please try again." : "An error occurred generating your report. Please try again.");
       setScreen("error");
     }
   };
 
-  // --- START / RESET ---
-  const startFresh = () => {
-    setAnswers({}); setCurrentQ(0); setTextInput("");
-    setUserName(""); setUserEmail(""); setEmailError("");
-    setScreen("welcome");
-  };
+  const startFresh = () => { setAnswers({}); setCurrentQ(0); setTextInput(""); setUserName(""); setUserEmail(""); setEmailError(""); setScreen("welcome"); };
   const beginCollect = () => setScreen("collect");
   const beginAssessment = () => {
     if (!userName.trim()) return;
-    if (!userEmail.trim() || !isValidEmail(userEmail)) {
-      setEmailError("Please enter a valid email address.");
-      return;
-    }
+    if (!userEmail.trim() || !isValidEmail(userEmail)) { setEmailError("Please enter a valid email address."); return; }
     setEmailError("");
-    // Pre-fill q1 with the name
     setAnswers({ q1: userName.trim() });
-    // Skip q1 in the assessment (start from q2)
     setCurrentQ(1);
     setScreen("assessment");
   };
   const retrySubmission = () => submitAssessment(answers);
 
-  // --- KEYBOARD ---
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (screen === "assessment" && e.key === "Enter" && question?.type === "text") goNext();
@@ -194,101 +159,86 @@ export default function InvestorProfilePage() {
     return () => window.removeEventListener("keydown", handleKey);
   }, [screen, question, goNext, userName, userEmail]);
 
-  // --- WHATSAPP SHARE ---
   const shareOnWhatsApp = () => {
     if (!reportData) return;
-    // Remove emoji from profile name (ES5-safe — no unicode regex flag)
     const pn = reportData.profile.replace(/[^\x20-\x7E\u00A0-\u024F\u0600-\u06FF]/g, "").trim();
-    const text = encodeURIComponent(`I just discovered my Islamic Investor Profile — I'm ${pn}!\n\nDiscover yours at themuslim-investor.com/tools/profile`);
+    const text = encodeURIComponent(`I just discovered my Islamic Investor Profile with The Muslim Investor \u2014 I\u2019m ${pn}!\n\nDiscover yours at themuslim-investor.com/tools/profile`);
     window.open(`https://wa.me/?text=${text}`, "_blank");
   };
 
-  // --- PDF DOWNLOAD ---
-  // Opens a new window with a print-optimized view of the FULL report, then triggers print
   const downloadPDF = () => {
     if (!reportData) return;
     const logoUrl = window.location.origin + "/images/tmi-logo.png";
+    const today = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
     const scoresHtml = Object.entries(reportData.scores).map(([k, v]) =>
-      `<div style="display:flex;justify-content:space-between;margin-bottom:4px;">
-        <span>${DIM_LABELS[k] || k}</span><span style="font-weight:600;color:${B.v};">${Math.round(v)}%</span>
-      </div>
-      <div style="height:6px;background:${B.i};border-radius:99px;margin-bottom:12px;overflow:hidden;">
-        <div style="height:100%;width:${v}%;background:${B.v};border-radius:99px;"></div>
-      </div>`
+      `<div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span>${DIM_LABELS[k] || k}</span><span style="font-weight:600;color:${B.v};">${Math.round(v)}%</span></div><div style="height:6px;background:${B.i};border-radius:99px;margin-bottom:12px;overflow:hidden;"><div style="height:100%;width:${v}%;background:${B.v};border-radius:99px;"></div></div>`
     ).join("");
-    const allocHtml = Object.entries(reportData.allocation).map(([k, v], i) =>
-      `<tr><td style="padding:8px 12px;border:1px solid #dde1d8;">${k}</td><td style="padding:8px 12px;border:1px solid #dde1d8;font-weight:600;">${v}%</td></tr>`
-    ).join("");
-    const fundsHtml = reportData.funds.map((f, i) =>
-      `<div style="padding:8px 0;border-bottom:${i < reportData.funds.length - 1 ? '1px solid #eee' : 'none'};">
-        <strong>${f.name}</strong> (${f.ticker}) — <em>${f.type}</em><br/>
-        <span style="color:${B.d};font-size:0.85em;">${f.rationale}</span>
-      </div>`
+    const allocRows = Object.entries(reportData.allocation).map(([k, v]) =>
+      `<tr><td style="padding:10px 14px;border-bottom:1px solid #e8ebe5;color:${B.o};">${k}</td><td style="padding:10px 14px;border-bottom:1px solid #e8ebe5;font-weight:600;color:${B.v};text-align:right;">${v}%</td></tr>`
     ).join("");
 
     const printHtml = `<!DOCTYPE html><html><head>
       <meta charset="UTF-8">
-      <title>${reportData.userName || "Your"} Islamic Investor Profile — TMI Report</title>
+      <title>TMI Personalized Investor Profile Report \u2014 ${reportData.userName}</title>
       <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&display=swap" rel="stylesheet">
       <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Poppins', sans-serif; color: ${B.o}; font-size: 14px; line-height: 1.7; padding: 40px; max-width: 800px; margin: 0 auto; }
-        .logo { text-align: center; margin-bottom: 24px; }
-        .logo img { height: 40px; }
-        .profile-card { background: linear-gradient(135deg, ${B.v}, ${B.o}); color: #fff; border-radius: 12px; padding: 28px; text-align: center; margin-bottom: 24px; }
-        .profile-card h2 { font-size: 22px; font-weight: 900; margin-bottom: 6px; }
-        .profile-card p { opacity: 0.85; font-size: 13px; }
-        .section { margin-bottom: 24px; }
-        .section-label { font-size: 10px; font-weight: 600; color: ${B.d}; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; }
-        h1 { font-size: 20px; font-weight: 900; margin: 24px 0 8px; color: ${B.o}; }
-        h2 { font-size: 16px; font-weight: 600; margin: 20px 0 6px; color: ${B.v}; }
-        h3 { font-size: 14px; font-weight: 600; margin: 14px 0 4px; color: ${B.o}; }
-        p { margin: 6px 0; }
-        ul, ol { margin: 8px 0 8px 24px; }
-        li { margin: 4px 0; }
-        table { width: 100%; border-collapse: collapse; margin: 12px 0; }
-        th { background: ${B.i}; font-weight: 600; padding: 8px 12px; text-align: left; border: 1px solid #dde1d8; }
-        td { padding: 8px 12px; border: 1px solid #dde1d8; }
-        blockquote { border-left: 3px solid ${B.v}; padding-left: 12px; margin: 12px 0; font-style: italic; color: ${B.d}; }
-        hr { margin: 20px 0; border: none; border-top: 1px solid #e8ebe5; }
-        .footer { text-align: center; margin-top: 32px; padding-top: 16px; border-top: 1px solid ${B.i}; color: ${B.d}; font-size: 11px; }
-        .disclaimer { background: ${B.i}; padding: 12px 16px; border-radius: 8px; font-size: 11px; color: ${B.d}; margin-top: 20px; }
-        @media print {
-          body { padding: 20px; }
-          .profile-card { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-        }
+        body { font-family: 'Poppins', sans-serif; color: ${B.o}; font-size: 13px; line-height: 1.75; padding: 40px 48px; max-width: 780px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 2px solid ${B.v}; }
+        .header img { height: 36px; margin-bottom: 10px; }
+        .header h1 { font-size: 18px; font-weight: 900; color: ${B.o}; margin-bottom: 4px; }
+        .header p { font-size: 12px; color: ${B.d}; }
+        .profile-card { background: linear-gradient(135deg, ${B.v}, ${B.o}); color: #fff; border-radius: 10px; padding: 24px; text-align: center; margin-bottom: 24px; }
+        .profile-card h2 { font-size: 20px; font-weight: 900; margin-bottom: 4px; }
+        .profile-card p { opacity: 0.85; font-size: 12px; }
+        .section { margin-bottom: 22px; }
+        .section-label { font-size: 9px; font-weight: 600; color: ${B.d}; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; }
+        h2 { font-size: 15px; font-weight: 600; margin: 20px 0 6px; color: ${B.v}; }
+        h3 { font-size: 13px; font-weight: 600; margin: 14px 0 4px; color: ${B.o}; }
+        p { margin: 5px 0; }
+        ul, ol { margin: 6px 0 6px 20px; }
+        li { margin: 3px 0; }
+        table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+        th { background: ${B.i}; font-weight: 600; padding: 10px 14px; text-align: left; font-size: 12px; color: ${B.o}; }
+        td { padding: 10px 14px; }
+        hr { margin: 18px 0; border: none; border-top: 1px solid #e8ebe5; }
+        blockquote { border-left: 3px solid ${B.v}; padding-left: 12px; margin: 10px 0; font-style: italic; color: ${B.d}; }
+        strong { font-weight: 600; }
+        em { color: ${B.d}; }
+        .footer { text-align: center; margin-top: 28px; padding-top: 16px; border-top: 2px solid ${B.v}; }
+        .footer img { height: 18px; opacity: 0.5; margin-bottom: 4px; }
+        .footer p { font-size: 10px; color: ${B.d}; }
+        .disclaimer { background: ${B.i}; padding: 12px 16px; border-radius: 8px; font-size: 10px; color: ${B.d}; margin-top: 18px; line-height: 1.6; }
+        @media print { body { padding: 20px; } .profile-card { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
       </style>
     </head><body>
-      <div class="logo"><img src="${logoUrl}" alt="The Muslim Investor" /></div>
+      <div class="header">
+        <img src="${logoUrl}" alt="The Muslim Investor" /><br/>
+        <h1>TMI Personalized Investor Profile Report</h1>
+        <p>Prepared for ${reportData.userName} \u2014 ${today}</p>
+      </div>
       <div class="profile-card">
-        <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.1em;opacity:0.65;margin-bottom:4px;">Your Islamic Investor Profile</div>
+        <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.1em;opacity:0.6;margin-bottom:4px;">Your Islamic Investor Profile</div>
         <h2>${reportData.profile}</h2>
         <p>${reportData.desc}</p>
       </div>
       <div class="section">
-        <div class="section-label">IIRS — Islamic Investment Readiness Score</div>
+        <div class="section-label">Your Investor DNA \u2014 5 Dimensions</div>
         ${scoresHtml}
       </div>
       <div class="section">
         <div class="section-label">Recommended Allocation</div>
-        <table><tr><th>Asset Class</th><th>Allocation</th></tr>${allocHtml}</table>
-        <div class="section-label" style="margin-top:16px;">Recommended Funds</div>
-        ${fundsHtml}
+        <table><thead><tr><th>Asset Class</th><th style="text-align:right;">Allocation</th></tr></thead><tbody>${allocRows}</tbody></table>
       </div>
       <hr/>
-      <div class="section">
-        <div class="section-label">Your Personalized Report</div>
-        ${formatMarkdown(reportData.report)}
-      </div>
+      <div class="section">${formatMarkdown(reportData.report)}</div>
       <div class="disclaimer">
-        This report provides educational guidance based on Islamic finance principles. It is not personalized financial advice.
-        The asset allocations and fund recommendations are educational examples — not buy/sell recommendations.
-        Consult a qualified advisor before making investment decisions.
+        <strong>Disclaimer:</strong> This report provides educational guidance based on Islamic finance principles. It is not personalized financial advice. The asset allocations shown are educational frameworks based on your responses \u2014 not buy/sell recommendations. No specific funds, ETFs, or financial products are recommended. Consult a qualified Islamic financial advisor before making investment decisions.
       </div>
       <div class="footer">
-        <img src="${logoUrl}" alt="TMI" style="height:20px;opacity:0.5;margin-bottom:4px;" /><br/>
-        The Muslim Investor — Akhirah-First Wealth Building<br/>
-        themuslim-investor.com
+        <img src="${logoUrl}" alt="TMI" /><br/>
+        <p>The Muslim Investor \u2014 Akhirah-First Wealth Building</p>
+        <p>themuslim-investor.com</p>
       </div>
     </body></html>`;
 
@@ -296,16 +246,11 @@ export default function InvestorProfilePage() {
     if (printWindow) {
       printWindow.document.write(printHtml);
       printWindow.document.close();
-      // Wait for fonts and images to load
-      printWindow.onload = () => {
-        setTimeout(() => { printWindow.print(); }, 500);
-      };
+      printWindow.onload = () => { setTimeout(() => { printWindow.print(); }, 500); };
     }
   };
 
-  // ============================================================================
-  // SHARED STYLES
-  // ============================================================================
+  // Shared styles
   const btnPrimary = (disabled = false): React.CSSProperties => ({
     width: "100%", padding: "0.875rem", fontSize: "0.9375rem", fontWeight: 600,
     color: "#fff", background: disabled ? "#c8ccc5" : B.v, border: "none",
@@ -325,9 +270,6 @@ export default function InvestorProfilePage() {
     textTransform: "uppercase" as const, letterSpacing: "0.08em",
   };
 
-  // ============================================================================
-  // RENDER
-  // ============================================================================
   return (
     <>
       <style jsx global>{`
@@ -345,38 +287,36 @@ export default function InvestorProfilePage() {
         .tmi-report ul,.tmi-report ol { margin:.625rem 0 .625rem 1.5rem; }
         .tmi-report li { margin:.3rem 0; line-height:1.7; color:${B.o}; font-size:.9375rem; }
         .tmi-report table { width:100%; border-collapse:collapse; margin:1rem 0; font-size:.875rem; }
-        .tmi-report th { background:${B.i}; font-weight:600; padding:.625rem .75rem; text-align:left; border:1px solid #dde1d8; color:${B.o}; }
-        .tmi-report td { padding:.625rem .75rem; border:1px solid #dde1d8; color:${B.o}; }
+        .tmi-report th { background:${B.i}; font-weight:600; padding:.625rem .75rem; text-align:left; border-bottom:2px solid #dde1d8; color:${B.o}; }
+        .tmi-report td { padding:.625rem .75rem; border-bottom:1px solid #e8ebe5; color:${B.o}; }
         .tmi-report blockquote { border-left:3px solid ${B.v}; padding-left:1rem; margin:1rem 0; font-style:italic; color:${B.d}; }
         .tmi-report hr { margin:1.5rem 0; border:none; border-top:1px solid #e8ebe5; }
         .tmi-report strong { font-weight:600; }
         .tmi-report em { color:${B.d}; }
-        @media print { .tmi-no-print { display:none!important; } body { -webkit-print-color-adjust:exact; print-color-adjust:exact; } }
+        @media print { .tmi-no-print { display:none!important; } }
       `}</style>
 
       <div className="tmi-page" style={{ minHeight: "100vh", background: `linear-gradient(180deg, ${B.i} 0%, #FAFBF8 50%, #fff 100%)` }}>
         <div style={{ maxWidth: 680, margin: "0 auto", padding: "2rem 1.25rem" }}>
 
-          {/* ============================================================ */}
-          {/* WELCOME SCREEN */}
-          {/* ============================================================ */}
+          {/* ==================== WELCOME ==================== */}
           {screen === "welcome" && (
             <div className="tmi-fu" style={{ textAlign: "center" }}>
               <div style={{ marginBottom: "2rem", paddingTop: "0.5rem" }}>
                 <img src="/images/tmi-logo.png" alt="The Muslim Investor" style={{ height: 48, width: "auto", margin: "0 auto", display: "block" }} />
               </div>
-              <p style={{ fontSize: "1.25rem", color: B.v, fontWeight: 600, marginBottom: "2rem" }}>بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+              <p style={{ fontSize: "1.25rem", color: B.v, fontWeight: 600, marginBottom: "2rem" }}>{"\u0628\u0650\u0633\u0652\u0645\u0650 \u0627\u0644\u0644\u0651\u064E\u0647\u0650 \u0627\u0644\u0631\u0651\u064E\u062D\u0652\u0645\u064E\u0640\u0670\u0646\u0650 \u0627\u0644\u0631\u0651\u064E\u062D\u0650\u064A\u0645\u0650"}</p>
               <h1 style={{ fontSize: "clamp(1.75rem, 5vw, 2.375rem)", fontWeight: 900, color: B.o, lineHeight: 1.15, marginBottom: "1rem", letterSpacing: "-0.02em" }}>
-                Discover Your Islamic <span style={{ color: B.v }}>Investor Profile</span>
+                TMI Personalized <span style={{ color: B.v }}>Investor Profile</span>
               </h1>
               <p style={{ fontSize: "1rem", fontWeight: 400, color: B.d, lineHeight: 1.7, maxWidth: 480, margin: "0 auto 2.5rem" }}>
-                Answer 35 questions to receive a personalized investment report aligned with your faith, goals, and financial situation.
+                35 questions that reveal exactly who you are as an investor — so you can stop guessing and start stewarding your Amanah with clarity.
               </p>
               <div style={{ ...card, textAlign: "left", marginBottom: "1.5rem" }}>
                 {[
-                  { icon: "🎯", t: "Personalized Profile", d: "Discover which of 7 investor profiles matches your approach" },
-                  { icon: "📊", t: "Custom Allocation", d: "Shariah-compliant fund recommendations tailored to you" },
-                  { icon: "📋", t: "90-Day Action Plan", d: "Concrete steps to begin your halal investing journey" },
+                  { icon: "\uD83C\uDFAF", t: "Your Investor DNA", d: "Discover which of 7 investor profiles matches your unique approach" },
+                  { icon: "\uD83D\uDCCA", t: "Your Recommended Allocation", d: "Asset class percentages calibrated to your profile and situation" },
+                  { icon: "\uD83D\uDCCB", t: "Your 90-Day Action Plan", d: "A step-by-step path through the TMI curriculum, tailored to you" },
                 ].map((f, i) => (
                   <div key={i} style={{ display: "flex", gap: "0.875rem", alignItems: "flex-start", padding: "0.875rem 0", borderBottom: i < 2 ? `1px solid ${B.i}` : "none" }}>
                     <span style={{ fontSize: "1.25rem", flexShrink: 0, marginTop: 2 }}>{f.icon}</span>
@@ -387,27 +327,21 @@ export default function InvestorProfilePage() {
                   </div>
                 ))}
               </div>
-
-              {/* DISCLAIMER */}
               <div style={{ background: `${B.i}90`, borderRadius: 10, padding: "1rem 1.25rem", marginBottom: "2rem", textAlign: "left" }}>
-                <p style={{ fontSize: "0.75rem", fontWeight: 400, color: B.d, lineHeight: 1.65 }}>
-                  This tool provides educational guidance based on Islamic finance principles. It is not personalized financial advice.
-                  The asset allocations and fund recommendations are educational examples — not buy/sell recommendations.
-                  Consult a qualified advisor before making investment decisions.
+                <p style={{ fontSize: "0.6875rem", fontWeight: 600, color: B.o, marginBottom: "0.375rem" }}>Disclaimer</p>
+                <p style={{ fontSize: "0.6875rem", fontWeight: 400, color: B.d, lineHeight: 1.65 }}>
+                  This tool provides educational guidance based on Islamic finance principles. It is not personalized financial advice. The asset allocations shown are educational frameworks based on your responses — not buy/sell recommendations. No specific funds, ETFs, or financial products are recommended. Consult a qualified Islamic financial advisor before making investment decisions.
                 </p>
-                <p style={{ fontSize: "0.75rem", fontWeight: 600, color: B.o, lineHeight: 1.65, marginTop: "0.5rem" }}>
-                  Privacy: We will never sell, share, or distribute your personal data to any external third party.
+                <p style={{ fontSize: "0.6875rem", fontWeight: 600, color: B.o, lineHeight: 1.65, marginTop: "0.5rem" }}>
+                  Privacy: We collect your name, email, and profile results to personalize your experience and deliver your report. We will never sell, share, or distribute your personal data to any external third party. Your assessment responses are processed in your browser and are not stored on our servers.
                 </p>
               </div>
-
-              <p style={{ fontSize: "0.8125rem", fontWeight: 400, color: B.d, marginBottom: "1.5rem" }}>⏱️ Takes approximately 10–15 minutes</p>
+              <p style={{ fontSize: "0.8125rem", fontWeight: 400, color: B.d, marginBottom: "1.5rem" }}>{"\u23F1\uFE0F"} Takes approximately 10\u201315 minutes</p>
               <button onClick={beginCollect} style={btnPrimary()}>Begin Assessment</button>
             </div>
           )}
 
-          {/* ============================================================ */}
-          {/* COLLECT NAME + EMAIL */}
-          {/* ============================================================ */}
+          {/* ==================== COLLECT NAME + EMAIL ==================== */}
           {screen === "collect" && (
             <div className="tmi-fu" style={{ textAlign: "center" }}>
               <div style={{ marginBottom: "2rem" }}>
@@ -419,40 +353,22 @@ export default function InvestorProfilePage() {
               </p>
               <div style={{ ...card, textAlign: "left", padding: "1.75rem 1.5rem" }}>
                 <label style={{ display: "block", fontSize: "0.8125rem", fontWeight: 600, color: B.o, marginBottom: 6 }}>Full Name</label>
-                <input
-                  type="text" value={userName} onChange={(e) => setUserName(e.target.value)}
-                  placeholder="Enter your full name" autoFocus
-                  style={{ width: "100%", padding: "0.875rem 1rem", fontSize: "0.9375rem", border: `2px solid ${userName ? B.v : "#dde1d8"}`, borderRadius: 8, outline: "none", color: B.o, background: userName ? `${B.i}40` : "#fff", fontFamily: "Poppins, sans-serif", marginBottom: "1.25rem", boxSizing: "border-box" as const }}
-                />
+                <input type="text" value={userName} onChange={(e) => setUserName(e.target.value)} placeholder="Enter your full name" autoFocus
+                  style={{ width: "100%", padding: "0.875rem 1rem", fontSize: "0.9375rem", border: `2px solid ${userName ? B.v : "#dde1d8"}`, borderRadius: 8, outline: "none", color: B.o, background: userName ? `${B.i}40` : "#fff", fontFamily: "Poppins, sans-serif", marginBottom: "1.25rem", boxSizing: "border-box" as const }} />
                 <label style={{ display: "block", fontSize: "0.8125rem", fontWeight: 600, color: B.o, marginBottom: 6 }}>Email Address</label>
-                <input
-                  type="email" value={userEmail} onChange={(e) => { setUserEmail(e.target.value); setEmailError(""); }}
-                  placeholder="your@email.com"
-                  style={{ width: "100%", padding: "0.875rem 1rem", fontSize: "0.9375rem", border: `2px solid ${emailError ? "#dc2626" : userEmail ? B.v : "#dde1d8"}`, borderRadius: 8, outline: "none", color: B.o, background: userEmail && !emailError ? `${B.i}40` : "#fff", fontFamily: "Poppins, sans-serif", boxSizing: "border-box" as const }}
-                />
-                {emailError && (
-                  <p style={{ fontSize: "0.75rem", color: "#dc2626", marginTop: 4 }}>{emailError}</p>
-                )}
+                <input type="email" value={userEmail} onChange={(e) => { setUserEmail(e.target.value); setEmailError(""); }} placeholder="your@email.com"
+                  style={{ width: "100%", padding: "0.875rem 1rem", fontSize: "0.9375rem", border: `2px solid ${emailError ? "#dc2626" : userEmail ? B.v : "#dde1d8"}`, borderRadius: 8, outline: "none", color: B.o, background: userEmail && !emailError ? `${B.i}40` : "#fff", fontFamily: "Poppins, sans-serif", boxSizing: "border-box" as const }} />
+                {emailError && <p style={{ fontSize: "0.75rem", color: "#dc2626", marginTop: 4 }}>{emailError}</p>}
                 <p style={{ fontSize: "0.6875rem", fontWeight: 400, color: B.d, marginTop: "1rem", lineHeight: 1.6 }}>
-                  We will never sell or share your data with any third party.
+                  We will never sell, share, or distribute your personal data to any external third party.
                 </p>
               </div>
-              <button
-                onClick={beginAssessment}
-                disabled={!userName.trim() || !userEmail.trim()}
-                style={btnPrimary(!userName.trim() || !userEmail.trim())}
-              >
-                Start the Assessment →
-              </button>
-              <button onClick={() => setScreen("welcome")} style={{ background: "none", border: "none", color: B.d, fontWeight: 600, fontSize: "0.8125rem", cursor: "pointer", marginTop: "1rem", fontFamily: "Poppins" }}>
-                ← Back
-              </button>
+              <button onClick={beginAssessment} disabled={!userName.trim() || !userEmail.trim()} style={btnPrimary(!userName.trim() || !userEmail.trim())}>Start the Assessment \u2192</button>
+              <button onClick={() => setScreen("welcome")} style={{ background: "none", border: "none", color: B.d, fontWeight: 600, fontSize: "0.8125rem", cursor: "pointer", marginTop: "1rem", fontFamily: "Poppins" }}>{"\u2190"} Back</button>
             </div>
           )}
 
-          {/* ============================================================ */}
-          {/* ASSESSMENT SCREEN */}
-          {/* ============================================================ */}
+          {/* ==================== ASSESSMENT ==================== */}
           {screen === "assessment" && question && section && (
             <div ref={questionRef} className="tmi-fu">
               <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "1.5rem" }}>
@@ -468,7 +384,6 @@ export default function InvestorProfilePage() {
                 </div>
                 <p style={{ fontSize: "0.6875rem", fontWeight: 400, color: B.d, marginTop: 4 }}>{section.description}</p>
               </div>
-
               <div key={question.id} className="tmi-si" style={{ ...card, padding: "1.75rem 1.5rem" }}>
                 <p style={{ fontSize: "1.0625rem", fontWeight: 600, color: B.o, lineHeight: 1.5, marginBottom: "1.25rem" }}>{question.question}</p>
                 {question.type === "text" ? (
@@ -492,18 +407,16 @@ export default function InvestorProfilePage() {
                 )}
               </div>
               <div style={{ display: "flex", gap: "0.625rem" }}>
-                <button onClick={goBack} disabled={currentQ <= 1} style={{ flex: 1, padding: "0.8125rem", fontSize: "0.875rem", fontWeight: 600, color: currentQ <= 1 ? "#c8ccc5" : B.o, background: currentQ <= 1 ? "#f5f6f3" : "#f0f1ed", border: "none", borderRadius: 10, cursor: currentQ <= 1 ? "not-allowed" : "pointer", minHeight: 50, fontFamily: "Poppins" }}>← Back</button>
+                <button onClick={goBack} disabled={currentQ <= 1} style={{ flex: 1, padding: "0.8125rem", fontSize: "0.875rem", fontWeight: 600, color: currentQ <= 1 ? "#c8ccc5" : B.o, background: currentQ <= 1 ? "#f5f6f3" : "#f0f1ed", border: "none", borderRadius: 10, cursor: currentQ <= 1 ? "not-allowed" : "pointer", minHeight: 50, fontFamily: "Poppins" }}>{"\u2190"} Back</button>
                 <button onClick={goNext} disabled={question.type === "text" ? !textInput.trim() : !currentAnswer}
                   style={{ flex: 1, padding: "0.8125rem", fontSize: "0.875rem", fontWeight: 600, color: "#fff", background: (question.type === "text" ? !textInput.trim() : !currentAnswer) ? "#c8ccc5" : B.v, border: "none", borderRadius: 10, cursor: (question.type === "text" ? !textInput.trim() : !currentAnswer) ? "not-allowed" : "pointer", minHeight: 50, fontFamily: "Poppins" }}>
-                  {currentQ === QUESTIONS.length - 1 ? "Submit" : "Next →"}
+                  {currentQ === QUESTIONS.length - 1 ? "Submit" : "Next \u2192"}
                 </button>
               </div>
             </div>
           )}
 
-          {/* ============================================================ */}
-          {/* PROCESSING SCREEN */}
-          {/* ============================================================ */}
+          {/* ==================== PROCESSING ==================== */}
           {screen === "processing" && (
             <div className="tmi-fu" style={{ textAlign: "center", padding: "3rem 0" }}>
               <img src="/images/tmi-logo.png" alt="TMI" style={{ height: 36, width: "auto", margin: "0 auto 2rem", display: "block", opacity: 0.7 }} />
@@ -512,7 +425,7 @@ export default function InvestorProfilePage() {
               <div style={{ maxWidth: 360, margin: "0 auto" }}>
                 {PROCESSING_MESSAGES.map((msg, i) => (
                   <p key={i} style={{ fontSize: i === 0 ? "1rem" : "0.8125rem", color: i <= processingMsg ? (i === 0 ? B.v : B.o) : "#d1d5cb", fontWeight: i === processingMsg ? 600 : 400, transition: "all 0.4s", marginBottom: "0.375rem", opacity: i <= processingMsg ? 1 : 0.3 }}>
-                    {i <= processingMsg ? "✓" : "○"} {msg}
+                    {i <= processingMsg ? "\u2713" : "\u25CB"} {msg}
                   </p>
                 ))}
               </div>
@@ -520,19 +433,16 @@ export default function InvestorProfilePage() {
             </div>
           )}
 
-          {/* ============================================================ */}
-          {/* RESULTS SCREEN */}
-          {/* ============================================================ */}
+          {/* ==================== RESULTS ==================== */}
           {screen === "results" && reportData && (
             <div className="tmi-fu" ref={reportRef}>
               <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
                 <img src="/images/tmi-logo.png" alt="TMI" style={{ height: 32, width: "auto" }} />
               </div>
 
-              {/* Action buttons */}
               <div className="tmi-no-print" style={{ display: "flex", gap: "0.5rem", marginBottom: "1.5rem" }}>
-                <button onClick={downloadPDF} style={{ ...btnPrimary(), flex: 1, width: "auto", fontSize: "0.8125rem", padding: "0.6875rem" }}>📄 Download Full PDF</button>
-                <button onClick={shareOnWhatsApp} style={{ ...btnSecondary, flex: 1, width: "auto", fontSize: "0.8125rem", padding: "0.6875rem" }}>💬 Share on WhatsApp</button>
+                <button onClick={downloadPDF} style={{ ...btnPrimary(), flex: 1, width: "auto", fontSize: "0.8125rem", padding: "0.6875rem" }}>{"\uD83D\uDCC4"} Download Full PDF</button>
+                <button onClick={shareOnWhatsApp} style={{ ...btnSecondary, flex: 1, width: "auto", fontSize: "0.8125rem", padding: "0.6875rem" }}>{"\uD83D\uDCAC"} Share on WhatsApp</button>
               </div>
 
               {/* Profile Card */}
@@ -542,9 +452,9 @@ export default function InvestorProfilePage() {
                 <p style={{ fontSize: "0.875rem", fontWeight: 400, opacity: 0.85, lineHeight: 1.65, maxWidth: 440, margin: "0 auto" }}>{reportData.desc}</p>
               </div>
 
-              {/* IIRS Dimension Scores */}
+              {/* Investor DNA — 5 Dimensions */}
               <div style={card}>
-                <h3 style={sectionLabel}>IIRS — Islamic Investment Readiness Score</h3>
+                <h3 style={sectionLabel}>Your Investor DNA — 5 Dimensions</h3>
                 {Object.entries(reportData.scores).map(([key, value]) => (
                   <div key={key} style={{ marginBottom: "0.875rem" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
@@ -558,7 +468,7 @@ export default function InvestorProfilePage() {
                 ))}
               </div>
 
-              {/* Allocation */}
+              {/* Allocation — NO FUNDS */}
               <div style={card}>
                 <h3 style={sectionLabel}>Recommended Allocation</h3>
                 <div style={{ display: "flex", height: 28, borderRadius: 6, overflow: "hidden", marginBottom: "0.875rem" }}>
@@ -566,7 +476,7 @@ export default function InvestorProfilePage() {
                     <div key={cls} style={{ width: `${pct}%`, background: ALLOC_COLORS[i % ALLOC_COLORS.length], display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.625rem", fontWeight: 600, color: "#fff" }}>{pct >= 14 ? `${pct}%` : ""}</div>
                   ))}
                 </div>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "0.625rem 1rem", marginBottom: "1.5rem" }}>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "0.625rem 1rem", marginBottom: "1rem" }}>
                   {Object.entries(reportData.allocation).map(([cls, pct], i) => (
                     <div key={cls} style={{ display: "flex", alignItems: "center", gap: 5 }}>
                       <div style={{ width: 10, height: 10, borderRadius: 2, background: ALLOC_COLORS[i % ALLOC_COLORS.length] }} />
@@ -574,65 +484,48 @@ export default function InvestorProfilePage() {
                     </div>
                   ))}
                 </div>
-                <p style={{ ...sectionLabel, marginTop: 0 }}>Recommended Funds</p>
-                {reportData.funds.map((fund, i) => (
-                  <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", padding: "0.6875rem 0", borderBottom: i < reportData.funds.length - 1 ? `1px solid ${B.i}` : "none" }}>
-                    <div style={{ flex: 1 }}>
-                      <p style={{ fontWeight: 600, fontSize: "0.8125rem", color: B.o }}>{fund.name}</p>
-                      <p style={{ fontSize: "0.6875rem", color: B.d }}>{fund.type} — {fund.rationale}</p>
-                    </div>
-                    <span style={{ fontSize: "0.75rem", fontWeight: 600, color: B.v, background: `${B.v}0D`, padding: "0.1875rem 0.5rem", borderRadius: 5, whiteSpace: "nowrap", marginLeft: "0.5rem" }}>{fund.ticker}</span>
-                  </div>
-                ))}
+                <p style={{ fontSize: "0.8125rem", color: B.d, lineHeight: 1.6, fontStyle: "italic" }}>
+                  You will learn how to select specific Shariah-compliant instruments within each asset class in TMI Courses 3-5.
+                </p>
               </div>
 
-              {/* FULL AI Report */}
+              {/* Full AI Report */}
               <div style={{ ...card, padding: "1.75rem 1.5rem" }}>
                 <h3 style={sectionLabel}>Your Personalized Report</h3>
                 <div className="tmi-report" dangerouslySetInnerHTML={{ __html: formatMarkdown(reportData.report) }} />
               </div>
 
-              {/* DISCLAIMER */}
+              {/* Disclaimer */}
               <div style={{ background: `${B.i}90`, borderRadius: 10, padding: "1rem 1.25rem", marginBottom: "1.25rem" }}>
                 <p style={{ fontSize: "0.6875rem", fontWeight: 400, color: B.d, lineHeight: 1.65 }}>
                   This report provides educational guidance based on Islamic finance principles. It is not personalized financial advice.
-                  The asset allocations and fund recommendations are educational examples — not buy/sell recommendations.
-                  Consult a qualified advisor before making investment decisions.
+                  The asset allocations shown are educational frameworks — not buy/sell recommendations. No specific funds, ETFs, or financial products are recommended.
+                  Consult a qualified Islamic financial advisor before making investment decisions.
                 </p>
               </div>
 
-              {/* ============================================================ */}
-              {/* ENCOURAGING CLOSING + CTA */}
-              {/* ============================================================ */}
+              {/* Closing CTA */}
               <div style={{ ...card, textAlign: "center", padding: "2rem 1.5rem", background: `linear-gradient(180deg, #fff 0%, ${B.i}50 100%)` }}>
-                <p style={{ fontSize: "1.5rem", marginBottom: "0.75rem" }}>🌿</p>
-                <h3 style={{ fontSize: "1.125rem", fontWeight: 900, color: B.o, marginBottom: "0.625rem" }}>
-                  Your Journey Starts Here
-                </h3>
+                <p style={{ fontSize: "1.5rem", marginBottom: "0.75rem" }}>{"\uD83C\uDF3F"}</p>
+                <h3 style={{ fontSize: "1.125rem", fontWeight: 900, color: B.o, marginBottom: "0.625rem" }}>Your Preparation Starts Here</h3>
                 <p style={{ fontSize: "0.9375rem", fontWeight: 400, color: B.d, lineHeight: 1.7, maxWidth: 480, margin: "0 auto 1.5rem" }}>
-                  You have already done what most people never do — you asked yourself the hard questions about your wealth and your faith.
-                  This report is your first step, not your last. The TMI community is here to walk with you on every step of this journey.
+                  You have already done what most Muslims never do — you stopped and asked yourself the hard questions about your wealth and your faith.
+                  This report is your first step. The TMI community walks with you on every step after.
                 </p>
-                <a
-                  href="https://www.skool.com/the-muslim-investor"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ display: "inline-block", padding: "0.875rem 2rem", fontSize: "0.9375rem", fontWeight: 600, color: "#fff", background: B.v, borderRadius: 10, textDecoration: "none", transition: "background 0.2s" }}
-                >
+                <a href="https://www.skool.com/the-muslim-investor" target="_blank" rel="noopener noreferrer"
+                  style={{ display: "inline-block", padding: "0.875rem 2rem", fontSize: "0.9375rem", fontWeight: 600, color: "#fff", background: B.v, borderRadius: 10, textDecoration: "none" }}>
                   Join the TMI Community — Free
                 </a>
                 <p style={{ fontSize: "0.75rem", color: B.d, marginTop: "0.75rem" }}>
-                  Connect with fellow Muslim investors building Akhirah-first wealth
+                  Thousands of Muslims preparing their answer for the Day of Judgment
                 </p>
               </div>
 
               {/* Bottom actions */}
               <div className="tmi-no-print" style={{ textAlign: "center", paddingBottom: "2rem" }}>
-                <button onClick={downloadPDF} style={{ ...btnPrimary(), marginBottom: "0.625rem" }}>📄 Save Full Report as PDF</button>
-                <button onClick={shareOnWhatsApp} style={{ ...btnSecondary, marginBottom: "1.5rem" }}>💬 Share Your Profile on WhatsApp</button>
-                <button onClick={startFresh} style={{ background: "none", border: "none", color: B.d, fontWeight: 600, fontSize: "0.8125rem", cursor: "pointer", textDecoration: "underline", fontFamily: "Poppins" }}>
-                  Start a New Assessment
-                </button>
+                <button onClick={downloadPDF} style={{ ...btnPrimary(), marginBottom: "0.625rem" }}>{"\uD83D\uDCC4"} Save Full Report as PDF</button>
+                <button onClick={shareOnWhatsApp} style={{ ...btnSecondary, marginBottom: "1.5rem" }}>{"\uD83D\uDCAC"} Share Your Profile on WhatsApp</button>
+                <button onClick={startFresh} style={{ background: "none", border: "none", color: B.d, fontWeight: 600, fontSize: "0.8125rem", cursor: "pointer", textDecoration: "underline", fontFamily: "Poppins" }}>Start a New Assessment</button>
                 <div style={{ marginTop: "2rem", paddingTop: "1rem", borderTop: `1px solid ${B.i}` }}>
                   <img src="/images/tmi-logo.png" alt="TMI" style={{ height: 24, width: "auto", margin: "0 auto 0.5rem", display: "block", opacity: 0.5 }} />
                   <p style={{ fontSize: "0.6875rem", color: B.d }}>Akhirah-First Wealth Building</p>
@@ -641,13 +534,11 @@ export default function InvestorProfilePage() {
             </div>
           )}
 
-          {/* ============================================================ */}
-          {/* ERROR SCREEN */}
-          {/* ============================================================ */}
+          {/* ==================== ERROR ==================== */}
           {screen === "error" && (
             <div className="tmi-fu" style={{ textAlign: "center", padding: "3rem 0" }}>
               <img src="/images/tmi-logo.png" alt="TMI" style={{ height: 32, width: "auto", margin: "0 auto 2rem", display: "block", opacity: 0.5 }} />
-              <div style={{ fontSize: "3rem", marginBottom: "1.25rem" }}>😔</div>
+              <div style={{ fontSize: "3rem", marginBottom: "1.25rem" }}>{"\uD83D\uDE14"}</div>
               <h2 style={{ fontSize: "1.375rem", fontWeight: 900, color: B.o, marginBottom: "0.5rem" }}>Bismillah</h2>
               <p style={{ fontSize: "0.9375rem", color: B.d, lineHeight: 1.7, maxWidth: 400, margin: "0 auto 2rem" }}>{errorMsg}</p>
               <button onClick={retrySubmission} style={{ ...btnPrimary(), marginBottom: "0.625rem" }}>Try Again</button>
@@ -661,7 +552,7 @@ export default function InvestorProfilePage() {
 }
 
 // ============================================================================
-// MARKDOWN → HTML
+// MARKDOWN -> HTML
 // ============================================================================
 function formatMarkdown(md: string): string {
   if (!md) return "<p>No report content available.</p>";
@@ -673,11 +564,33 @@ function formatMarkdown(md: string): string {
     .replace(/\*(.+?)\*/g, "<em>$1</em>")
     .replace(/^---+$/gm, "<hr>")
     .replace(/^===+$/gm, "<hr>")
-    .replace(/^[\-•]\s+(.+)$/gm, "<li>$1</li>")
+    .replace(/^[\-\u2022]\s+(.+)$/gm, "<li>$1</li>")
     .replace(/^\d+\.\s+(.+)$/gm, "<li>$1</li>")
-    .replace(/^>\s+(.+)$/gm, "<blockquote>$1</blockquote>")
-    .replace(/\n\n/g, "</p><p>")
-    .replace(/\n/g, "<br>");
+    .replace(/^>\s+(.+)$/gm, "<blockquote>$1</blockquote>");
+
+  // Table rendering fix — handle markdown tables properly
+  html = html.replace(/\|(.+)\|/g, (match) => {
+    const cells = match.split("|").filter((c) => c.trim());
+    if (cells.every((c) => /^[\-:]+$/.test(c.trim()))) return "<!--table-sep-->";
+    const isHeader = match.includes("---");
+    const tag = "td";
+    const row = cells.map((c) => `<${tag} style="padding:8px 12px;border-bottom:1px solid #e8ebe5;">${c.trim()}</${tag}>`).join("");
+    return `<tr>${row}</tr>`;
+  });
+  html = html.replace(/<!--table-sep-->/g, "");
+  html = html.replace(/(<tr>[\s\S]*?<\/tr>(\s*\n?\s*<tr>[\s\S]*?<\/tr>)*)/g, (tableBlock) => {
+    // Wrap consecutive rows in a table
+    const firstRow = tableBlock.match(/<tr>(.*?)<\/tr>/);
+    if (firstRow) {
+      const headerRow = firstRow[1].replace(/<td/g, "<th").replace(/<\/td>/g, "</th>");
+      const remaining = tableBlock.replace(firstRow[0], "");
+      return `<table style="width:100%;border-collapse:collapse;margin:1rem 0;"><thead><tr>${headerRow}</tr></thead><tbody>${remaining}</tbody></table>`;
+    }
+    return `<table style="width:100%;border-collapse:collapse;margin:1rem 0;">${tableBlock}</table>`;
+  });
+
+  html = html.replace(/\n\n/g, "</p><p>");
+  html = html.replace(/\n/g, "<br>");
   html = "<p>" + html + "</p>";
   html = html.replace(/<p><\/p>/g, "");
   html = html.replace(/<p><br><\/p>/g, "");
@@ -687,12 +600,7 @@ function formatMarkdown(md: string): string {
   html = html.replace(/<p>(<li>)/g, "<ul>$1");
   html = html.replace(/(<\/li>)<\/p>/g, "$1</ul>");
   html = html.replace(/<\/li><br><li>/g, "</li><li>");
-  html = html.replace(/\|(.+)\|/g, (match) => {
-    const cells = match.split("|").filter((c) => c.trim());
-    if (cells.every((c) => c.match(/^[\-:]+$/))) return "";
-    const row = cells.map((c) => `<td>${c.trim()}</td>`).join("");
-    return `<tr>${row}</tr>`;
-  });
-  html = html.replace(/(<tr>[\s\S]*?<\/tr>(\s*<br>?\s*<tr>[\s\S]*?<\/tr>)*)/g, "<table>$1</table>");
+  html = html.replace(/<p>(<table)/g, "$1");
+  html = html.replace(/(<\/table>)<\/p>/g, "$1");
   return html;
 }
