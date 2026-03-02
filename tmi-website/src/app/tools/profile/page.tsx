@@ -197,7 +197,8 @@ export default function InvestorProfilePage() {
   // --- WHATSAPP SHARE ---
   const shareOnWhatsApp = () => {
     if (!reportData) return;
-    const pn = reportData.profile.replace(/[\u{1F300}-\u{1FAFF}]/gu, "").trim();
+    // Remove emoji from profile name (ES5-safe — no unicode regex flag)
+    const pn = reportData.profile.replace(/[^\x20-\x7E\u00A0-\u024F\u0600-\u06FF]/g, "").trim();
     const text = encodeURIComponent(`I just discovered my Islamic Investor Profile — I'm ${pn}!\n\nDiscover yours at themuslim-investor.com/tools/profile`);
     window.open(`https://wa.me/?text=${text}`, "_blank");
   };
