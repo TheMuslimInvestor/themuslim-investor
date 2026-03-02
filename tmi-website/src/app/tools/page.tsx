@@ -65,7 +65,7 @@ export default function ToolsPage() {
                   <span className="text-xs bg-viridian/10 text-viridian font-medium px-3 py-1 rounded-full">5 Investor Dimensions</span>
                   <span className="text-xs bg-viridian/10 text-viridian font-medium px-3 py-1 rounded-full">Personalized Profile</span>
                 </div>
-                <a href="https://tmi-replitzip--themusliminvest.replit.app" target="_blank" rel="noopener noreferrer" className="btn-primary text-sm">Discover Your Profile →</a>
+                <a href="/tools/profile" target="_blank" rel="noopener noreferrer" className="btn-primary text-sm">Discover Your Profile →</a>
               </div>
             </div>
           </div>
@@ -188,7 +188,7 @@ export default function ToolsPage() {
           <div className="relative z-10 max-w-3xl mx-auto px-6 lg:px-8">
             <h2 className="text-2xl md:text-3xl font-black text-white leading-tight mb-6">Tools without action are decoration.<br /><span className="text-viridian">Start with one.</span></h2>
             <p className="text-lg text-onyx-200 leading-relaxed mb-10">The Investor Profile takes 10 minutes. It will tell you more about yourself as an investor than 10 years of guessing.</p>
-            <a href="https://tmi-replitzip--themusliminvest.replit.app" target="_blank" rel="noopener noreferrer" className="btn-primary text-lg">Discover Your Investor Profile →</a>
+            <a href="/tools/profile" target="_blank" rel="noopener noreferrer" className="btn-primary text-lg">Discover Your Investor Profile →</a>
           </div>
         </section>
 
