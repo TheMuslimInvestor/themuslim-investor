@@ -322,12 +322,70 @@ export function calculateScores(answers: Record<string, string>): Record<string,
 }
 
 export function determineProfile(scores: Record<string, number>): string {
-  const { spiritual_focus, risk_tolerance, knowledge_level, time_horizon, financial_stability } = scores;
-  if (knowledge_level < 35 || (knowledge_level < 50 && financial_stability < 40)) return "foundation_builder";
-  if (risk_tolerance < 30 && financial_stability > 60) return "fortress_builder";
-  if (risk_tolerance > 70 && time_horizon > 60) return "growth_seeker";
-  if (risk_tolerance > 60 && knowledge_level > 60 && time_horizon < 50) return "tactical_trader";
-  if (spiritual_focus > 70 && knowledge_level > 50) return "purposeful_builder";
-  if (financial_stability > 50 && risk_tolerance > 40 && risk_tolerance < 65) return "practical_provider";
-  return "steady_steward";
+  // ============================================================================
+  // TMI PROFILE DETERMINATION — Risk Tolerance is the PRIMARY driver
+  // 
+  // Logic: A person with low risk tolerance should NEVER get a high-equity
+  // allocation, regardless of other scores. Risk tolerance determines the
+  // range; other dimensions adjust within that range.
+  //
+  // Profiles ordered by equity exposure:
+  //   fortress_builder:    15% equity (Sukuk 40%, MM 30%, Gold 15%, Eq 15%)
+  //   foundation_builder:  20% equity (MM 40%, Sukuk 30%, Eq 20%, Gold 10%)
+  //   practical_provider:  40% equity (Eq 40%, Sukuk 30%, RE 15%, MM 15%)
+  //   purposeful_builder:  50% equity (Eq 50%, Sukuk 25%, RE 15%, MM 10%)
+  //   steady_steward:      55% equity (Eq 55%, Sukuk 25%, RE 10%, Gold 10%)
+  //   tactical_trader:     60% equity + 20% EM (Eq 60%, EM 20%, Gold 10%, MM 10%)
+  //   growth_seeker:       70% equity + 15% EM (Eq 70%, EM 15%, Gold 10%, MM 5%)
+  // ============================================================================
+
+  const rt = scores.risk_tolerance ?? 50;   // Risk Tolerance (primary driver)
+  const sf = scores.spiritual_focus ?? 50;  // Spiritual Focus
+  const kl = scores.knowledge_level ?? 50;  // Knowledge Level
+  const th = scores.time_horizon ?? 50;     // Time Horizon
+  const fs = scores.financial_stability ?? 50; // Financial Stability
+
+  // Composite of secondary factors (used within risk bands)
+  const secondary = (kl + th + fs) / 3;
+
+  // ── VERY CONSERVATIVE (Risk Tolerance ≤ 25) ──
+  // These investors cannot stomach volatility. Protect first.
+  if (rt <= 25) {
+    return "fortress_builder";
+  }
+
+  // ── CONSERVATIVE (Risk Tolerance 26–40) ──
+  // Low risk tolerance, but some capacity depending on knowledge/stability.
+  if (rt <= 40) {
+    // If knowledge and stability are also low → start at the beginning
+    if (secondary < 55) return "foundation_builder";
+    // If they have decent stability/knowledge → can handle a moderate allocation
+    return "practical_provider";
+  }
+
+  // ── MODERATE (Risk Tolerance 41–60) ──
+  // The middle ground — differentiated by spiritual focus and secondary factors.
+  if (rt <= 60) {
+    // Faith-driven investors with strong spiritual focus
+    if (sf >= 60) return "purposeful_builder";
+    // Lower secondary = more conservative moderate
+    if (secondary < 50) return "practical_provider";
+    // Standard moderate
+    return "steady_steward";
+  }
+
+  // ── AGGRESSIVE (Risk Tolerance 61–80) ──
+  // Active, knowledgeable investors who accept volatility.
+  if (rt <= 80) {
+    // Need sufficient knowledge to handle active trading
+    if (kl >= 50) return "tactical_trader";
+    // High risk tolerance but low knowledge → moderate is safer
+    return "steady_steward";
+  }
+
+  // ── VERY AGGRESSIVE (Risk Tolerance > 80) ──
+  // Maximum growth, long horizon, high conviction.
+  if (kl >= 50 && th >= 50) return "growth_seeker";
+  // Very aggressive but lacks knowledge or short horizon → cap at tactical
+  return "tactical_trader";
 }
