@@ -23,6 +23,7 @@ interface GroupedTotals {
   real_estate: number;
   alternatives: number;
   haram: number;
+  [key: string]: number;
 }
 
 interface AnalysisResult {
