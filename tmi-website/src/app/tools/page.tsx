@@ -51,7 +51,7 @@ export default function ToolsPage() {
       cta: 'Hold Up the Mirror \u2192',
       link: '/tools/mirror',
       external: false,
-      live: false,
+      live: true,
     },
   ];
 
