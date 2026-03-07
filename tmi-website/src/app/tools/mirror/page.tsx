@@ -117,7 +117,7 @@ const CATEGORY_MAP: Record<string, any> = {};
 ASSET_CATEGORIES.forEach(c => { CATEGORY_MAP[c.value] = c; });
 
 // --- SHARIAH SCREENING FUNCTION ---
-function screenHolding(ticker, categoryValue) {
+function screenHolding(ticker: string, categoryValue: string) {
   const cat = CATEGORY_MAP[categoryValue];
   if (cat?.autoStatus) {
     return { status: cat.autoStatus, reason: cat.autoReason || null, source: "category" };
@@ -131,7 +131,7 @@ function screenHolding(ticker, categoryValue) {
 }
 
 // --- ANALYSIS ENGINE (ported from Python) ---
-function analyzePortfolio(holdings, profileId, iirsScore) {
+function analyzePortfolio(holdings: any[], profileId: string | null, iirsScore: number | null) {
   const profile = profileId ? INVESTOR_PROFILES[profileId] : null;
   const totalValue = holdings.reduce((s, h) => s + h.value, 0);
   if (totalValue === 0) return { error: "Portfolio value cannot be zero" };
@@ -237,7 +237,7 @@ function analyzePortfolio(holdings, profileId, iirsScore) {
 }
 
 // --- FALLBACK NARRATIVE ---
-function generateFallback(analysis, name) {
+function generateFallback(analysis: any, name: string) {
   const { reconciliation, cashAnalysis, compliance, concentration, risk, iirsInsight } = analysis;
   let text = `## Bismillah\n\nDear ${name},\n\nYou have taken an important step by holding up the Mirror to your portfolio. This takes courage — the willingness to see your financial reality as it truly is.\n\n`;
 
@@ -301,7 +301,7 @@ const C = {
 const font = "'Poppins', sans-serif";
 
 // --- STATUS BADGE ---
-function StatusBadge({ status, reason }) {
+function StatusBadge({ status, reason }: { status: string; reason?: string | null }) {
   const config = {
     COMPLIANT: { bg: "#E8F5EE", color: C.viridian, icon: "✅", label: "Compliant" },
     NON_COMPLIANT: { bg: "#FEE2E2", color: C.red, icon: "🔴", label: "Non-Compliant" },
@@ -319,7 +319,7 @@ function StatusBadge({ status, reason }) {
 }
 
 // --- PIE CHART (SVG) ---
-function PieChart({ data, size = 220 }) {
+function PieChart({ data, size = 220 }: { data: any; size?: number }) {
   const total = data.reduce((s, d) => s + d.value, 0);
   if (total === 0) return null;
   const colors = [C.viridian, "#5BA88C", C.cambridge, "#A8C5AD", C.dimGray, "#4A6FA5", "#E8A838"];
@@ -377,12 +377,12 @@ export default function PortfolioMirror() {
     setHoldings(prev => [...prev, { id: nextId.current++, name: "", category: "", value: "" }]);
   };
 
-  const removeHolding = (id) => {
+  const removeHolding = (id: string) => {
     if (holdings.length <= 1) return;
     setHoldings(prev => prev.filter(h => h.id !== id));
   };
 
-  const updateHolding = (id, field, val) => {
+  const updateHolding = (id: string, field: string, val: any) => {
     setHoldings(prev => prev.map(h => h.id === id ? { ...h, [field]: val } : h));
   };
 
@@ -571,7 +571,7 @@ Remember: This is the CULMINATION tool. Be personal. Be honest. Use their name. 
   }, [step]);
 
   // --- RENDER HELPERS ---
-  const renderMarkdown = (text) => {
+  const renderMarkdown = (text: string) => {
     if (!text) return null;
     return text.split("\n").map((line, i) => {
       if (line.startsWith("## ")) return <h2 key={i} style={{ fontSize: 20, fontWeight: 700, color: C.onyx, marginTop: 28, marginBottom: 12, fontFamily: font, borderBottom: `2px solid ${C.viridian}`, paddingBottom: 6 }}>{line.replace("## ", "")}</h2>;
@@ -598,14 +598,14 @@ Remember: This is the CULMINATION tool. Be personal. Be honest. Use their name. 
   };
 
   // Card wrapper
-  const Card = ({ children, style = {} }) => (
+  const Card = ({ children, style = {} }: { children: React.ReactNode; style?: any }) => (
     <div style={{ background: C.white, borderRadius: 12, padding: "28px 32px", boxShadow: "0 1px 3px rgba(0,0,0,0.06)", border: `1px solid #E5E7EB`, ...style }}>
       {children}
     </div>
   );
 
   // Input
-  const Input = ({ label, value, onChange, placeholder, type = "text", required, note }) => (
+  const Input = ({ label, value, onChange, placeholder, type = "text", required, note }: any) => (
     <div style={{ marginBottom: 18 }}>
       <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: C.onyx, marginBottom: 6, fontFamily: font }}>
         {label}{required && <span style={{ color: C.red }}> *</span>}
@@ -621,7 +621,7 @@ Remember: This is the CULMINATION tool. Be personal. Be honest. Use their name. 
   );
 
   // Select
-  const Select = ({ label, value, onChange, options, placeholder }) => (
+  const Select = ({ label, value, onChange, options, placeholder }: any) => (
     <div style={{ marginBottom: 18 }}>
       <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: C.onyx, marginBottom: 6, fontFamily: font }}>{label}</label>
       <select
@@ -635,7 +635,7 @@ Remember: This is the CULMINATION tool. Be personal. Be honest. Use their name. 
   );
 
   // Button
-  const Btn = ({ children, onClick, disabled, variant = "primary", style: s = {} }) => {
+  const Btn = ({ children, onClick, disabled, variant = "primary", style: s = {} }: any) => {
     const styles = {
       primary: { bg: C.viridian, color: C.white, border: "none" },
       secondary: { bg: "transparent", color: C.viridian, border: `2px solid ${C.viridian}` },
@@ -653,7 +653,7 @@ Remember: This is the CULMINATION tool. Be personal. Be honest. Use their name. 
   };
 
   // Progress bar
-  const Progress = ({ current }) => {
+  const Progress = ({ current }: { current: number }) => {
     const steps = ["Welcome", "Foundation", "Holdings", "Results"];
     return (
       <div style={{ display: "flex", alignItems: "center", gap: 0, marginBottom: 32 }}>
