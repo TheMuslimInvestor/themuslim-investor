@@ -3,9 +3,9 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 
 // ============================================================================
-// TMI PORTFOLIO MIRROR v2 — THE CULMINATION TOOL
+// TMI PORTFOLIO MIRROR v3 — THE CULMINATION TOOL
 // Step 4 of the 4-Step Financial Foundation
-// Strict TypeScript — no implicit any, no @ts-nocheck
+// Strict TypeScript — all 9 fixes applied
 // ============================================================================
 
 // ============================================================================
@@ -14,19 +14,8 @@ import React, { useState, useEffect, useRef, useMemo } from "react";
 
 type ShariahStatus = "COMPLIANT" | "NON_COMPLIANT" | "QUESTIONABLE" | "NOT_FOUND";
 
-interface ShariahEquityEntry {
-  name: string;
-  status: ShariahStatus;
-  sector: string;
-  reason?: string;
-}
-
-interface ShariahEtfEntry {
-  name: string;
-  status: ShariahStatus;
-  type: string;
-  reason?: string;
-}
+interface ShariahEquityEntry { name: string; status: ShariahStatus; sector: string; reason?: string; }
+interface ShariahEtfEntry { name: string; status: ShariahStatus; type: string; reason?: string; }
 
 interface ShariahDb {
   metadata: { source: string; standard: string; last_updated: string; next_update: string; disclaimer: string };
@@ -34,22 +23,11 @@ interface ShariahDb {
   etfs: Record<string, ShariahEtfEntry>;
 }
 
-interface ScreeningResult {
-  status: ShariahStatus;
-  reason: string | null;
-  source: string;
-  name?: string;
-  sector?: string;
-  type?: string;
-}
+interface ScreeningResult { status: ShariahStatus; reason: string | null; source: string; name?: string; sector?: string; type?: string; }
 
 interface AssetCategory {
-  value: string;
-  label: string;
-  group: string;
-  autoStatus?: ShariahStatus;
-  autoReason?: string;
-  excludeFromAnalysis?: boolean;
+  value: string; label: string; group: string;
+  autoStatus?: ShariahStatus; autoReason?: string; excludeFromAnalysis?: boolean;
 }
 
 interface ProfileAllocation {
@@ -58,22 +36,16 @@ interface ProfileAllocation {
   [key: string]: number;
 }
 
-interface InvestorProfile {
-  name: string;
-  expected: ProfileAllocation;
-}
+interface InvestorProfile { name: string; expected: ProfileAllocation; }
 
+// Fix 5: Added mortgage and financeType for real estate
 interface HoldingInput {
   id: number; name: string; category: string; value: string;
+  mortgage?: string; financeType?: string;
 }
 
-interface ScreenedHolding {
-  id: number; name: string; category: string; value: number; screening: ScreeningResult;
-}
-
-interface HoldingWithPct extends ScreenedHolding {
-  pct: number; group: string;
-}
+interface ScreenedHolding { id: number; name: string; category: string; value: number; screening: ScreeningResult; displayName?: string; }
+interface HoldingWithPct extends ScreenedHolding { pct: number; group: string; }
 
 interface ConcentrationInsight { severity: string; holding?: string; pct?: number; msg: string; }
 interface CashAnalysis { level: string; pct: number; msg: string; q: string | null; }
@@ -95,6 +67,10 @@ interface PieDataPoint { label: string; value: number; }
 interface SelectOption { value: string; label: string; }
 interface StatusBadgeConfig { bg: string; color: string; icon: string; label: string; }
 
+// Fix 3: Compliance verdict type
+interface ComplianceVerdict { level: "clean" | "non_compliant" | "questionable" | "unverified"; bannerBg: string; bannerBorder: string; bannerColor: string; icon: string; title: string; description: string; }
+
+
 // ============================================================================
 // SHARIAH SCREENING DATABASE
 // ============================================================================
@@ -113,10 +89,10 @@ const SHARIAH_DB: ShariahDb = {
     UNH: { name: "UnitedHealth Group", status: "QUESTIONABLE", reason: "Insurance operations require review", sector: "Healthcare" },
     V: { name: "Visa Inc.", status: "QUESTIONABLE", reason: "Financial services revenue mix", sector: "Financials" },
     MA: { name: "Mastercard Inc.", status: "QUESTIONABLE", reason: "Financial services revenue mix", sector: "Financials" },
-    JPM: { name: "JPMorgan Chase", status: "NON_COMPLIANT", reason: "Conventional banking — primary business is interest-based lending", sector: "Financials" },
-    BAC: { name: "Bank of America", status: "NON_COMPLIANT", reason: "Conventional banking — primary business is interest-based lending", sector: "Financials" },
-    WFC: { name: "Wells Fargo", status: "NON_COMPLIANT", reason: "Conventional banking — primary business is interest-based lending", sector: "Financials" },
-    C: { name: "Citigroup Inc.", status: "NON_COMPLIANT", reason: "Conventional banking — primary business is interest-based lending", sector: "Financials" },
+    JPM: { name: "JPMorgan Chase", status: "NON_COMPLIANT", reason: "Conventional banking \u2014 primary business is interest-based lending", sector: "Financials" },
+    BAC: { name: "Bank of America", status: "NON_COMPLIANT", reason: "Conventional banking \u2014 primary business is interest-based lending", sector: "Financials" },
+    WFC: { name: "Wells Fargo", status: "NON_COMPLIANT", reason: "Conventional banking \u2014 primary business is interest-based lending", sector: "Financials" },
+    C: { name: "Citigroup Inc.", status: "NON_COMPLIANT", reason: "Conventional banking \u2014 primary business is interest-based lending", sector: "Financials" },
     GS: { name: "Goldman Sachs", status: "NON_COMPLIANT", reason: "Conventional banking and investment banking", sector: "Financials" },
     MS: { name: "Morgan Stanley", status: "NON_COMPLIANT", reason: "Conventional banking and investment banking", sector: "Financials" },
     AIG: { name: "American International Group", status: "NON_COMPLIANT", reason: "Conventional insurance", sector: "Financials" },
@@ -136,8 +112,8 @@ const SHARIAH_DB: ShariahDb = {
     BA: { name: "Boeing Co.", status: "QUESTIONABLE", reason: "Defense revenue requires review", sector: "Industrials" },
     LMT: { name: "Lockheed Martin", status: "NON_COMPLIANT", reason: "Primary weapons manufacturer", sector: "Industrials" },
     RTX: { name: "RTX Corporation", status: "NON_COMPLIANT", reason: "Primary weapons/defense manufacturer", sector: "Industrials" },
-    PM: { name: "Philip Morris", status: "NON_COMPLIANT", reason: "Tobacco — harmful products", sector: "Consumer Staples" },
-    MO: { name: "Altria Group", status: "NON_COMPLIANT", reason: "Tobacco — harmful products", sector: "Consumer Staples" },
+    PM: { name: "Philip Morris", status: "NON_COMPLIANT", reason: "Tobacco \u2014 harmful products", sector: "Consumer Staples" },
+    MO: { name: "Altria Group", status: "NON_COMPLIANT", reason: "Tobacco \u2014 harmful products", sector: "Consumer Staples" },
     BUD: { name: "Anheuser-Busch InBev", status: "NON_COMPLIANT", reason: "Alcohol production", sector: "Consumer Staples" },
     DEO: { name: "Diageo", status: "NON_COMPLIANT", reason: "Alcohol production", sector: "Consumer Staples" },
     WYNN: { name: "Wynn Resorts", status: "NON_COMPLIANT", reason: "Gambling operations", sector: "Consumer Discretionary" },
@@ -158,8 +134,8 @@ const SHARIAH_DB: ShariahDb = {
     VOO: { name: "Vanguard S&P 500 ETF", status: "NON_COMPLIANT", reason: "Contains non-compliant holdings", type: "Conventional ETF" },
     VTI: { name: "Vanguard Total Stock Market ETF", status: "NON_COMPLIANT", reason: "Contains non-compliant holdings", type: "Conventional ETF" },
     VT: { name: "Vanguard Total World Stock ETF", status: "NON_COMPLIANT", reason: "Contains non-compliant holdings", type: "Conventional ETF" },
-    AGG: { name: "iShares Core US Aggregate Bond ETF", status: "NON_COMPLIANT", reason: "Conventional bonds — Riba", type: "Conventional ETF" },
-    BND: { name: "Vanguard Total Bond Market ETF", status: "NON_COMPLIANT", reason: "Conventional bonds — Riba", type: "Conventional ETF" },
+    AGG: { name: "iShares Core US Aggregate Bond ETF", status: "NON_COMPLIANT", reason: "Conventional bonds \u2014 Riba", type: "Conventional ETF" },
+    BND: { name: "Vanguard Total Bond Market ETF", status: "NON_COMPLIANT", reason: "Conventional bonds \u2014 Riba", type: "Conventional ETF" },
     GLD: { name: "SPDR Gold Trust", status: "COMPLIANT", type: "Gold ETF" },
     IAU: { name: "iShares Gold Trust", status: "COMPLIANT", type: "Gold ETF" },
     IBIT: { name: "iShares Bitcoin Trust ETF", status: "QUESTIONABLE", reason: "Bitcoin Shariah status debated among scholars", type: "Crypto ETF" },
@@ -167,47 +143,63 @@ const SHARIAH_DB: ShariahDb = {
 };
 
 // ============================================================================
-// INVESTOR PROFILES
+// FIX 2: INVESTOR PROFILES — Aligned with profile-data.ts
 // ============================================================================
 
 const INVESTOR_PROFILES: Record<string, InvestorProfile> = {
-  fortress_builder: { name: "Fortress Builder", expected: { sukuk: 60, equities: 20, gold: 15, cash: 5, crypto: 0, real_estate: 0, alternatives: 0 } },
-  foundation_builder: { name: "Foundation Builder", expected: { sukuk: 45, equities: 30, gold: 15, cash: 10, crypto: 0, real_estate: 0, alternatives: 0 } },
-  practical_provider: { name: "Practical Provider", expected: { sukuk: 35, equities: 40, gold: 5, cash: 5, crypto: 0, real_estate: 15, alternatives: 0 } },
-  steady_steward: { name: "Steady Steward", expected: { sukuk: 25, equities: 45, gold: 10, cash: 5, crypto: 0, real_estate: 10, alternatives: 5 } },
-  purposeful_builder: { name: "Purposeful Builder", expected: { sukuk: 20, equities: 50, gold: 0, cash: 5, crypto: 0, real_estate: 15, alternatives: 10 } },
-  tactical_trader: { name: "Tactical Trader", expected: { sukuk: 10, equities: 50, gold: 5, cash: 10, crypto: 5, real_estate: 10, alternatives: 10 } },
-  growth_seeker: { name: "Growth Seeker", expected: { sukuk: 10, equities: 60, gold: 0, cash: 5, crypto: 5, real_estate: 10, alternatives: 10 } },
+  fortress_builder: { name: "Fortress Builder", expected: { sukuk: 40, equities: 15, gold: 15, cash: 30, crypto: 0, real_estate: 0, alternatives: 0 } },
+  foundation_builder: { name: "Foundation Builder", expected: { sukuk: 30, equities: 20, gold: 10, cash: 40, crypto: 0, real_estate: 0, alternatives: 0 } },
+  practical_provider: { name: "Practical Provider", expected: { sukuk: 30, equities: 40, gold: 0, cash: 15, crypto: 0, real_estate: 15, alternatives: 0 } },
+  purposeful_builder: { name: "Purposeful Builder", expected: { sukuk: 25, equities: 50, gold: 0, cash: 10, crypto: 0, real_estate: 15, alternatives: 0 } },
+  steady_steward: { name: "Steady Steward", expected: { sukuk: 25, equities: 55, gold: 10, cash: 0, crypto: 0, real_estate: 10, alternatives: 0 } },
+  tactical_trader: { name: "Tactical Trader", expected: { sukuk: 0, equities: 80, gold: 10, cash: 10, crypto: 0, real_estate: 0, alternatives: 0 } },
+  growth_seeker: { name: "Growth Seeker", expected: { sukuk: 0, equities: 85, gold: 10, cash: 5, crypto: 0, real_estate: 0, alternatives: 0 } },
 };
+
+// ============================================================================
+// FIX 4: ASSET CATEGORIES — etf_conventional is NON_COMPLIANT
+// ============================================================================
 
 const ASSET_CATEGORIES: AssetCategory[] = [
   { value: "us_equities", label: "US Equities", group: "equities" },
   { value: "international_equities", label: "International Equities", group: "equities" },
   { value: "emerging_markets", label: "Emerging Market Equities", group: "equities" },
   { value: "sukuk", label: "Sukuk / Islamic Fixed Income", group: "sukuk", autoStatus: "COMPLIANT" },
-  { value: "conventional_bonds", label: "Conventional Bonds", group: "sukuk", autoStatus: "NON_COMPLIANT", autoReason: "Generates interest (Riba) — non-compliant by definition" },
+  { value: "conventional_bonds", label: "Conventional Bonds", group: "sukuk", autoStatus: "NON_COMPLIANT", autoReason: "Generates interest (Riba) \u2014 non-compliant by definition" },
   { value: "real_estate_investment", label: "Real Estate (Investment Property)", group: "real_estate" },
   { value: "real_estate_home", label: "Real Estate (Primary Home)", group: "real_estate", excludeFromAnalysis: true },
   { value: "gold", label: "Gold / Precious Metals", group: "gold", autoStatus: "COMPLIANT" },
   { value: "commodities", label: "Commodities", group: "alternatives" },
   { value: "crypto", label: "Cryptocurrency / Bitcoin", group: "crypto" },
   { value: "cash_islamic", label: "Cash / Islamic Savings Account", group: "cash", autoStatus: "COMPLIANT" },
-  { value: "cash_conventional", label: "Cash / Conventional Savings Account", group: "cash", autoStatus: "NON_COMPLIANT", autoReason: "Generates interest (Riba) — non-compliant by definition" },
+  { value: "cash_conventional", label: "Cash / Conventional Savings Account", group: "cash", autoStatus: "NON_COMPLIANT", autoReason: "Generates interest (Riba) \u2014 non-compliant by definition" },
   { value: "pension", label: "Pension / Retirement Fund", group: "alternatives" },
   { value: "private_business", label: "Private Business / Equity", group: "alternatives" },
   { value: "etf_islamic", label: "ETF / Islamic Fund", group: "equities", autoStatus: "COMPLIANT" },
-  { value: "etf_conventional", label: "ETF / Conventional Fund", group: "equities", autoStatus: "QUESTIONABLE", autoReason: "Conventional fund — requires Shariah screening" },
+  { value: "etf_conventional", label: "ETF / Conventional Fund", group: "equities", autoStatus: "NON_COMPLIANT", autoReason: "Conventional funds contain non-Shariah-compliant holdings (banks, alcohol, weapons, gambling) \u2014 non-compliant by definition" },
   { value: "other", label: "Other", group: "alternatives" },
 ];
 
 const CATEGORY_MAP: Record<string, AssetCategory> = {};
 ASSET_CATEGORIES.forEach((c: AssetCategory) => { CATEGORY_MAP[c.value] = c; });
 
+
 // ============================================================================
-// SHARIAH SCREENING
+// SHARIAH SCREENING (Fix 5: handles real estate finance type)
 // ============================================================================
 
-function screenHolding(ticker: string, categoryValue: string): ScreeningResult {
+function screenHolding(ticker: string, categoryValue: string, financeType?: string): ScreeningResult {
+  // Fix 5: Real estate investment property screening by finance type
+  if (categoryValue === "real_estate_investment") {
+    if (financeType === "conventional") {
+      return { status: "NON_COMPLIANT", reason: "Investment property financed with conventional mortgage (Riba). Seeking additional investment income through interest-based debt is a deliberate choice that requires urgent attention.", source: "category" };
+    }
+    if (financeType === "islamic" || financeType === "outright") {
+      return { status: "COMPLIANT", reason: null, source: "category" };
+    }
+    return { status: "NOT_FOUND", reason: "Please specify how this property is financed", source: "category" };
+  }
+
   const cat: AssetCategory | undefined = CATEGORY_MAP[categoryValue];
   if (cat?.autoStatus) {
     return { status: cat.autoStatus, reason: cat.autoReason || null, source: "category" };
@@ -224,7 +216,46 @@ function screenHolding(ticker: string, categoryValue: string): ScreeningResult {
 }
 
 // ============================================================================
-// ANALYSIS ENGINE
+// FIX 3: COMPLIANCE VERDICT — Conservative hierarchy
+// ============================================================================
+
+function getComplianceVerdict(compliance: ComplianceSummary): ComplianceVerdict {
+  const nc: number = compliance.nonCompliant.length;
+  const q: number = compliance.questionable.length;
+  const nf: number = compliance.notFound.length;
+
+  if (nc > 0) return {
+    level: "non_compliant", bannerBg: "#FEE2E2", bannerBorder: "#DC2626", bannerColor: "#DC2626",
+    icon: "\u26a0\ufe0f",
+    title: `URGENT: Your portfolio contains ${nc} non-Shariah-compliant holding${nc > 1 ? "s" : ""} that require${nc === 1 ? "s" : ""} immediate action.`,
+    description: "Your portfolio contains holdings that have been identified as non-Shariah-compliant based on AAOIFI screening standards. Every day these holdings remain, you carry the weight of non-compliant income. This is not about optimization \u2014 it is about purification.",
+  };
+
+  if (q > 0) return {
+    level: "questionable", bannerBg: "#FEF3C7", bannerBorder: "#F59E0B", bannerColor: "#92400E",
+    icon: "\u26a0\ufe0f",
+    title: `Your portfolio contains ${q} holding${q > 1 ? "s" : ""} whose Shariah compliance could not be fully verified. These require your attention and further investigation before your portfolio can be considered clean.`,
+    description: `We were unable to fully verify the Shariah compliance of ${q} holding${q > 1 ? "s" : ""} in your portfolio. Until these are verified, we cannot confirm your portfolio is fully Shariah-compliant. This is not a minor footnote \u2014 the status of your wealth on the Day of Judgment depends on certainty, not assumptions.`,
+  };
+
+  if (nf > 0) return {
+    level: "unverified", bannerBg: "#F3F4F6", bannerBorder: "#9CA3AF", bannerColor: "#4B5563",
+    icon: "\u2753",
+    title: `Your portfolio contains ${nf} holding${nf > 1 ? "s" : ""} that are not in our screening database. We cannot confirm full Shariah compliance until these are independently verified.`,
+    description: `We could not screen ${nf} of your holdings against our database. This does not mean they are haram \u2014 it means we have not verified them. Please verify these holdings independently with a qualified Shariah advisor.`,
+  };
+
+  return {
+    level: "clean", bannerBg: "#E8F5EE", bannerBorder: "#358C6C", bannerColor: "#358C6C",
+    icon: "\u2705",
+    title: "Alhamdulillah \u2014 all holdings in your portfolio have passed Shariah screening based on AAOIFI standards.",
+    description: "Alhamdulillah \u2014 based on our screening against AAOIFI standards (source: IdealRatings), all holdings in your portfolio appear Shariah-compliant.",
+  };
+}
+
+
+// ============================================================================
+// ANALYSIS ENGINE (Fix 5: uses net equity for real estate)
 // ============================================================================
 
 function analyzePortfolio(holdings: ScreenedHolding[], profileId: string | null, iirsScore: number | null): AnalysisResult {
@@ -246,27 +277,24 @@ function analyzePortfolio(holdings: ScreenedHolding[], profileId: string | null,
   const investableHoldings: HoldingWithPct[] = holdingsWithPct.filter((h: HoldingWithPct) => !CATEGORY_MAP[h.category]?.excludeFromAnalysis);
   const investableTotal: number = investableHoldings.reduce((s: number, h: HoldingWithPct) => s + h.value, 0);
 
-  // Concentration
   const concentration: ConcentrationInsight[] = [];
   for (const h of investableHoldings) {
     const pct: number = investableTotal > 0 ? (h.value / investableTotal) * 100 : 0;
-    if (pct > 90) concentration.push({ severity: "critical", holding: h.name, pct: Math.round(pct * 10) / 10, msg: `Your entire financial future rests on ${h.name} (${pct.toFixed(1)}%). This is not diversification — this is all-in.` });
+    if (pct > 90) concentration.push({ severity: "critical", holding: h.name, pct: Math.round(pct * 10) / 10, msg: `Your entire financial future rests on ${h.name} (${pct.toFixed(1)}%). This is not diversification \u2014 this is all-in.` });
     else if (pct > 50) concentration.push({ severity: "high", holding: h.name, pct: Math.round(pct * 10) / 10, msg: `Half your wealth depends on ${h.name} (${pct.toFixed(1)}%). This conviction requires a clear thesis.` });
-    else if (pct > 30) concentration.push({ severity: "medium", holding: h.name, pct: Math.round(pct * 10) / 10, msg: `${h.name} represents ${pct.toFixed(1)}% of your portfolio — a significant conviction position.` });
+    else if (pct > 30) concentration.push({ severity: "medium", holding: h.name, pct: Math.round(pct * 10) / 10, msg: `${h.name} represents ${pct.toFixed(1)}% of your portfolio \u2014 a significant conviction position.` });
   }
   if (investableHoldings.length === 1) concentration.push({ severity: "critical", msg: "Your entire portfolio is one holding. Maximum concentration risk." });
   if (investableHoldings.length > 20) concentration.push({ severity: "low", msg: `You have ${investableHoldings.length} holdings. Beyond 20 positions, you may be creating the illusion of diversification.` });
 
-  // Cash
   const cashPct: number = grouped.cash || 0;
   let cashAnalysis: CashAnalysis;
   if (cashPct > 50) cashAnalysis = { level: "EXTREME", pct: cashPct, msg: "Half your wealth sits idle while inflation erodes it.", q: "What are you protecting against?" };
-  else if (cashPct > 30) cashAnalysis = { level: "HIGH", pct: cashPct, msg: "Significant cash reserves — waiting or nervous?", q: "How long has your cash been at this level?" };
+  else if (cashPct > 30) cashAnalysis = { level: "HIGH", pct: cashPct, msg: "Significant cash reserves \u2014 waiting or nervous?", q: "How long has your cash been at this level?" };
   else if (cashPct > 10) cashAnalysis = { level: "MODERATE", pct: cashPct, msg: "Healthy reserve. Dry powder.", q: "Do you have criteria for deployment?" };
   else if (cashPct < 5) cashAnalysis = { level: "LOW", pct: cashPct, msg: "Fully invested. No cushion.", q: "If a crisis creates buying opportunities, where do funds come from?" };
   else cashAnalysis = { level: "NORMAL", pct: cashPct, msg: "Cash position within typical ranges.", q: null };
 
-  // Geographic
   const geo: GeoInsight[] = [];
   const usPct: number = holdingsWithPct.filter((h: HoldingWithPct) => h.category === "us_equities").reduce((s: number, h: HoldingWithPct) => s + h.pct, 0);
   const emPct: number = holdingsWithPct.filter((h: HoldingWithPct) => h.category === "emerging_markets").reduce((s: number, h: HoldingWithPct) => s + h.pct, 0);
@@ -277,16 +305,14 @@ function analyzePortfolio(holdings: ScreenedHolding[], profileId: string | null,
     if (emPct === 0 && totalEq > 20) geo.push({ type: "no_emerging", msg: "No exposure to emerging markets, including Muslim-majority economies." });
   }
 
-  // Risk
   const risk: RiskInsight[] = [];
   const growthPct: number = (grouped.equities || 0) + (grouped.crypto || 0);
   const defensivePct: number = (grouped.sukuk || 0) + (grouped.gold || 0) + (grouped.cash || 0);
   if (growthPct > 80) risk.push({ type: "high_growth", msg: "Over 80% in growth assets. You will feel the full force of bear markets." });
-  if ((grouped.crypto || 0) > 20) risk.push({ type: "high_crypto", msg: `Crypto is ${(grouped.crypto || 0).toFixed(1)}% — the most volatile asset class.` });
+  if ((grouped.crypto || 0) > 20) risk.push({ type: "high_crypto", msg: `Crypto is ${(grouped.crypto || 0).toFixed(1)}% \u2014 the most volatile asset class.` });
   if (defensivePct === 0 && growthPct > 50) risk.push({ type: "no_defensive", msg: "No defensive positions. Your entire portfolio moves with market sentiment." });
   if ((grouped.gold || 0) === 0) risk.push({ type: "no_gold", msg: "No gold. No connection to the Sunnah currency and no crisis hedge." });
 
-  // Profile reconciliation
   let reconciliation: Reconciliation | null = null;
   if (profile) {
     const deviations: Deviation[] = [];
@@ -306,7 +332,6 @@ function analyzePortfolio(holdings: ScreenedHolding[], profileId: string | null,
     reconciliation = { overall: alignPct >= 80 ? "well_aligned" : alignPct >= 50 ? "partial_alignment" : "significant_mismatch", alignPct: Math.round(alignPct), deviations, profileName: profile.name };
   }
 
-  // IIRS
   let iirsInsight: IirsInsight | null = null;
   if (iirsScore !== null && iirsScore !== undefined) {
     if (iirsScore < 40) iirsInsight = { level: "CRITICAL", msg: "Your financial foundation is in crisis. Focus on the Compass action plan before making ANY portfolio changes." };
@@ -324,57 +349,98 @@ function analyzePortfolio(holdings: ScreenedHolding[], profileId: string | null,
   return { totalValue, grouped, holdingsWithPct, concentration, cashAnalysis, geo, risk, reconciliation, iirsInsight, compliance, holdingsCount: investableHoldings.length };
 }
 
+
 // ============================================================================
-// FALLBACK NARRATIVE
+// FIX 8: FALLBACK NARRATIVE — Uses all 3 data layers + correct verdict
 // ============================================================================
 
-function generateFallback(a: AnalysisResult, userName: string): string {
-  const { reconciliation, compliance, concentration, iirsInsight } = a;
-  let t: string = `## Bismillah\n\nDear ${userName},\n\nYou have taken an important step by holding up the Mirror to your portfolio. This takes courage — the willingness to see your financial reality as it truly is.\n\n`;
-  if (compliance.nonCompliant.length > 0) {
-    t += `## ⚠️ Shariah Compliance — Urgent Attention Required\n\n${compliance.nonCompliant.length} of your holdings have been identified as non-Shariah-compliant based on AAOIFI screening standards:\n\n`;
-    compliance.nonCompliant.forEach((h: ScreenedHolding) => { t += `- **${h.name}** — ${h.screening?.reason || "Non-compliant"}\n`; });
-    t += `\nEvery day these holdings remain in your portfolio, you carry the weight of non-compliant income. This is not about optimization — it is about purification.\n\n`;
-  } else { t += `## ✅ Shariah Compliance\n\nAlhamdulillah — based on our screening, your portfolio appears Shariah-compliant.\n\n`; }
-  t += `## Your Portfolio at a Glance\n\nTotal Portfolio Value: $${a.totalValue.toLocaleString()}\nNumber of Holdings: ${a.holdingsCount}\n\n`;
+function generateFallback(a: AnalysisResult, userName: string, iirsVal: number | null): string {
+  const { reconciliation, compliance, concentration, iirsInsight, grouped, cashAnalysis } = a;
+  const verdict: ComplianceVerdict = getComplianceVerdict(compliance);
+
+  let t: string = `## Bismillah\n\nDear ${userName},\n\nThe Mirror does not tell you what you want to hear. It shows you what is. Here is what your portfolio reveals.\n\n`;
+
+  // Shariah verdict (Fix 3)
+  if (verdict.level === "non_compliant") {
+    t += `## \u26a0\ufe0f Shariah Compliance \u2014 Urgent Action Required\n\n${verdict.description}\n\n`;
+    compliance.nonCompliant.forEach((h: ScreenedHolding) => { t += `- **${h.name}** \u2014 ${h.screening?.reason || "Non-compliant"}\n`; });
+    t += `\n`;
+  } else if (verdict.level === "questionable") {
+    t += `## \u26a0\ufe0f Shariah Compliance \u2014 Verification Required\n\n${verdict.description}\n\n`;
+    compliance.questionable.forEach((h: ScreenedHolding) => { t += `- **${h.name}** \u2014 ${h.screening?.reason || "Requires review"}\n`; });
+    t += `\n`;
+  } else if (verdict.level === "unverified") {
+    t += `## Shariah Compliance \u2014 Unverified Holdings\n\n${verdict.description}\n\n`;
+    compliance.notFound.forEach((h: ScreenedHolding) => { t += `- **${h.name}** \u2014 Not in screening database\n`; });
+    t += `\n`;
+  } else {
+    t += `## \u2705 Shariah Compliance\n\n${verdict.description}\n\n`;
+  }
+
+  t += `## Your Portfolio at a Glance\n\nTotal Portfolio Value: $${a.totalValue.toLocaleString()} across ${a.holdingsCount} holdings.\n\n`;
+
+  // Profile alignment (always present now)
   if (reconciliation) {
     t += `## Profile Alignment\n\nYou identified as a **${reconciliation.profileName}**. `;
-    if (reconciliation.overall === "well_aligned") t += `Your portfolio closely matches this profile. Your actions reflect your stated identity.\n\n`;
-    else if (reconciliation.overall === "significant_mismatch") {
-      t += `However, your portfolio tells a different story. There is a significant gap between who you claim to be and what your holdings reveal.\n\n`;
-      if (reconciliation.deviations.length > 0) { const d: Deviation = reconciliation.deviations[0]; t += `Most notably, you are ${d.direction} in ${d.category} by ${Math.abs(d.deviation)}%.\n\n`; }
-    } else { t += `Your portfolio partially aligns with this profile, but there are notable drifts worth examining.\n\n`; }
+    if (reconciliation.overall === "well_aligned") {
+      t += `Your portfolio allocation closely matches this profile (${reconciliation.alignPct}% alignment). Your actions reflect your stated identity \u2014 this consistency suggests intentional stewardship.\n\n`;
+    } else if (reconciliation.overall === "significant_mismatch") {
+      t += `However, your portfolio tells a different story. At ${reconciliation.alignPct}% alignment, there is a significant gap between who you claim to be and what your holdings demonstrate.\n\n`;
+      if (reconciliation.deviations.length > 0) {
+        reconciliation.deviations.slice(0, 3).forEach((d: Deviation) => {
+          t += `- **${d.category}**: ${d.actual}% actual vs ${d.expected}% expected (${d.direction} by ${Math.abs(d.deviation)}%)\n`;
+        });
+        t += `\n`;
+      }
+    } else {
+      t += `Your portfolio partially aligns (${reconciliation.alignPct}%), but there are notable drifts that deserve examination.\n\n`;
+    }
   }
-  if (iirsInsight) t += `## Financial Readiness\n\nYour IIRS indicates: ${iirsInsight.msg}\n\n`;
+
+  // IIRS (always present now)
+  if (iirsInsight && iirsVal !== null) {
+    t += `## Financial Readiness\n\nYour IIRS is **${iirsVal}/100** (${iirsInsight.level}). ${iirsInsight.msg}`;
+    if (iirsInsight.level === "CRITICAL") {
+      t += ` Before optimizing your portfolio, you need to address the urgent issues identified by your Akhirah Financial Compass. Portfolio alignment without a solid foundation is like decorating a house with a cracked foundation.`;
+    }
+    t += `\n\n`;
+  }
+
   if (concentration.length > 0) t += `## Concentration\n\n${concentration[0].msg}\n\n`;
-  t += `## Questions for Reflection\n\n1. If you stood before Allah today and He asked about every holding in your portfolio — would you be confident in your answer?\n2. Does your portfolio reflect intentional stewardship, or has it grown by default without conscious direction?\n3. What would need to change for your portfolio to truly align with who you say you are?\n\n---\n\n*Mehdi — Founder, The Muslim Investor*\n*themuslim-investor.com*`;
+
+  t += `## Questions for Reflection\n\n`;
+  t += `1. If you stood before Allah today and He asked about every holding in your portfolio \u2014 would you be confident in your answer?\n`;
+  t += `2. Does your portfolio reflect intentional stewardship, or has it grown by default without conscious direction?\n`;
+  t += `3. What would need to change for your portfolio to truly align with who you say you are?\n\n`;
+  t += `---\n\n*Mehdi \u2014 Founder, The Muslim Investor*\n*themuslim-investor.com*`;
   return t;
 }
 
+
 // ============================================================================
-// COLORS
+// COLORS & CONSTANTS
 // ============================================================================
 
 const C = { viridian: "#358C6C", onyx: "#343840", cambridge: "#86A68B", ivory: "#EFF2E4", dimGray: "#6C7173", red: "#DC2626", amber: "#F59E0B", white: "#FFFFFF", bg: "#F8FAF5" } as const;
 const FONT: string = "'Poppins', sans-serif";
 
 // ============================================================================
-// SUB-COMPONENTS
+// SUB-COMPONENTS (module-level to avoid remounting)
 // ============================================================================
 
 function StatusBadge({ status, reason }: { status: ShariahStatus; reason?: string | null }): React.JSX.Element {
   const config: Record<ShariahStatus, StatusBadgeConfig> = {
-    COMPLIANT: { bg: "#E8F5EE", color: C.viridian, icon: "✅", label: "Compliant" },
-    NON_COMPLIANT: { bg: "#FEE2E2", color: C.red, icon: "🔴", label: "Non-Compliant" },
-    QUESTIONABLE: { bg: "#FEF3C7", color: "#92400E", icon: "🟡", label: "Requires Review" },
-    NOT_FOUND: { bg: "#F3F4F6", color: C.dimGray, icon: "⚪", label: "Not in database" },
+    COMPLIANT: { bg: "#E8F5EE", color: C.viridian, icon: "\u2705", label: "Compliant" },
+    NON_COMPLIANT: { bg: "#FEE2E2", color: C.red, icon: "\ud83d\udd34", label: "Non-Compliant" },
+    QUESTIONABLE: { bg: "#FEF3C7", color: "#92400E", icon: "\ud83d\udfe1", label: "Requires Review" },
+    NOT_FOUND: { bg: "#F3F4F6", color: C.dimGray, icon: "\u26aa", label: "Not in database" },
   };
   const cfg: StatusBadgeConfig = config[status] || config.NOT_FOUND;
   return (
     <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "4px 10px", borderRadius: 6, background: cfg.bg, fontSize: 12, fontFamily: FONT }}>
       <span>{cfg.icon}</span>
       <span style={{ color: cfg.color, fontWeight: 600 }}>{cfg.label}</span>
-      {reason && status !== "COMPLIANT" && <span style={{ color: cfg.color, fontWeight: 400, fontSize: 11 }}>— {reason}</span>}
+      {reason && status !== "COMPLIANT" && <span style={{ color: cfg.color, fontWeight: 400, fontSize: 11 }}>\u2014 {reason}</span>}
     </div>
   );
 }
@@ -412,15 +478,8 @@ function PieChart({ data, size = 220 }: { data: PieDataPoint[]; size?: number })
   );
 }
 
-
-// ============================================================================
-// REUSABLE UI COMPONENTS (module-level to avoid remounting on re-render)
-// ============================================================================
-
 function Card({ children, style: extraStyle }: { children: React.ReactNode; style?: React.CSSProperties }): React.JSX.Element {
-  return (
-    <div style={{ background: C.white, borderRadius: 12, padding: "28px 32px", boxShadow: "0 1px 3px rgba(0,0,0,0.06)", border: "1px solid #E5E7EB", ...extraStyle }}>{children}</div>
-  );
+  return <div style={{ background: C.white, borderRadius: 12, padding: "28px 32px", boxShadow: "0 1px 3px rgba(0,0,0,0.06)", border: "1px solid #E5E7EB", ...extraStyle }}>{children}</div>;
 }
 
 function FormInput({ label, value, onChange, placeholder, type = "text", required, note }: { label: string; value: string; onChange: (val: string) => void; placeholder?: string; type?: string; required?: boolean; note?: string }): React.JSX.Element {
@@ -478,17 +537,45 @@ export default function PortfolioMirror(): React.JSX.Element {
   const [email, setEmail] = useState<string>("");
   const [profileType, setProfileType] = useState<string>("");
   const [iirsScore, setIirsScore] = useState<string>("");
-  const [skipIirs, setSkipIirs] = useState<boolean>(false);
+  // Fix 1: Removed skipIirs state — IIRS is now required
   const [holdings, setHoldings] = useState<HoldingInput[]>([{ id: 1, name: "", category: "", value: "" }]);
   const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);
   const [narrative, setNarrative] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [loadingMsg, setLoadingMsg] = useState<string>("");
+  const [logoBase64, setLogoBase64] = useState<string>("");
   const nextId = useRef<number>(2);
   const resultsRef = useRef<HTMLDivElement | null>(null);
 
+  // Fix 6: Load logo as base64 on mount for PDF
+  useEffect((): void => {
+    const img: HTMLImageElement = new window.Image();
+    img.crossOrigin = "anonymous";
+    img.onload = (): void => {
+      try {
+        const canvas: HTMLCanvasElement = document.createElement("canvas");
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        const ctx: CanvasRenderingContext2D | null = canvas.getContext("2d");
+        if (ctx) {
+          ctx.drawImage(img, 0, 0);
+          setLogoBase64(canvas.toDataURL("image/png"));
+        }
+      } catch (_e: unknown) { /* CORS fallback — PDF will omit logo */ }
+    };
+    img.src = "/images/tmi-logo-white-bg.png";
+  }, []);
+
+  // Fix 5: Compute totalValue using net equity for real estate
   const totalValue: number = useMemo((): number => {
-    return holdings.reduce((s: number, h: HoldingInput) => s + (parseFloat(String(h.value).replace(/,/g, "")) || 0), 0);
+    return holdings.reduce((s: number, h: HoldingInput) => {
+      const gross: number = parseFloat(String(h.value).replace(/,/g, "")) || 0;
+      if (h.category === "real_estate_investment" && h.mortgage) {
+        const mort: number = parseFloat(String(h.mortgage).replace(/,/g, "")) || 0;
+        return s + Math.max(0, gross - mort);
+      }
+      return s + gross;
+    }, 0);
   }, [holdings]);
 
   const addHolding = (): void => {
@@ -498,30 +585,52 @@ export default function PortfolioMirror(): React.JSX.Element {
     if (holdings.length <= 1) return;
     setHoldings((prev: HoldingInput[]) => prev.filter((h: HoldingInput) => h.id !== id));
   };
-  const updateHolding = (id: number, field: keyof HoldingInput, val: string): void => {
+  const updateHolding = (id: number, field: string, val: string): void => {
     setHoldings((prev: HoldingInput[]) => prev.map((h: HoldingInput) => (h.id === id ? { ...h, [field]: val } : h)));
   };
 
   const canProceedStep2: boolean = name.trim().length > 0 && email.trim().length > 0 && email.includes("@");
-  const validHoldings: HoldingInput[] = holdings.filter((h: HoldingInput) => h.name.trim().length > 0 && h.category.length > 0 && parseFloat(String(h.value).replace(/,/g, "")) > 0);
+
+  // Fix 1: Hard gate — both Profile AND IIRS required to proceed
+  const iirsNum: number = parseInt(iirsScore, 10);
+  const iirsValid: boolean = iirsScore.length > 0 && !isNaN(iirsNum) && iirsNum >= 0 && iirsNum <= 100;
+  const profileValid: boolean = profileType.length > 0 && profileType !== "none";
+  const canProceedStep3: boolean = profileValid && iirsValid;
+
+  const validHoldings: HoldingInput[] = holdings.filter((h: HoldingInput) => {
+    const gross: number = parseFloat(String(h.value).replace(/,/g, "")) || 0;
+    return h.name.trim().length > 0 && h.category.length > 0 && gross > 0;
+  });
   const canAnalyze: boolean = validHoldings.length >= 1;
+
+  // ============================================================================
+  // RUN ANALYSIS (Fix 5: net equity, Fix 7: updated AI prompt)
+  // ============================================================================
 
   const runAnalysis = async (): Promise<void> => {
     setLoading(true);
     setLoadingMsg("Screening your holdings against AAOIFI standards...");
     setStep(5);
 
+    // Fix 5: Use net equity for real estate
     const screened: ScreenedHolding[] = validHoldings.map((h: HoldingInput): ScreenedHolding => {
-      const val: number = parseFloat(String(h.value).replace(/,/g, ""));
-      const screening: ScreeningResult = screenHolding(h.name, h.category);
-      return { id: h.id, name: h.name, category: h.category, value: val, screening };
+      let val: number = parseFloat(String(h.value).replace(/,/g, ""));
+      let dName: string = h.name;
+      if (h.category === "real_estate_investment" && h.mortgage) {
+        const mort: number = parseFloat(String(h.mortgage).replace(/,/g, "")) || 0;
+        val = Math.max(0, val - mort);
+        if (mort > 0) dName = `${h.name} (Net equity: $${val.toLocaleString()})`;
+      }
+      const screening: ScreeningResult = screenHolding(h.name, h.category, h.financeType);
+      return { id: h.id, name: h.name, category: h.category, value: val, screening, displayName: dName };
     });
 
     await new Promise<void>((r: () => void) => setTimeout(r, 800));
     setLoadingMsg("Analyzing portfolio structure and alignment...");
 
-    const profileId: string | null = profileType && profileType !== "none" ? profileType : null;
-    const iirs: number | null = !skipIirs && iirsScore !== "" ? parseInt(iirsScore, 10) : null;
+    // Both are guaranteed to be valid due to Fix 1 hard gate
+    const profileId: string = profileType;
+    const iirs: number = parseInt(iirsScore, 10);
     const result: AnalysisResult = analyzePortfolio(screened, profileId, iirs);
 
     result.holdingsWithPct = screened.map((h: ScreenedHolding): HoldingWithPct => {
@@ -540,25 +649,116 @@ export default function PortfolioMirror(): React.JSX.Element {
     await new Promise<void>((r: () => void) => setTimeout(r, 600));
     setLoadingMsg("Generating your personal Mirror Analysis with AI...");
 
-    const profileObj: InvestorProfile | null = profileId ? INVESTOR_PROFILES[profileId] || null : null;
+    const profileObj: InvestorProfile = INVESTOR_PROFILES[profileId];
     const holdingsSummary: string = screened.map((h: ScreenedHolding): string => {
       const catLabel: string = CATEGORY_MAP[h.category]?.label || h.category;
       const pctStr: string = ((h.value / result.totalValue) * 100).toFixed(1);
       const reasonStr: string = h.screening.reason ? ` [${h.screening.reason}]` : "";
-      return `- ${h.name} (${catLabel}): $${h.value.toLocaleString()} (${pctStr}%) \u2014 Shariah Status: ${h.screening.status}${reasonStr}`;
+      return `- ${h.displayName || h.name} (${catLabel}): $${h.value.toLocaleString()} (${pctStr}%) \u2014 Shariah Status: ${h.screening.status}${reasonStr}`;
     }).join("\n");
     const allocSummary: string = Object.entries(result.grouped).filter(([, v]: [string, number]) => v > 0).map(([k, v]: [string, number]) => `- ${k}: ${v.toFixed(1)}%`).join("\n");
     const compSummary: string = `Compliant: ${result.compliance.compliant.length} | Non-compliant: ${result.compliance.nonCompliant.length} | Questionable: ${result.compliance.questionable.length} | Unverified: ${result.compliance.notFound.length}`;
-    let reconcSummary: string = "Profile not provided";
-    if (result.reconciliation) {
-      reconcSummary = `Overall: ${result.reconciliation.overall}\n${result.reconciliation.deviations.slice(0, 5).map((d: Deviation): string => `- ${d.category}: ${d.actual}% actual vs ${d.expected}% expected (${d.direction} by ${Math.abs(d.deviation)}%)`).join("\n")}`;
-    }
-    let iirsSummary: string = "Not provided";
-    if (result.iirsInsight) iirsSummary = `Score: ${iirs}, Level: ${result.iirsInsight.level} \u2014 ${result.iirsInsight.msg}`;
+    const reconcSummary: string = result.reconciliation ? `Overall: ${result.reconciliation.overall}\n${result.reconciliation.deviations.slice(0, 5).map((d: Deviation): string => `- ${d.category}: ${d.actual}% actual vs ${d.expected}% expected (${d.direction} by ${Math.abs(d.deviation)}%)`).join("\n")}` : "";
 
-    const systemPrompt: string = `You are the TMI Portfolio Mirror \u2014 the culmination tool in The Muslim Investor\u2019s 4-Step Financial Foundation. You have access to three layers of data about this Muslim investor:\n\n1. Their INVESTOR PROFILE \u2014 who they say they are\n2. Their IIRS SCORE \u2014 whether their financial foundation is ready\n3. Their ACTUAL PORTFOLIO \u2014 what they actually hold, including Shariah compliance screening results\n\nYour role is to synthesize ALL THREE into one unified, penetrating, personal reflection. You REFLECT \u2014 you show them the truth about the gap between their stated identity and their actual reality.\n\nCRITICAL RULES:\n1. NEVER recommend specific funds, ETFs, stocks, or financial products by name\n2. NEVER name specific brokerage platforms\n3. NEVER provide a rebalancing plan, specific allocation targets, or trading instructions\n4. DO flag Haram holdings clearly and urgently \u2014 this is the ONE exception\n5. For non-compliant holdings, state clearly: \"This holding has been identified as non-Shariah-compliant based on AAOIFI screening standards (source: IdealRatings). We strongly recommend divesting and consulting a qualified Shariah advisor.\"\n6. For unverified holdings, state: \"We could not verify this holding against our screening database. This does not mean it is haram \u2014 it means we haven\u2019t screened it. Please verify independently.\"\n7. Use the person\u2019s NAME throughout\n8. Frame everything through Akhirah preparation, not wealth optimization\n9. Reference Quran and Hadith naturally \u2014 not as decoration but as genuine guidance\n10. The tone is warm, direct, and honest \u2014 like a trusted advisor who cares enough to tell uncomfortable truths\n\nSTRUCTURE YOUR RESPONSE WITH THESE EXACT SECTIONS:\n\n## Bismillah\nBrief personal opening addressing them by name. Acknowledge their courage.\n\n## 1. Your Shariah Compliance Status\nList every NON_COMPLIANT holding with reason. List QUESTIONABLE and NOT_FOUND. Be direct about haram.\n\n## 2. Your Portfolio at a Glance\nTotal value, allocation breakdown, number of holdings.\n\n## 3. What Your Portfolio Says About Your Beliefs\nThe psychological/spiritual mirror.\n\n## 4. Your Profile Alignment\n${profileObj ? "Compare actual to " + profileObj.name + " expected allocation. Biggest gaps." : "Profile was not provided \u2014 skip this section."}\n\n## 5. Your Financial Readiness\n${result.iirsInsight ? "IIRS Score: " + String(iirs) + ". Connect to portfolio decisions." : "IIRS was not provided \u2014 skip this section."}\n\n## 6. The Unified Picture\nTie everything together in 2-3 paragraphs.\n\n## 7. Questions for Reflection\n3-5 penetrating, personal questions.\n\n## 8. Your Next Step\nGuide to TMI ecosystem based on their situation.\n\nEnd with a brief du\u2019a and sign off as \"Mehdi \u2014 Founder, The Muslim Investor\"`;
+    // Fix 7: Updated system prompt — always includes Profile and IIRS, adds IIRS interpretation guide
+    const systemPrompt: string = `You are the TMI Portfolio Mirror \u2014 the culmination tool in The Muslim Investor\u2019s 4-Step Financial Foundation. You have access to three layers of data about this Muslim investor:
 
-    const userPrompt: string = `Analyze this Muslim investor\u2019s portfolio and provide a comprehensive Mirror Analysis.\n\nNAME: ${name}\nINVESTOR PROFILE: ${profileObj ? profileObj.name : "Not provided"}\nIIRS SCORE: ${iirsSummary}\nTOTAL PORTFOLIO VALUE: $${result.totalValue.toLocaleString()}\n\nHOLDINGS:\n${holdingsSummary}\n\nALLOCATION BY ASSET CLASS:\n${allocSummary}\n\nSHARIAH SCREENING SUMMARY:\n${compSummary}\n${result.compliance.nonCompliant.length > 0 ? "Non-compliant holdings: " + result.compliance.nonCompliant.map((h: ScreenedHolding) => h.name).join(", ") : ""}\n\nPROFILE RECONCILIATION:\n${reconcSummary}\n\nCONCENTRATION ALERTS:\n${result.concentration.length > 0 ? result.concentration.map((c: ConcentrationInsight) => c.msg).join("\n") : "No significant concentration issues"}\n\nCASH ANALYSIS:\n${result.cashAnalysis.level}: ${result.cashAnalysis.msg}\n\nRISK EXPOSURE:\n${result.risk.length > 0 ? result.risk.map((r: RiskInsight) => r.msg).join("\n") : "No significant risk flags"}\n\nRemember: This is the CULMINATION tool. Be personal. Be honest. Use their name. Flag haram urgently. Reflect, don\u2019t prescribe.`;
+1. Their INVESTOR PROFILE \u2014 who they say they are
+2. Their IIRS SCORE \u2014 whether their financial foundation is ready
+3. Their ACTUAL PORTFOLIO \u2014 what they actually hold, including Shariah compliance screening results
+
+Your role is to synthesize ALL THREE into one unified, penetrating, personal reflection. You REFLECT \u2014 you show them the truth about the gap between their stated identity and their actual reality.
+
+CRITICAL RULES:
+1. NEVER recommend specific funds, ETFs, stocks, or financial products by name
+2. NEVER name specific brokerage platforms
+3. NEVER provide a rebalancing plan, specific allocation targets, or trading instructions
+4. DO flag Haram holdings clearly and urgently \u2014 this is the ONE exception
+5. For non-compliant holdings, state clearly: "This holding has been identified as non-Shariah-compliant based on AAOIFI screening standards (source: IdealRatings). We strongly recommend divesting and consulting a qualified Shariah advisor."
+6. For unverified holdings, state: "We could not verify this holding against our screening database. This does not mean it is haram \u2014 it means we haven\u2019t screened it. Please verify independently."
+7. Use the person\u2019s NAME throughout
+8. Frame everything through Akhirah preparation, not wealth optimization
+9. Reference Quran and Hadith naturally \u2014 not as decoration but as genuine guidance
+10. The tone is warm, direct, and honest \u2014 like a trusted advisor who cares enough to tell uncomfortable truths
+
+IIRS SCORE INTERPRETATION:
+- 0-29: CRITICAL \u2014 Financial foundation in crisis. Riba, no emergency fund, or both. Portfolio changes are premature.
+- 30-49: BUILDING \u2014 Foundation needs significant work. Focus on Compass action plan first.
+- 50-69: PROGRESSING \u2014 Foundation improving but not solid. Portfolio review appropriate but major changes should wait.
+- 70-100: INVESTMENT READY \u2014 Foundation is solid. Portfolio alignment is the right focus.
+
+IIRS COMPONENT BREAKDOWN:
+- Riba Elimination: 40 points max (the heaviest weight \u2014 interest-based debt is the #1 priority)
+- Emergency Fund: 25 points max (the safety net before any investing)
+- Expense Control: 20 points max (spending discipline)
+- Savings Rate: 15 points max (capacity to invest)
+
+If IIRS < 40, the Mirror should say clearly: "Your financial foundation is in crisis. Before optimizing your portfolio, you need to address the urgent issues identified by your Akhirah Financial Compass. Portfolio alignment without a solid foundation is like decorating a house with a cracked foundation."
+
+INVESTOR PROFILE INTERPRETATION:
+Use the profile to contextualize the portfolio. A Fortress Builder with 80% equities has a massive identity-portfolio gap. A Growth Seeker with 50% cash is either paralyzed or strategic \u2014 the Mirror asks which.
+
+STRUCTURE YOUR RESPONSE WITH THESE EXACT SECTIONS:
+
+## Bismillah
+Brief personal opening addressing them by name. Acknowledge their courage.
+
+## 1. Your Shariah Compliance Status
+List every NON_COMPLIANT holding with reason. List QUESTIONABLE and NOT_FOUND. Be direct about haram.
+
+## 2. Your Portfolio at a Glance
+Total value, allocation breakdown, number of holdings.
+
+## 3. What Your Portfolio Says About Your Beliefs
+The psychological/spiritual mirror.
+
+## 4. Your Profile Alignment
+Compare their actual allocation to their ${profileObj.name} expected allocation. Identify the biggest gaps. What do these gaps reveal about the distance between who they claim to be and what their portfolio demonstrates?
+
+## 5. Your Financial Readiness
+Their IIRS Score is ${iirs}. Level: ${result.iirsInsight?.level || "N/A"}. ${result.iirsInsight?.msg || ""}. Connect this to their portfolio decisions \u2014 if their IIRS indicates their foundation is in crisis, their portfolio optimization is premature. If their IIRS is strong, portfolio alignment becomes the appropriate focus.
+
+## 6. The Unified Picture
+Tie everything together in 2-3 paragraphs.
+
+## 7. Questions for Reflection
+3-5 penetrating, personal questions.
+
+## 8. Your Next Step
+Guide to TMI ecosystem based on their situation.
+
+End with a brief du\u2019a and sign off as "Mehdi \u2014 Founder, The Muslim Investor"`;
+
+    const userPrompt: string = `Analyze this Muslim investor\u2019s portfolio and provide a comprehensive Mirror Analysis.
+
+NAME: ${name}
+INVESTOR PROFILE: ${profileObj.name}
+IIRS SCORE: ${iirs}/100 (${result.iirsInsight?.level || ""} \u2014 ${result.iirsInsight?.msg || ""})
+TOTAL PORTFOLIO VALUE: $${result.totalValue.toLocaleString()}
+
+HOLDINGS:
+${holdingsSummary}
+
+ALLOCATION BY ASSET CLASS:
+${allocSummary}
+
+SHARIAH SCREENING SUMMARY:
+${compSummary}
+${result.compliance.nonCompliant.length > 0 ? "Non-compliant holdings: " + result.compliance.nonCompliant.map((h: ScreenedHolding) => h.name).join(", ") : ""}
+
+PROFILE RECONCILIATION:
+${reconcSummary}
+
+CONCENTRATION ALERTS:
+${result.concentration.length > 0 ? result.concentration.map((c: ConcentrationInsight) => c.msg).join("\n") : "No significant concentration issues"}
+
+CASH ANALYSIS:
+${result.cashAnalysis.level}: ${result.cashAnalysis.msg}
+
+RISK EXPOSURE:
+${result.risk.length > 0 ? result.risk.map((r: RiskInsight) => r.msg).join("\n") : "No significant risk flags"}
+
+Remember: This is the CULMINATION tool. Be personal. Be honest. Use their name. Flag haram urgently. Reflect, don\u2019t prescribe.`;
 
     try {
       const response: Response = await fetch("/api/mirror", {
@@ -568,10 +768,10 @@ export default function PortfolioMirror(): React.JSX.Element {
       });
       const data: { narrative?: string; error?: string } = await response.json();
       if (data.narrative && data.narrative.length > 100) { setNarrative(data.narrative); }
-      else { setNarrative(generateFallback(result, name)); }
+      else { setNarrative(generateFallback(result, name, iirs)); }
     } catch (e: unknown) {
       console.error("AI call failed:", e);
-      setNarrative(generateFallback(result, name));
+      setNarrative(generateFallback(result, name, iirs));
     }
 
     try {
@@ -580,7 +780,7 @@ export default function PortfolioMirror(): React.JSX.Element {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           timestamp: new Date().toISOString(), name, email,
-          profile_type: profileObj?.name || "Not provided", iirs_score: iirs,
+          profile_type: profileObj.name, iirs_score: iirs,
           total_value: result.totalValue, num_holdings: screened.length,
           allocation: result.grouped,
           compliant_pct: screened.length > 0 ? Math.round((result.compliance.compliant.length / screened.length) * 100) : 0,
@@ -617,8 +817,6 @@ export default function PortfolioMirror(): React.JSX.Element {
     });
   };
 
-  // Reusable components are defined at module level (above) to avoid remounting on re-render
-
   // ============================================================================
   // STEP RENDERERS
   // ============================================================================
@@ -639,30 +837,56 @@ export default function PortfolioMirror(): React.JSX.Element {
     </div>
   );
 
+  // Fix 1: Hard gate on Step 2 — both Profile and IIRS required
   const renderStep2 = (): React.JSX.Element => (
     <div>
       <Progress current={2} />
       <h2 style={{ fontSize: 22, fontWeight: 700, color: C.onyx, fontFamily: FONT, marginBottom: 8 }}>Your TMI Foundation</h2>
-      <p style={{ fontSize: 14, color: C.dimGray, fontFamily: FONT, marginBottom: 24 }}>Your results from Steps 1-3 of the Financial Foundation.</p>
+      <p style={{ fontSize: 14, color: C.dimGray, fontFamily: FONT, marginBottom: 24, lineHeight: 1.6 }}>The Mirror combines three layers — your identity, your readiness, and your holdings — to give you a picture no other tool can. Both your Investor Profile and IIRS are required.</p>
+
       <Card style={{ marginBottom: 20 }}>
         <h3 style={{ fontSize: 16, fontWeight: 700, color: C.onyx, fontFamily: FONT, marginBottom: 12 }}>Your Investor Profile</h3>
         <FormSelect label="Which TMI Investor Profile are you?" value={profileType} onChange={setProfileType} placeholder="Select your profile..." options={[...Object.entries(INVESTOR_PROFILES).map(([k, v]: [string, InvestorProfile]): SelectOption => ({ value: k, label: v.name })), { value: "none", label: "I haven't taken the Investor Profile yet" }]} />
         {profileType === "none" && (
-          <div style={{ padding: 16, background: C.ivory, borderRadius: 8, borderLeft: `3px solid ${C.viridian}` }}>
-            <p style={{ fontSize: 13, color: C.onyx, fontFamily: FONT, lineHeight: 1.6, marginBottom: 10 }}>The Portfolio Mirror is most powerful when combined with your Investor Profile. We recommend taking it first.</p>
-            <a href="https://themuslim-investor.com/tools/profile" target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, color: C.viridian, fontWeight: 600, fontFamily: FONT, textDecoration: "none" }}>Take the Investor Profile &rarr;</a>
+          <div style={{ padding: 20, background: C.ivory, borderRadius: 8, borderLeft: `4px solid ${C.viridian}` }}>
+            <p style={{ fontSize: 14, color: C.onyx, fontFamily: FONT, lineHeight: 1.7, marginBottom: 12 }}>
+              Your Mirror analysis combines three layers — your identity, your readiness, and your holdings — to give you a picture no other tool can. Without your Investor Profile, we cannot assess whether your portfolio matches who you are. And guessing with your Amanah is not something TMI is willing to do.
+            </p>
+            <a href="https://themuslim-investor.com/tools/profile" target="_blank" rel="noopener noreferrer" style={{ display: "inline-block", padding: "10px 20px", background: C.viridian, color: C.white, borderRadius: 8, fontSize: 14, fontWeight: 600, fontFamily: FONT, textDecoration: "none" }}>
+              Take the Investor Profile &rarr;
+            </a>
+            <p style={{ fontSize: 12, color: C.dimGray, fontFamily: FONT, marginTop: 10 }}>Once you have your result, come back here and select your profile to continue.</p>
           </div>
         )}
       </Card>
+
       <Card>
         <h3 style={{ fontSize: 16, fontWeight: 700, color: C.onyx, fontFamily: FONT, marginBottom: 12 }}>Your IIRS Score</h3>
-        {!skipIirs && <FormInput label="What is your Islamic Investment Readiness Score (IIRS)?" value={iirsScore} onChange={setIirsScore} placeholder="0-100" type="number" note="Don't know your IIRS? Take the Akhirah Financial Compass at themuslim-investor.com/tools/compass" />}
-        <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", fontFamily: FONT, fontSize: 13, color: C.dimGray }}><input type="checkbox" checked={skipIirs} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSkipIirs(e.target.checked)} style={{ accentColor: C.viridian }} />I have not taken the Compass yet</label>
+        <FormInput label="What is your Islamic Investment Readiness Score (IIRS)?" value={iirsScore} onChange={setIirsScore} placeholder="0-100" type="number" required />
+        {iirsScore.length > 0 && !iirsValid && (
+          <p style={{ fontSize: 12, color: C.red, fontFamily: FONT, marginTop: -12 }}>Please enter a valid IIRS between 0 and 100.</p>
+        )}
+        <p style={{ fontSize: 12, color: C.dimGray, fontFamily: FONT, marginTop: 4, lineHeight: 1.6 }}>
+          {"Don't know your IIRS? "}
+          <a href="https://themuslim-investor.com/tools/compass" target="_blank" rel="noopener noreferrer" style={{ color: C.viridian, fontWeight: 600, textDecoration: "none" }}>
+            Take the Akhirah Financial Compass first &rarr;
+          </a>
+        </p>
       </Card>
-      <div style={{ display: "flex", justifyContent: "space-between", marginTop: 24 }}><Btn variant="secondary" onClick={() => setStep(1)}>&larr; Back</Btn><Btn onClick={() => setStep(3)}>Continue &rarr;</Btn></div>
+
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 24, flexWrap: "wrap", gap: 12 }}>
+        <Btn variant="secondary" onClick={() => setStep(1)}>&larr; Back</Btn>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 6 }}>
+          <Btn onClick={() => setStep(3)} disabled={!canProceedStep3}>Continue &rarr;</Btn>
+          {!canProceedStep3 && (
+            <span style={{ fontSize: 12, color: C.dimGray, fontFamily: FONT }}>Complete both your Investor Profile and IIRS to continue.</span>
+          )}
+        </div>
+      </div>
     </div>
   );
 
+  // Fix 5: Holdings step with real estate mortgage/finance fields
   const renderStep3 = (): React.JSX.Element => (
     <div>
       <Progress current={3} />
@@ -677,25 +901,65 @@ export default function PortfolioMirror(): React.JSX.Element {
       </Card>
       {totalValue > 0 && (() => {
         const groups: Record<string, number> = {};
-        validHoldings.forEach((h: HoldingInput) => { const cat: AssetCategory | undefined = CATEGORY_MAP[h.category]; const grp: string = cat?.group || "other"; const lbl: string = grp.charAt(0).toUpperCase() + grp.slice(1).replace("_", " "); groups[lbl] = (groups[lbl] || 0) + parseFloat(String(h.value).replace(/,/g, "")); });
+        validHoldings.forEach((h: HoldingInput) => {
+          const cat: AssetCategory | undefined = CATEGORY_MAP[h.category];
+          const grp: string = cat?.group || "other";
+          const lbl: string = grp.charAt(0).toUpperCase() + grp.slice(1).replace("_", " ");
+          let val: number = parseFloat(String(h.value).replace(/,/g, ""));
+          if (h.category === "real_estate_investment" && h.mortgage) {
+            val = Math.max(0, val - (parseFloat(String(h.mortgage).replace(/,/g, "")) || 0));
+          }
+          groups[lbl] = (groups[lbl] || 0) + val;
+        });
         const pd: PieDataPoint[] = Object.entries(groups).map(([label, value]: [string, number]): PieDataPoint => ({ label, value })).sort((a: PieDataPoint, b: PieDataPoint) => b.value - a.value);
         return <Card style={{ marginBottom: 20, textAlign: "center" }}><PieChart data={pd} /></Card>;
       })()}
       {holdings.map((h: HoldingInput, idx: number) => {
-        const screening: ScreeningResult | null = h.name.length > 0 && h.category.length > 0 ? screenHolding(h.name, h.category) : null;
-        const isHaram: boolean = h.category === "conventional_bonds" || h.category === "cash_conventional";
+        const screening: ScreeningResult | null = h.name.length > 0 && h.category.length > 0 ? screenHolding(h.name, h.category, h.financeType) : null;
+        const isHaram: boolean = h.category === "conventional_bonds" || h.category === "cash_conventional" || h.category === "etf_conventional";
+        const isRealEstate: boolean = h.category === "real_estate_investment";
+        const grossVal: number = parseFloat(String(h.value).replace(/,/g, "")) || 0;
+        const mortVal: number = parseFloat(String(h.mortgage || "").replace(/,/g, "")) || 0;
+        const netEquity: number = isRealEstate ? Math.max(0, grossVal - mortVal) : grossVal;
         return (
-          <Card key={h.id} style={{ marginBottom: 12, border: isHaram ? `1px solid ${C.red}` : "1px solid #E5E7EB" }}>
+          <Card key={h.id} style={{ marginBottom: 12, border: isHaram || (isRealEstate && h.financeType === "conventional") ? `1px solid ${C.red}` : "1px solid #E5E7EB" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
               <span style={{ fontSize: 13, fontWeight: 700, color: C.dimGray, fontFamily: FONT }}>Holding #{idx + 1}</span>
               {holdings.length > 1 && <button onClick={() => removeHolding(h.id)} style={{ background: "none", border: "none", color: C.red, cursor: "pointer", fontSize: 18, lineHeight: 1 }}>{"\u00d7"}</button>}
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
               <div><label style={{ display: "block", fontSize: 12, fontWeight: 600, color: C.onyx, marginBottom: 4, fontFamily: FONT }}>Holding Name / Ticker</label><input value={h.name} onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateHolding(h.id, "name", e.target.value)} placeholder="e.g., AAPL, SPUS, Gold" style={{ width: "100%", padding: "8px 12px", borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 13, fontFamily: FONT, boxSizing: "border-box" }} /></div>
-              <div><label style={{ display: "block", fontSize: 12, fontWeight: 600, color: C.onyx, marginBottom: 4, fontFamily: FONT }}>Current Value ($)</label><input type="number" value={h.value} onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateHolding(h.id, "value", e.target.value)} placeholder="0" style={{ width: "100%", padding: "8px 12px", borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 13, fontFamily: FONT, boxSizing: "border-box" }} /></div>
+              <div><label style={{ display: "block", fontSize: 12, fontWeight: 600, color: C.onyx, marginBottom: 4, fontFamily: FONT }}>{isRealEstate ? "Property Value ($)" : "Current Value ($)"}</label><input type="number" value={h.value} onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateHolding(h.id, "value", e.target.value)} placeholder="0" style={{ width: "100%", padding: "8px 12px", borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 13, fontFamily: FONT, boxSizing: "border-box" }} /></div>
             </div>
             <div style={{ marginTop: 10 }}><label style={{ display: "block", fontSize: 12, fontWeight: 600, color: C.onyx, marginBottom: 4, fontFamily: FONT }}>Asset Class</label><select value={h.category} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => updateHolding(h.id, "category", e.target.value)} style={{ width: "100%", padding: "8px 12px", borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 13, fontFamily: FONT, boxSizing: "border-box", background: C.white }}><option value="">Select asset class...</option>{ASSET_CATEGORIES.map((c: AssetCategory) => <option key={c.value} value={c.value}>{c.label}</option>)}</select></div>
-            {isHaram && <div style={{ marginTop: 8, padding: "8px 12px", background: "#FEE2E2", borderRadius: 6, fontSize: 12, color: C.red, fontFamily: FONT, fontWeight: 600 }}>{"\u26a0\ufe0f"} This category generates interest (Riba) and is automatically flagged as non-compliant.</div>}
+
+            {/* Fix 5: Real estate additional fields */}
+            {isRealEstate && (
+              <div style={{ marginTop: 12, padding: 16, background: "#F9FAFB", borderRadius: 8, display: "flex", flexDirection: "column", gap: 12 }}>
+                <div>
+                  <label style={{ display: "block", fontSize: 12, fontWeight: 600, color: C.onyx, marginBottom: 4, fontFamily: FONT }}>Outstanding mortgage balance ($)</label>
+                  <input type="number" value={h.mortgage || ""} onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateHolding(h.id, "mortgage", e.target.value)} placeholder="0 = owned outright" style={{ width: "100%", padding: "8px 12px", borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 13, fontFamily: FONT, boxSizing: "border-box" }} />
+                  {mortVal > grossVal && grossVal > 0 && <p style={{ fontSize: 12, color: C.red, fontFamily: FONT, marginTop: 4 }}>Your mortgage exceeds the property value. Please verify.</p>}
+                  {grossVal > 0 && <p style={{ fontSize: 12, color: C.viridian, fontWeight: 600, fontFamily: FONT, marginTop: 4 }}>Net equity: ${netEquity.toLocaleString()}</p>}
+                </div>
+                <div>
+                  <label style={{ display: "block", fontSize: 12, fontWeight: 600, color: C.onyx, marginBottom: 4, fontFamily: FONT }}>How is this property financed?</label>
+                  <select value={h.financeType || ""} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => updateHolding(h.id, "financeType", e.target.value)} style={{ width: "100%", padding: "8px 12px", borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 13, fontFamily: FONT, boxSizing: "border-box", background: C.white }}>
+                    <option value="">Select financing type...</option>
+                    <option value="outright">Owned outright (no mortgage)</option>
+                    <option value="islamic">Islamic financing (Murabaha / Ijara)</option>
+                    <option value="conventional">Conventional mortgage</option>
+                  </select>
+                </div>
+                {h.financeType === "conventional" && (
+                  <div style={{ padding: "8px 12px", background: "#FEE2E2", borderRadius: 6, fontSize: 12, color: C.red, fontFamily: FONT, fontWeight: 600 }}>
+                    {"\u26a0\ufe0f"} Investment property financed with conventional mortgage (Riba). This is flagged as non-compliant.
+                  </div>
+                )}
+              </div>
+            )}
+
+            {isHaram && !isRealEstate && <div style={{ marginTop: 8, padding: "8px 12px", background: "#FEE2E2", borderRadius: 6, fontSize: 12, color: C.red, fontFamily: FONT, fontWeight: 600 }}>{"\u26a0\ufe0f"} This category is automatically flagged as non-compliant.</div>}
             {screening && h.name.length > 0 && h.category.length > 0 && <div style={{ marginTop: 8 }}><StatusBadge status={screening.status} reason={screening.reason} /></div>}
           </Card>
         );
@@ -714,22 +978,29 @@ export default function PortfolioMirror(): React.JSX.Element {
     </div>
   );
 
+  // ============================================================================
+  // RESULTS (Fix 3: verdict banner, Fix 6: branded PDF)
+  // ============================================================================
+
   const renderResults = (): React.JSX.Element | null => {
     if (!analysis) return null;
     const { compliance, totalValue: tv, grouped, holdingsWithPct: hwp } = analysis;
     const nonCompCount: number = compliance.nonCompliant.length;
     const questCount: number = compliance.questionable.length;
     const notFoundCount: number = compliance.notFound.length;
+    const verdict: ComplianceVerdict = getComplianceVerdict(compliance);
     const pieData: PieDataPoint[] = Object.entries(grouped).filter(([, v]: [string, number]) => v > 0).map(([k, v]: [string, number]): PieDataPoint => ({ label: k.charAt(0).toUpperCase() + k.slice(1).replace("_", " "), value: v })).sort((a: PieDataPoint, b: PieDataPoint) => b.value - a.value);
 
+    // Fix 6: Branded PDF with logo, correct verdict, branded footer
     const handlePdfPrint = (): void => {
       const pw: Window | null = window.open("", "_blank");
       if (!pw) return;
-      const hHtml: string = (hwp || []).map((h: HoldingWithPct): string => { const cl: string = CATEGORY_MAP[h.category]?.label || ""; const ps: string = ((h.value / tv) * 100).toFixed(1); const sc: string = h.screening?.status === "COMPLIANT" ? "compliant" : "non-compliant"; return `<tr><td>${h.name}</td><td>${cl}</td><td>$${h.value.toLocaleString()}</td><td>${ps}%</td><td><span class="badge ${sc}">${h.screening?.status || ""}</span></td></tr>`; }).join("");
+      const logoHtml: string = logoBase64 ? `<img src="${logoBase64}" style="height:50px;display:block;margin:0 auto 16px" alt="TMI" />` : "";
+      const hHtml: string = (hwp || []).map((h: HoldingWithPct): string => { const cl: string = CATEGORY_MAP[h.category]?.label || ""; const ps: string = ((h.value / tv) * 100).toFixed(1); const sc: string = h.screening?.status === "COMPLIANT" ? "compliant" : "non-compliant"; return `<tr><td>${h.displayName || h.name}</td><td>${cl}</td><td>$${h.value.toLocaleString()}</td><td>${ps}%</td><td><span class="badge ${sc}">${h.screening?.status || ""}</span></td></tr>`; }).join("");
       const nHtml: string = narrative.split("\n").map((line: string): string => { if (line.startsWith("## ")) return `<h2>${line.replace("## ", "")}</h2>`; if (line.startsWith("- ")) return `<p style="margin-left:16px">\u2022 ${line.replace("- ", "")}</p>`; if (line.trim() === "") return "<br/>"; return `<p>${line.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")}</p>`; }).join("");
-      const ncH: string = nonCompCount > 0 ? `<div style="background:#FEE2E2;padding:12px;border-radius:8px;margin:12px 0"><strong style="color:#DC2626">Non-compliant:</strong> ${compliance.nonCompliant.map((h: ScreenedHolding) => `${h.name} (${h.screening?.reason || ""})`).join(", ")}</div>` : "";
+      const verdictHtml: string = `<div style="background:${verdict.bannerBg};border:1px solid ${verdict.bannerBorder};padding:16px;border-radius:8px;margin:16px 0"><strong style="color:${verdict.bannerColor}">${verdict.icon} ${verdict.title}</strong></div>`;
       const ds: string = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
-      pw.document.write(`<!DOCTYPE html><html><head><title>TMI Portfolio Mirror Report</title><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet"><style>body{font-family:'Poppins',sans-serif;max-width:800px;margin:0 auto;padding:40px 20px;color:#343840}h1{color:#358C6C;font-size:24px}h2{color:#343840;font-size:18px;border-bottom:2px solid #358C6C;padding-bottom:6px}p{line-height:1.8;font-size:14px}.header{text-align:center;margin-bottom:32px;border-bottom:3px solid #358C6C;padding-bottom:20px}.badge{display:inline-block;padding:4px 10px;border-radius:4px;font-size:12px;font-weight:600}.compliant{background:#E8F5EE;color:#358C6C}.non-compliant{background:#FEE2E2;color:#DC2626}table{width:100%;border-collapse:collapse;font-size:13px;margin:16px 0}th,td{padding:8px;text-align:left;border-bottom:1px solid #E5E7EB}th{font-weight:700;border-bottom:2px solid #343840}@media print{body{padding:20px}}</style></head><body><div class="header"><h1>TMI Portfolio Mirror Report</h1><p>Prepared for <strong>${name}</strong> \u2014 ${ds}</p></div><h2>Shariah Compliance Summary</h2><p>Compliant: ${compliance.compliant.length} | Non-compliant: ${nonCompCount} | Questionable: ${questCount} | Unverified: ${notFoundCount}</p>${ncH}<h2>Portfolio Summary</h2><p>Total Value: <strong>$${tv.toLocaleString()}</strong> | Holdings: <strong>${analysis.holdingsCount}</strong></p><table><thead><tr><th>Holding</th><th>Category</th><th>Value</th><th>%</th><th>Status</th></tr></thead><tbody>${hHtml}</tbody></table><h2>Mirror Analysis</h2>${nHtml}<hr style="margin-top:40px;border:none;border-top:2px solid #358C6C"/><p style="text-align:center;font-size:12px;color:#6C7173"><strong>Disclaimer:</strong> Educational analysis based on Islamic finance principles. Not personalized financial advice. Shariah screening sourced from IdealRatings (AAOIFI standards).<br/><br/>themuslim-investor.com/tools/mirror</p></body></html>`);
+      pw.document.write(`<!DOCTYPE html><html><head><title>TMI Portfolio Mirror Report</title><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet"><style>body{font-family:'Poppins',sans-serif;max-width:800px;margin:0 auto;padding:40px 20px;color:#343840}h1{color:#358C6C;font-size:24px;margin:0}h2{color:#343840;font-size:18px;border-bottom:2px solid #358C6C;padding-bottom:6px}p{line-height:1.8;font-size:14px}.header{text-align:center;margin-bottom:32px;padding-bottom:20px}.badge{display:inline-block;padding:4px 10px;border-radius:4px;font-size:12px;font-weight:600}.compliant{background:#E8F5EE;color:#358C6C}.non-compliant{background:#FEE2E2;color:#DC2626}table{width:100%;border-collapse:collapse;font-size:13px;margin:16px 0}th,td{padding:8px;text-align:left;border-bottom:1px solid #E5E7EB}th{font-weight:700;border-bottom:2px solid #343840}@media print{body{padding:20px}}</style></head><body><div class="header">${logoHtml}<h1 style="color:#358C6C;font-size:24px;margin:0">TMI Portfolio Mirror Report</h1><p style="color:#6C7173;font-size:14px;margin-top:8px">Prepared for <strong>${name}</strong> \u2014 ${ds}</p><div style="height:3px;background:#358C6C;margin-top:16px"></div></div><h2>Shariah Compliance</h2>${verdictHtml}<p>Compliant: ${compliance.compliant.length} | Non-compliant: ${nonCompCount} | Questionable: ${questCount} | Unverified: ${notFoundCount}</p><h2>Portfolio Summary</h2><p>Total Value: <strong>$${tv.toLocaleString()}</strong> | Holdings: <strong>${analysis.holdingsCount}</strong></p><table><thead><tr><th>Holding</th><th>Category</th><th>Value</th><th>%</th><th>Status</th></tr></thead><tbody>${hHtml}</tbody></table><h2>Mirror Analysis</h2>${nHtml}<div style="margin-top:40px;border-top:2px solid #358C6C;padding-top:20px;text-align:center"><p style="font-size:12px;color:#6C7173;line-height:1.6"><strong>Disclaimer:</strong> Educational analysis based on Islamic finance principles. Not personalized financial advice. Shariah screening sourced from IdealRatings (AAOIFI standards). Updated quarterly.<br/><br/><strong>The Muslim Investor</strong> \u2014 Preparing Your Answer for the Day of Judgment<br/>themuslim-investor.com/tools/mirror</p></div></body></html>`);
       pw.document.close();
       setTimeout(() => pw.print(), 500);
     };
@@ -738,22 +1009,22 @@ export default function PortfolioMirror(): React.JSX.Element {
 
     return (
       <div ref={resultsRef}>
-        {nonCompCount > 0 ? (
-          <div style={{ background: "#FEE2E2", border: `1px solid ${C.red}`, borderRadius: 12, padding: "20px 24px", marginBottom: 20 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}><span style={{ fontSize: 24 }}>{"\u26a0\ufe0f"}</span><h2 style={{ fontSize: 18, fontWeight: 900, color: C.red, fontFamily: FONT, margin: 0 }}>URGENT: {nonCompCount} Holding{nonCompCount > 1 ? "s" : ""} Require Immediate Shariah Review</h2></div>
-            {compliance.nonCompliant.map((h: ScreenedHolding, i: number) => <div key={i} style={{ fontSize: 13, color: C.red, fontFamily: FONT, marginLeft: 34 }}>{"\u2022"} <strong>{h.name}</strong> {"\u2014"} {h.screening?.reason || "Non-compliant"}</div>)}
+        {/* Fix 3: Compliance verdict banner using conservative hierarchy */}
+        <div style={{ background: verdict.bannerBg, border: `1px solid ${verdict.bannerBorder}`, borderRadius: 12, padding: "20px 24px", marginBottom: 20 }}>
+          <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+            <span style={{ fontSize: 24, flexShrink: 0 }}>{verdict.icon}</span>
+            <h2 style={{ fontSize: 16, fontWeight: 700, color: verdict.bannerColor, fontFamily: FONT, margin: 0, lineHeight: 1.5 }}>{verdict.title}</h2>
           </div>
-        ) : questCount > 0 || notFoundCount > 0 ? (
-          <div style={{ background: "#FEF3C7", border: "1px solid #F59E0B", borderRadius: 12, padding: "20px 24px", marginBottom: 20 }}><div style={{ display: "flex", alignItems: "center", gap: 10 }}><span style={{ fontSize: 24 }}>{"\ud83d\udfe1"}</span><h2 style={{ fontSize: 18, fontWeight: 700, color: "#92400E", fontFamily: FONT, margin: 0 }}>{questCount + notFoundCount} Holding{questCount + notFoundCount > 1 ? "s" : ""} Need Verification</h2></div></div>
-        ) : (
-          <div style={{ background: "#E8F5EE", border: `1px solid ${C.viridian}`, borderRadius: 12, padding: "20px 24px", marginBottom: 20 }}><div style={{ display: "flex", alignItems: "center", gap: 10 }}><span style={{ fontSize: 24 }}>{"\u2705"}</span><h2 style={{ fontSize: 18, fontWeight: 700, color: C.viridian, fontFamily: FONT, margin: 0 }}>Alhamdulillah {"\u2014"} Your Portfolio Passes Shariah Screening</h2></div></div>
-        )}
+          {verdict.level === "non_compliant" && compliance.nonCompliant.map((h: ScreenedHolding, i: number) => (
+            <div key={i} style={{ fontSize: 13, color: C.red, fontFamily: FONT, marginLeft: 34, marginTop: 4 }}>{"\u2022"} <strong>{h.name}</strong> {"\u2014"} {h.screening?.reason || "Non-compliant"}</div>
+          ))}
+        </div>
         <Card style={{ marginBottom: 20 }}>
           <h3 style={{ fontSize: 18, fontWeight: 700, color: C.onyx, fontFamily: FONT, marginBottom: 16 }}>Portfolio Summary</h3>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 16, marginBottom: 20 }}>
             <div style={{ textAlign: "center", padding: 16, background: C.ivory, borderRadius: 8 }}><div style={{ fontSize: 11, color: C.dimGray, fontFamily: FONT, textTransform: "uppercase", letterSpacing: 1 }}>Total Value</div><div style={{ fontSize: 22, fontWeight: 900, color: C.viridian, fontFamily: FONT }}>${tv.toLocaleString(undefined, { maximumFractionDigits: 0 })}</div></div>
             <div style={{ textAlign: "center", padding: 16, background: C.ivory, borderRadius: 8 }}><div style={{ fontSize: 11, color: C.dimGray, fontFamily: FONT, textTransform: "uppercase", letterSpacing: 1 }}>Holdings</div><div style={{ fontSize: 22, fontWeight: 900, color: C.onyx, fontFamily: FONT }}>{analysis.holdingsCount}</div></div>
-            <div style={{ textAlign: "center", padding: 16, background: nonCompCount > 0 ? "#FEE2E2" : "#E8F5EE", borderRadius: 8 }}><div style={{ fontSize: 11, color: C.dimGray, fontFamily: FONT, textTransform: "uppercase", letterSpacing: 1 }}>Compliant</div><div style={{ fontSize: 22, fontWeight: 900, color: nonCompCount > 0 ? C.red : C.viridian, fontFamily: FONT }}>{compliance.compliant.length}/{compliance.compliant.length + nonCompCount + questCount + notFoundCount}</div></div>
+            <div style={{ textAlign: "center", padding: 16, background: verdict.level === "clean" ? "#E8F5EE" : "#FEE2E2", borderRadius: 8 }}><div style={{ fontSize: 11, color: C.dimGray, fontFamily: FONT, textTransform: "uppercase", letterSpacing: 1 }}>Compliant</div><div style={{ fontSize: 22, fontWeight: 900, color: verdict.level === "clean" ? C.viridian : C.red, fontFamily: FONT }}>{compliance.compliant.length}/{compliance.compliant.length + nonCompCount + questCount + notFoundCount}</div></div>
           </div>
           <PieChart data={pieData} />
         </Card>
@@ -762,7 +1033,7 @@ export default function PortfolioMirror(): React.JSX.Element {
           <div style={{ overflowX: "auto" }}>
             <table style={{ width: "100%", borderCollapse: "collapse", fontFamily: FONT, fontSize: 13 }}>
               <thead><tr style={{ borderBottom: `2px solid ${C.onyx}` }}><th style={{ textAlign: "left", padding: "8px 12px", fontWeight: 700, color: C.onyx }}>Holding</th><th style={{ textAlign: "left", padding: "8px 12px", fontWeight: 700, color: C.onyx }}>Category</th><th style={{ textAlign: "right", padding: "8px 12px", fontWeight: 700, color: C.onyx }}>Value</th><th style={{ textAlign: "right", padding: "8px 12px", fontWeight: 700, color: C.onyx }}>%</th><th style={{ textAlign: "left", padding: "8px 12px", fontWeight: 700, color: C.onyx }}>Shariah Status</th></tr></thead>
-              <tbody>{(hwp || []).map((h: HoldingWithPct, i: number) => (<tr key={i} style={{ borderBottom: "1px solid #E5E7EB" }}><td style={{ padding: "8px 12px", fontWeight: 600, color: C.onyx }}>{h.name}</td><td style={{ padding: "8px 12px", color: C.dimGray }}>{CATEGORY_MAP[h.category]?.label || h.category}</td><td style={{ padding: "8px 12px", textAlign: "right", color: C.onyx }}>${h.value.toLocaleString(undefined, { maximumFractionDigits: 0 })}</td><td style={{ padding: "8px 12px", textAlign: "right", color: C.onyx }}>{h.pct !== undefined ? h.pct.toFixed(1) : ((h.value / tv) * 100).toFixed(1)}%</td><td style={{ padding: "8px 12px" }}><StatusBadge status={h.screening?.status || "NOT_FOUND"} reason={h.screening?.reason} /></td></tr>))}</tbody>
+              <tbody>{(hwp || []).map((h: HoldingWithPct, i: number) => (<tr key={i} style={{ borderBottom: "1px solid #E5E7EB" }}><td style={{ padding: "8px 12px", fontWeight: 600, color: C.onyx }}>{h.displayName || h.name}</td><td style={{ padding: "8px 12px", color: C.dimGray }}>{CATEGORY_MAP[h.category]?.label || h.category}</td><td style={{ padding: "8px 12px", textAlign: "right", color: C.onyx }}>${h.value.toLocaleString(undefined, { maximumFractionDigits: 0 })}</td><td style={{ padding: "8px 12px", textAlign: "right", color: C.onyx }}>{h.pct !== undefined ? h.pct.toFixed(1) : ((h.value / tv) * 100).toFixed(1)}%</td><td style={{ padding: "8px 12px" }}><StatusBadge status={h.screening?.status || "NOT_FOUND"} reason={h.screening?.reason} /></td></tr>))}</tbody>
             </table>
           </div>
         </Card>
@@ -770,13 +1041,12 @@ export default function PortfolioMirror(): React.JSX.Element {
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}><div style={{ width: 36, height: 36, borderRadius: "50%", background: C.viridian, display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{ fontSize: 18 }}>{"\ud83e\ude9e"}</span></div><h3 style={{ fontSize: 20, fontWeight: 900, color: C.onyx, fontFamily: FONT, margin: 0 }}>Your Mirror Analysis</h3></div>
           <div>{renderMarkdown(narrative)}</div>
         </Card>
+        {/* Fix 1: Removed conditional Profile/Compass buttons — both are now required */}
         <Card style={{ background: C.ivory, border: `1px solid ${C.cambridge}` }}>
           <h3 style={{ fontSize: 16, fontWeight: 700, color: C.onyx, fontFamily: FONT, marginBottom: 16 }}>Your Next Steps</h3>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
             <Btn onClick={handlePdfPrint}>Download Report (PDF)</Btn>
             <Btn variant="secondary" onClick={handleWhatsApp}>Share on WhatsApp</Btn>
-            {(!profileType || profileType === "none") && <Btn variant="secondary" onClick={() => window.open("https://themuslim-investor.com/tools/profile", "_blank")}>Take the Investor Profile &rarr;</Btn>}
-            {skipIirs && <Btn variant="secondary" onClick={() => window.open("https://themuslim-investor.com/tools/compass", "_blank")}>Take the Akhirah Compass &rarr;</Btn>}
             <Btn variant="secondary" onClick={() => window.open("https://skool.com/the-muslim-investor", "_blank")}>Join TMI Community &rarr;</Btn>
           </div>
         </Card>
@@ -786,7 +1056,7 @@ export default function PortfolioMirror(): React.JSX.Element {
   };
 
   // ============================================================================
-  // MAIN RENDER
+  // MAIN RENDER (Fix 9: actual logo image in header)
   // ============================================================================
 
   return (
@@ -794,7 +1064,12 @@ export default function PortfolioMirror(): React.JSX.Element {
       {/* eslint-disable-next-line @next/next/no-page-custom-font */}
       <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Amiri&display=swap" rel="stylesheet" />
       <div style={{ background: C.onyx, padding: "16px 24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}><span style={{ fontSize: 24, fontWeight: 900, color: C.viridian, fontFamily: FONT }}>T<span style={{ color: C.white }}>M</span>I</span><span style={{ fontSize: 13, color: C.dimGray, fontFamily: FONT }}>Portfolio Mirror</span></div>
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          {/* Fix 9: Actual logo image */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/images/tmi-logo-light.png" alt="The Muslim Investor" style={{ height: 28 }} />
+          <span style={{ fontSize: 13, color: C.dimGray, fontFamily: FONT }}>Portfolio Mirror</span>
+        </div>
         <span style={{ fontSize: 11, color: C.dimGray, fontFamily: FONT }}>Step 4 of 4 {"\u2014"} Financial Foundation</span>
       </div>
       <div style={{ maxWidth: 720, margin: "0 auto", padding: "32px 20px" }}>
