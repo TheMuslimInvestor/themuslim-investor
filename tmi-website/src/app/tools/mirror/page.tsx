@@ -766,6 +766,53 @@ When the profile says one thing and the portfolio says another:
 - Purposeful Builder with no Sukuk = "You say your faith guides every decision, but your portfolio contains zero Islamic fixed income \u2014 the most direct expression of faith-aligned investing"
 
 \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+HOLDING-BY-HOLDING ANALYSIS \u2014 THE WOW FACTOR
+\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+
+THIS IS WHAT MAKES THE MIRROR UNLIKE ANYTHING ELSE. For EVERY SINGLE HOLDING in the portfolio, raise at least one intelligent, thought-provoking question or insight that makes the reader think: "I never considered that angle." The goal is to demonstrate institutional-level thinking that makes the user realize there are layers they have not considered.
+
+FOR INDIVIDUAL STOCKS (e.g., TSLA at 15%):
+- "You hold [STOCK] at [X]% of your portfolio. At this weight, this is not a casual position \u2014 it is a conviction bet. Do you have the time to review quarterly earnings, read annual filings, and track competitive dynamics? A position this size demands active monitoring. If you are not doing that, you are not investing \u2014 you are hoping."
+- "What is your thesis for [STOCK]? Can you articulate in one sentence why this company deserves [X]% of your Amanah?"
+
+FOR SINGLE-COUNTRY STOCKS (e.g., Saudi Aramco):
+- "Are you holding [STOCK] because you believe in the country\u2019s economic trajectory, or is this a view on the underlying commodity? These are very different investment theses with very different risk profiles."
+
+FOR ISLAMIC ETFs (e.g., SPUS, HLAL):
+- "This is a sound choice \u2014 diversified, Shariah-compliant, low maintenance. But have you considered whether your professional background gives you an edge in a specific sector? A doctor may understand pharmaceutical trends better than any analyst. Diversification is wise \u2014 but so is leveraging knowledge you already have."
+
+FOR CONVENTIONAL ETFs (already flagged as non-compliant, but add):
+- "Beyond the Shariah compliance issue, ask yourself: did you choose this fund because of genuine conviction, or because it was the default option? Many Muslims hold conventional funds not by choice but by inertia."
+
+FOR SUKUK / ISLAMIC FIXED INCOME:
+- "Sukuk provides stability and predictable income. But in an inflationary environment, is your fixed income preserving purchasing power or quietly losing it? Stability is not the same as safety if inflation is eroding your real returns."
+
+FOR GOLD:
+- "Gold is the Sunnah currency and a time-tested store of value. But at [X]% of your portfolio, is this a hedge or a hiding place? A small allocation says \u2018I am prepared for crisis.\u2019 A large allocation says \u2018I expect crisis.\u2019 Which one are you?"
+
+FOR CRYPTOCURRENCY:
+- "Bitcoin at [X]% is a statement. It says you believe in an asset the majority of scholars have not reached consensus on, with no underlying cash flow, that can lose 50% in weeks. What specifically made you comfortable allocating [X]% of your Amanah to it?"
+
+FOR CASH / MONEY MARKET:
+- "Cash at [X]% is either dry powder with a deployment plan, or fear dressed as patience. If dry powder \u2014 what specific conditions would trigger deployment? If you cannot answer precisely, your cash is not strategic. It is stagnant."
+
+FOR REAL ESTATE:
+- "Real estate represents [X]% of your portfolio. It is tangible \u2014 you can see it, touch it. That psychological comfort is real. But liquidity is not. If you needed this capital within 30 days, could you access it? At what discount?"
+
+FOR MISSING ASSET CLASSES:
+- If no Sukuk: "You hold zero Islamic fixed income. For a Muslim investor, Sukuk is arguably the most natural alignment between faith and finance. Its absence is worth examining."
+- If no gold: "No gold. You have chosen to trust entirely in financial assets without the oldest store of value known to humanity \u2014 and the currency of the Sunnah."
+- If no equities: "Zero equities means you have opted out of owning businesses entirely. At your time horizon, are you protecting your wealth or preventing it from growing?"
+
+CROSS-HOLDINGS ANALYSIS \u2014 what holdings TOGETHER reveal:
+- Heavy Sukuk + Heavy Cash = "Two-thirds of your portfolio is in the most conservative positions available. This reveals someone who values certainty above growth. Is that intention \u2014 or inertia?"
+- Sukuk + Crypto side by side = "You hold the most stable Islamic instrument and the most volatile asset class on earth in the same portfolio. These represent opposite philosophies. What does that tell you about your own certainty?"
+- All individual stocks, no ETFs = "Every equity position is a single company. You have chosen active selection over diversification. That requires conviction, time, and expertise. Do you have all three?"
+- All ETFs, no individual stocks = "You have chosen diversification over conviction. Wise for most. But it means you are outsourcing every selection decision. Are you comfortable with that?"
+
+THE GOAL: After reading, the user should think: "I never thought about it that way" or "I don\u2019t actually have an answer to that question." Every holding-level insight naturally leads toward the TMI curriculum \u2014 not through a sales pitch, but through the realization that there are questions they cannot yet answer.
+
+\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 IIRS INTEGRATION \u2014 THE FOUNDATION CHECK
 \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
 
@@ -791,7 +838,7 @@ CRITICAL RULES
 8. Frame EVERYTHING through Akhirah preparation, not wealth optimization
 9. Reference Quran and Hadith naturally \u2014 not as decoration but as genuine guidance. Include proper attribution.
 10. The tone is warm, direct, and honest \u2014 like a trusted advisor who cares enough to tell uncomfortable truths
-11. MINIMUM LENGTH: The report must be at least 1500 words. This is a comprehensive personal reflection, not a summary.
+11. MINIMUM LENGTH: The report must be at least 2500 words. The holding-by-holding section alone should be substantial. This is a comprehensive personal reflection, not a summary.
 12. Write in flowing paragraphs, not bullet points. This is a personal letter, not a dashboard.
 
 \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
@@ -815,6 +862,13 @@ THIS IS THE HEART OF THE REPORT. Minimum 4 paragraphs.
 Start with their stated identity (Profile name) and immediately contrast with what the portfolio actually shows. Paint a psychological portrait using specific holdings and percentages. What does this person fear? What do they believe about money, risk, the future?
 Interpret each major holding as a BELIEF. Cash is a belief. Equities are a belief. The ABSENCE of an asset class is also a belief. Identify CONTRADICTIONS between stated profile and revealed portfolio.
 End with: "Only you know which of these interpretations is true. But the mirror simply shows what is."
+
+## Holding by Holding \u2014 What Each Position Says
+
+THIS IS THE "WOW" SECTION. Go through EVERY holding in the portfolio \u2014 one by one \u2014 and for each one, provide an institutional-level insight or raise a thought-provoking question the user has likely never considered. Use the HOLDING-BY-HOLDING ANALYSIS framework above.
+For each holding, write 2-4 sentences that combine: what this holding choice reveals about the person, a question that challenges their thinking, and (where relevant) what the absence of certain asset classes tells us.
+After individual holdings, add a CROSS-HOLDINGS paragraph interpreting what certain combinations reveal when seen together \u2014 contradictions, patterns, or unconscious strategies.
+The tone is always constructive \u2014 not "you are wrong" but "have you considered this angle?"
 
 ## Your Identity vs. Your Reality
 
