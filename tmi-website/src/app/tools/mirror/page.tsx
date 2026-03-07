@@ -113,7 +113,7 @@ const ASSET_CATEGORIES = [
   { value: "other", label: "Other", group: "alternatives" },
 ];
 
-const CATEGORY_MAP = {};
+const CATEGORY_MAP: Record<string, any> = {};
 ASSET_CATEGORIES.forEach(c => { CATEGORY_MAP[c.value] = c; });
 
 // --- SHARIAH SCREENING FUNCTION ---
