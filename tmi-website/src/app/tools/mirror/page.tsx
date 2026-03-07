@@ -414,6 +414,61 @@ function PieChart({ data, size = 220 }: { data: PieDataPoint[]; size?: number })
 
 
 // ============================================================================
+// REUSABLE UI COMPONENTS (module-level to avoid remounting on re-render)
+// ============================================================================
+
+function Card({ children, style: extraStyle }: { children: React.ReactNode; style?: React.CSSProperties }): React.JSX.Element {
+  return (
+    <div style={{ background: C.white, borderRadius: 12, padding: "28px 32px", boxShadow: "0 1px 3px rgba(0,0,0,0.06)", border: "1px solid #E5E7EB", ...extraStyle }}>{children}</div>
+  );
+}
+
+function FormInput({ label, value, onChange, placeholder, type = "text", required, note }: { label: string; value: string; onChange: (val: string) => void; placeholder?: string; type?: string; required?: boolean; note?: string }): React.JSX.Element {
+  return (
+    <div style={{ marginBottom: 18 }}>
+      <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: C.onyx, marginBottom: 6, fontFamily: FONT }}>{label}{required && <span style={{ color: C.red }}> *</span>}</label>
+      <input type={type} value={value} onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value)} placeholder={placeholder} style={{ width: "100%", padding: "10px 14px", borderRadius: 8, border: "1px solid #D1D5DB", fontSize: 14, fontFamily: FONT, color: C.onyx, outline: "none", boxSizing: "border-box", transition: "border 0.2s" }} onFocus={(e: React.FocusEvent<HTMLInputElement>) => { e.target.style.borderColor = C.viridian; }} onBlur={(e: React.FocusEvent<HTMLInputElement>) => { e.target.style.borderColor = "#D1D5DB"; }} />
+      {note && <p style={{ fontSize: 12, color: C.dimGray, marginTop: 4, fontFamily: FONT }}>{note}</p>}
+    </div>
+  );
+}
+
+function FormSelect({ label, value, onChange, options, placeholder }: { label: string; value: string; onChange: (val: string) => void; options: SelectOption[]; placeholder?: string }): React.JSX.Element {
+  return (
+    <div style={{ marginBottom: 18 }}>
+      <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: C.onyx, marginBottom: 6, fontFamily: FONT }}>{label}</label>
+      <select value={value} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => onChange(e.target.value)} style={{ width: "100%", padding: "10px 14px", borderRadius: 8, border: "1px solid #D1D5DB", fontSize: 14, fontFamily: FONT, color: value ? C.onyx : C.dimGray, outline: "none", boxSizing: "border-box", background: C.white, cursor: "pointer" }}>
+        <option value="">{placeholder || "Select..."}</option>
+        {options.map((o: SelectOption) => <option key={o.value} value={o.value}>{o.label}</option>)}
+      </select>
+    </div>
+  );
+}
+
+function Btn({ children, onClick, disabled, variant = "primary", style: extraStyle }: { children: React.ReactNode; onClick?: () => void; disabled?: boolean; variant?: "primary" | "secondary" | "danger"; style?: React.CSSProperties }): React.JSX.Element {
+  const variants: Record<string, { bg: string; color: string; border: string }> = { primary: { bg: C.viridian, color: C.white, border: "none" }, secondary: { bg: "transparent", color: C.viridian, border: `2px solid ${C.viridian}` }, danger: { bg: "transparent", color: C.red, border: `1px solid ${C.red}` } };
+  const v = variants[variant];
+  return <button onClick={onClick} disabled={disabled} style={{ padding: "12px 28px", borderRadius: 8, fontSize: 15, fontWeight: 600, fontFamily: FONT, cursor: disabled ? "not-allowed" : "pointer", opacity: disabled ? 0.5 : 1, background: v.bg, color: v.color, border: v.border, transition: "all 0.2s", ...extraStyle }}>{children}</button>;
+}
+
+function Progress({ current }: { current: number }): React.JSX.Element {
+  const stepLabels: string[] = ["Welcome", "Foundation", "Holdings", "Results"];
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 0, marginBottom: 32 }}>
+      {stepLabels.map((s: string, i: number) => (
+        <div key={i} style={{ display: "flex", alignItems: "center", flex: 1 }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flex: 1 }}>
+            <div style={{ width: 32, height: 32, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 700, fontFamily: FONT, background: i + 1 <= current ? C.viridian : "#E5E7EB", color: i + 1 <= current ? C.white : C.dimGray, transition: "all 0.3s" }}>{i + 1 <= current ? "\u2713" : i + 1}</div>
+            <span style={{ fontSize: 11, color: i + 1 <= current ? C.viridian : C.dimGray, marginTop: 4, fontFamily: FONT, fontWeight: i + 1 === current ? 600 : 400 }}>{s}</span>
+          </div>
+          {i < stepLabels.length - 1 && <div style={{ height: 2, flex: 1, background: i + 1 < current ? C.viridian : "#E5E7EB", transition: "all 0.3s", margin: "0 -8px", marginBottom: 18 }} />}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ============================================================================
 // MAIN COMPONENT
 // ============================================================================
 
@@ -562,51 +617,7 @@ export default function PortfolioMirror(): React.JSX.Element {
     });
   };
 
-  // Reusable components
-  const Card = ({ children, style: extraStyle }: { children: React.ReactNode; style?: React.CSSProperties }): React.JSX.Element => (
-    <div style={{ background: C.white, borderRadius: 12, padding: "28px 32px", boxShadow: "0 1px 3px rgba(0,0,0,0.06)", border: "1px solid #E5E7EB", ...extraStyle }}>{children}</div>
-  );
-
-  const FormInput = ({ label, value, onChange, placeholder, type = "text", required, note }: { label: string; value: string; onChange: (val: string) => void; placeholder?: string; type?: string; required?: boolean; note?: string }): React.JSX.Element => (
-    <div style={{ marginBottom: 18 }}>
-      <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: C.onyx, marginBottom: 6, fontFamily: FONT }}>{label}{required && <span style={{ color: C.red }}> *</span>}</label>
-      <input type={type} value={value} onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value)} placeholder={placeholder} style={{ width: "100%", padding: "10px 14px", borderRadius: 8, border: "1px solid #D1D5DB", fontSize: 14, fontFamily: FONT, color: C.onyx, outline: "none", boxSizing: "border-box", transition: "border 0.2s" }} onFocus={(e: React.FocusEvent<HTMLInputElement>) => { e.target.style.borderColor = C.viridian; }} onBlur={(e: React.FocusEvent<HTMLInputElement>) => { e.target.style.borderColor = "#D1D5DB"; }} />
-      {note && <p style={{ fontSize: 12, color: C.dimGray, marginTop: 4, fontFamily: FONT }}>{note}</p>}
-    </div>
-  );
-
-  const FormSelect = ({ label, value, onChange, options, placeholder }: { label: string; value: string; onChange: (val: string) => void; options: SelectOption[]; placeholder?: string }): React.JSX.Element => (
-    <div style={{ marginBottom: 18 }}>
-      <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: C.onyx, marginBottom: 6, fontFamily: FONT }}>{label}</label>
-      <select value={value} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => onChange(e.target.value)} style={{ width: "100%", padding: "10px 14px", borderRadius: 8, border: "1px solid #D1D5DB", fontSize: 14, fontFamily: FONT, color: value ? C.onyx : C.dimGray, outline: "none", boxSizing: "border-box", background: C.white, cursor: "pointer" }}>
-        <option value="">{placeholder || "Select..."}</option>
-        {options.map((o: SelectOption) => <option key={o.value} value={o.value}>{o.label}</option>)}
-      </select>
-    </div>
-  );
-
-  const Btn = ({ children, onClick, disabled, variant = "primary", style: extraStyle }: { children: React.ReactNode; onClick?: () => void; disabled?: boolean; variant?: "primary" | "secondary" | "danger"; style?: React.CSSProperties }): React.JSX.Element => {
-    const variants: Record<string, { bg: string; color: string; border: string }> = { primary: { bg: C.viridian, color: C.white, border: "none" }, secondary: { bg: "transparent", color: C.viridian, border: `2px solid ${C.viridian}` }, danger: { bg: "transparent", color: C.red, border: `1px solid ${C.red}` } };
-    const v = variants[variant];
-    return <button onClick={onClick} disabled={disabled} style={{ padding: "12px 28px", borderRadius: 8, fontSize: 15, fontWeight: 600, fontFamily: FONT, cursor: disabled ? "not-allowed" : "pointer", opacity: disabled ? 0.5 : 1, background: v.bg, color: v.color, border: v.border, transition: "all 0.2s", ...extraStyle }}>{children}</button>;
-  };
-
-  const Progress = ({ current }: { current: number }): React.JSX.Element => {
-    const stepLabels: string[] = ["Welcome", "Foundation", "Holdings", "Results"];
-    return (
-      <div style={{ display: "flex", alignItems: "center", gap: 0, marginBottom: 32 }}>
-        {stepLabels.map((s: string, i: number) => (
-          <div key={i} style={{ display: "flex", alignItems: "center", flex: 1 }}>
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flex: 1 }}>
-              <div style={{ width: 32, height: 32, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 700, fontFamily: FONT, background: i + 1 <= current ? C.viridian : "#E5E7EB", color: i + 1 <= current ? C.white : C.dimGray, transition: "all 0.3s" }}>{i + 1 <= current ? "\u2713" : i + 1}</div>
-              <span style={{ fontSize: 11, color: i + 1 <= current ? C.viridian : C.dimGray, marginTop: 4, fontFamily: FONT, fontWeight: i + 1 === current ? 600 : 400 }}>{s}</span>
-            </div>
-            {i < stepLabels.length - 1 && <div style={{ height: 2, flex: 1, background: i + 1 < current ? C.viridian : "#E5E7EB", transition: "all 0.3s", margin: "0 -8px", marginBottom: 18 }} />}
-          </div>
-        ))}
-      </div>
-    );
-  };
+  // Reusable components are defined at module level (above) to avoid remounting on re-render
 
   // ============================================================================
   // STEP RENDERERS
